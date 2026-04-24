@@ -49,3 +49,46 @@ These helpers require PyTorch. Install the compute extras when using them:
 ```bash
 pip install -e ".[compute]"
 ```
+
+## PopQA Workflow
+
+PopQA is a good next dataset for source-sensitive stability because it directly
+targets parametric versus retrieved knowledge on entity-centric QA. The base
+dataset provides questions, aliases, and popularity metadata; the retrieval/web
+condition must be constructed by the experiment.
+
+Once you have:
+
+- PopQA metadata exported locally as `.csv`, `.json`, or `.jsonl`
+- stability runs for one or more source conditions
+
+you can join the metadata onto a stability report with:
+
+```python
+import json
+from pathlib import Path
+
+from stability_agent.popqa_summary import (
+    load_popqa_metadata,
+    render_popqa_markdown,
+    summarize_popqa_source_effects,
+)
+
+result = json.loads(Path("reports/popqa_source_comparison.json").read_text())
+metadata = load_popqa_metadata(Path("data/popqa.csv"))
+summary = summarize_popqa_source_effects(result, metadata)
+Path("reports/popqa_followup_summary.md").write_text(
+    render_popqa_markdown(summary),
+    encoding="utf-8",
+)
+```
+
+The key PopQA slices to inspect are:
+
+- subject popularity bucket
+- object popularity bucket
+- pairwise source gaps on matched questions
+
+If the PopQA hypothesis holds, retrieved conditions should help most on
+low-popularity questions even if parametric memory remains strong on popular
+ones.

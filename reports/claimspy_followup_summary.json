@@ -1,0 +1,456 @@
+{
+  "domain_source_summary": [
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.30657687126714006,
+      "domain": "alloys",
+      "high_n": 2,
+      "low_n": 9,
+      "n": 16,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.25025925926553705,
+      "domain": "alloys",
+      "high_n": 4,
+      "low_n": 12,
+      "n": 16,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.6512285608991439,
+      "domain": "alloys",
+      "high_n": 4,
+      "low_n": 0,
+      "n": 16,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.4059484726963632,
+      "domain": "alloys_sup",
+      "high_n": 0,
+      "low_n": 1,
+      "n": 4,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.26861111134833965,
+      "domain": "alloys_sup",
+      "high_n": 1,
+      "low_n": 3,
+      "n": 4,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.6891608287066389,
+      "domain": "alloys_sup",
+      "high_n": 1,
+      "low_n": 0,
+      "n": 4,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.4156972051676303,
+      "domain": "batteries",
+      "high_n": 1,
+      "low_n": 2,
+      "n": 5,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.4,
+      "domain": "batteries",
+      "high_n": 2,
+      "low_n": 3,
+      "n": 5,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.25,
+      "avg_stability": 0.6608570734584841,
+      "domain": "batteries",
+      "high_n": 1,
+      "low_n": 0,
+      "n": 5,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": 0.4189189189189189,
+      "avg_stability": 0.32651563110027515,
+      "domain": "computational_tools",
+      "high_n": 7,
+      "low_n": 22,
+      "n": 37,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.4189189189189189,
+      "avg_stability": 0.33311711713761183,
+      "domain": "computational_tools",
+      "high_n": 12,
+      "low_n": 25,
+      "n": 37,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.4189189189189189,
+      "avg_stability": 0.727686230719249,
+      "domain": "computational_tools",
+      "high_n": 15,
+      "low_n": 0,
+      "n": 37,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": 0.37625,
+      "avg_stability": 0.30002164292219113,
+      "domain": "modalities",
+      "high_n": 1,
+      "low_n": 5,
+      "n": 8,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.37625,
+      "avg_stability": 0.27570512832608074,
+      "domain": "modalities",
+      "high_n": 2,
+      "low_n": 6,
+      "n": 8,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.37625,
+      "avg_stability": 0.662614580800402,
+      "domain": "modalities",
+      "high_n": 3,
+      "low_n": 0,
+      "n": 8,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": 0.0,
+      "avg_stability": 0.20127619112797437,
+      "domain": "semiconductors",
+      "high_n": 0,
+      "low_n": 3,
+      "n": 5,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.0,
+      "avg_stability": 0.2,
+      "domain": "semiconductors",
+      "high_n": 1,
+      "low_n": 4,
+      "n": 5,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.0,
+      "avg_stability": 0.6509907274848384,
+      "domain": "semiconductors",
+      "high_n": 1,
+      "low_n": 0,
+      "n": 5,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": 0.3,
+      "avg_stability": 0.28928643092209266,
+      "domain": "superconductors",
+      "high_n": 2,
+      "low_n": 9,
+      "n": 15,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.3,
+      "avg_stability": 0.33902857153188615,
+      "domain": "superconductors",
+      "high_n": 4,
+      "low_n": 9,
+      "n": 15,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.3,
+      "avg_stability": 0.677739674128611,
+      "domain": "superconductors",
+      "high_n": 5,
+      "low_n": 1,
+      "n": 15,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": null,
+      "avg_stability": 0.4057885071166375,
+      "domain": "unknown",
+      "high_n": 4,
+      "low_n": 9,
+      "n": 16,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": null,
+      "avg_stability": 0.3756547619123012,
+      "domain": "unknown",
+      "high_n": 6,
+      "low_n": 10,
+      "n": 16,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": null,
+      "avg_stability": 0.7214061247869579,
+      "domain": "unknown",
+      "high_n": 6,
+      "low_n": 0,
+      "n": 16,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    }
+  ],
+  "quality_buckets": [
+    {
+      "avg_quality_score": 0.958,
+      "avg_stability": 0.32954124023948206,
+      "bucket": "high_quality",
+      "n": 30,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.008666666666666666,
+      "avg_stability": 0.3091366927212059,
+      "bucket": "low_quality",
+      "n": 60,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": null,
+      "avg_stability": 0.4057885071166375,
+      "bucket": "missing",
+      "n": 16,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_quality_score": 0.958,
+      "avg_stability": 0.3435213675186505,
+      "bucket": "high_quality",
+      "n": 30,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.008666666666666666,
+      "avg_stability": 0.2898225750293502,
+      "bucket": "low_quality",
+      "n": 60,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": null,
+      "avg_stability": 0.3756547619123012,
+      "bucket": "missing",
+      "n": 16,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_quality_score": 0.958,
+      "avg_stability": 0.695261479599451,
+      "bucket": "high_quality",
+      "n": 30,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": 0.008666666666666666,
+      "avg_stability": 0.687818286681509,
+      "bucket": "low_quality",
+      "n": 60,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    },
+    {
+      "avg_quality_score": null,
+      "avg_stability": 0.7214061247869579,
+      "bucket": "missing",
+      "n": 16,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    }
+  ],
+  "source_gap_examples": [
+    {
+      "domain": "alloys",
+      "example_id": "13",
+      "least_stable_source": "ss_rate_dicts_all",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "alloys_0014",
+      "quality_score": 1.0,
+      "stability_gap": 1.0
+    },
+    {
+      "domain": "computational_tools",
+      "example_id": "43",
+      "least_stable_source": "ss_rate_dicts_all",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "computational_tools_0019",
+      "quality_score": 0.0,
+      "stability_gap": 1.0
+    },
+    {
+      "domain": "computational_tools",
+      "example_id": "49",
+      "least_stable_source": "ss_rate_dicts_all_nonweb",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "computational_tools_0025",
+      "quality_score": 0.0,
+      "stability_gap": 1.0
+    },
+    {
+      "domain": "modalities",
+      "example_id": "66",
+      "least_stable_source": "ss_rate_dicts_all",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "modalities_0003",
+      "quality_score": 1.0,
+      "stability_gap": 1.0
+    },
+    {
+      "domain": "alloys",
+      "example_id": "7",
+      "least_stable_source": "ss_rate_dicts_all_nonweb",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "alloys_0008",
+      "quality_score": 0.0,
+      "stability_gap": 0.9962962962066134
+    },
+    {
+      "domain": "computational_tools",
+      "example_id": "57",
+      "least_stable_source": "ss_rate_dicts_all_nonweb",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "computational_tools_0033",
+      "quality_score": 0.25,
+      "stability_gap": 0.9754386073664615
+    },
+    {
+      "domain": null,
+      "example_id": "93",
+      "least_stable_source": "ss_rate_dicts_all_nonweb",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": null,
+      "quality_score": null,
+      "stability_gap": 0.9749549611194713
+    },
+    {
+      "domain": "semiconductors",
+      "example_id": "73",
+      "least_stable_source": "ss_rate_dicts_all_nonweb",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "semiconductors_0004",
+      "quality_score": 0.0,
+      "stability_gap": 0.9640740785333846
+    },
+    {
+      "domain": "superconductors",
+      "example_id": "85",
+      "least_stable_source": "ss_rate_dicts_all_nonweb",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "superconductors_0011",
+      "quality_score": 0.0,
+      "stability_gap": 0.9301960748784682
+    },
+    {
+      "domain": "computational_tools",
+      "example_id": "34",
+      "least_stable_source": "ss_rate_dicts_all_nonweb",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "computational_tools_0010",
+      "quality_score": 1.0,
+      "stability_gap": 0.9214814802010854
+    },
+    {
+      "domain": null,
+      "example_id": "99",
+      "least_stable_source": "ss_rate_dicts_all_nonweb",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": null,
+      "quality_score": null,
+      "stability_gap": 0.9176190410341535
+    },
+    {
+      "domain": "computational_tools",
+      "example_id": "52",
+      "least_stable_source": "ss_rate_dicts_all",
+      "most_stable_source": "ss_rate_dicts_all_parametric_v0",
+      "problem_id": "computational_tools_0028",
+      "quality_score": 1.0,
+      "stability_gap": 0.9108771948437941
+    }
+  ],
+  "source_pair_summary": [
+    {
+      "large_gap_n": 80,
+      "left_more_stable_n": 21,
+      "left_source": "ss_rate_dicts_all_nonweb",
+      "mean_abs_delta": 0.505343793968435,
+      "mean_delta_left_minus_right": -0.3770185647881891,
+      "median_delta_left_minus_right": -0.508412697485515,
+      "n": 106,
+      "right_more_stable_n": 72,
+      "right_source": "ss_rate_dicts_all_parametric_v0",
+      "similar_n": 13
+    },
+    {
+      "large_gap_n": 57,
+      "left_more_stable_n": 9,
+      "left_source": "ss_rate_dicts_all",
+      "mean_abs_delta": 0.38942791305500063,
+      "mean_delta_left_minus_right": -0.365494195293796,
+      "median_delta_left_minus_right": -0.40960327046700534,
+      "n": 106,
+      "right_more_stable_n": 73,
+      "right_source": "ss_rate_dicts_all_parametric_v0",
+      "similar_n": 24
+    },
+    {
+      "large_gap_n": 24,
+      "left_more_stable_n": 38,
+      "left_source": "ss_rate_dicts_all",
+      "mean_abs_delta": 0.15502155922730015,
+      "mean_delta_left_minus_right": 0.01152436949439312,
+      "median_delta_left_minus_right": 0.015255848214381553,
+      "n": 106,
+      "right_more_stable_n": 28,
+      "right_source": "ss_rate_dicts_all_nonweb",
+      "similar_n": 40
+    }
+  ],
+  "source_summary": [
+    {
+      "avg_stability": 0.32950051777663225,
+      "high_n": 17,
+      "low_n": 60,
+      "n": 106,
+      "source_name": "ss_rate_dicts_all"
+    },
+    {
+      "avg_stability": 0.31797614828223913,
+      "high_n": 32,
+      "low_n": 72,
+      "n": 106,
+      "source_name": "ss_rate_dicts_all_nonweb"
+    },
+    {
+      "avg_stability": 0.6949947130704283,
+      "high_n": 36,
+      "low_n": 1,
+      "n": 106,
+      "source_name": "ss_rate_dicts_all_parametric_v0"
+    }
+  ]
+}
