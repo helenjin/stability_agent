@@ -2,45 +2,12 @@
 
 from __future__ import annotations
 
-import json
-from collections import Counter, defaultdict
-from pathlib import Path
+from collections import defaultdict
 from statistics import mean
 from typing import Any
 
-
-def load_claimspy_metadata(assessment_dir: Path) -> dict[str, dict[str, Any]]:
-    """Map sorted ClaimSpy assessment index to lightweight metadata."""
-
-    files = [
-        path
-        for path in assessment_dir.glob("*/*.json")
-        if not path.name.startswith("runtime_config")
-    ]
-    files = sorted(files, key=lambda path: (path.parent.name, path.name))
-
-    out: dict[str, dict[str, Any]] = {}
-    for idx, path in enumerate(files):
-        obj = json.loads(path.read_text(encoding="utf-8"))
-        solution = obj.get("solution", {}) if isinstance(obj, dict) else {}
-        assessment = solution.get("assessment")
-        if assessment is None:
-            json_output = solution.get("json_output")
-            assessment = json.loads(json_output) if isinstance(json_output, str) else json_output
-        if not isinstance(assessment, dict):
-            continue
-
-        problem_id = assessment.get("problem_id") or path.parent.name
-        domain = _domain_from_problem_id(problem_id)
-        out[str(idx)] = {
-            "problem_id": problem_id,
-            "domain": domain,
-            "likert_score": assessment.get("likert_score"),
-            "continuous_score": assessment.get("continuous_score"),
-            "confidence": assessment.get("confidence"),
-            "path": str(path),
-        }
-    return out
+# Loader lives with the adapter now; re-exported here for backward compatibility.
+from ..datasets.claimspy import load_claimspy_metadata  # noqa: F401
 
 
 def summarize_claimspy_source_effects(
@@ -234,12 +201,6 @@ def _source_gap_examples(
 
     examples.sort(key=lambda row: row["stability_gap"], reverse=True)
     return examples[:12]
-
-
-def _domain_from_problem_id(problem_id: Any) -> str:
-    if not isinstance(problem_id, str) or "_" not in problem_id:
-        return "unknown"
-    return problem_id.rsplit("_", 1)[0]
 
 
 def _quality_bucket(score: Any) -> str:

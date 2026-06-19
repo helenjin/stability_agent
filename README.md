@@ -57,6 +57,35 @@ targets parametric versus retrieved knowledge on entity-centric QA. The base
 dataset provides questions, aliases, and popularity metadata; the retrieval/web
 condition must be constructed by the experiment.
 
+### 1. Export PopQA to local experiment files
+
+If `datasets` is installed, you can export PopQA directly from Hugging Face:
+
+```bash
+pip install -e ".[data]"
+stability-agent-popqa-export \
+  --max-examples 250 \
+  --metadata-out reports/popqa_metadata.json \
+  --questions-out reports/popqa_questions.jsonl \
+  --preview-out reports/popqa_preview.md
+```
+
+You can also point the exporter at a local `.csv`, `.json`, or `.jsonl` file:
+
+```bash
+stability-agent-popqa-export \
+  --input data/popqa.csv \
+  --max-examples 250
+```
+
+The exporter writes:
+
+- normalized PopQA metadata
+- question JSONL for downstream answer/retrieval runs
+- a short markdown preview for sanity checking
+
+### 2. Run source conditions
+
 Once you have:
 
 - PopQA metadata exported locally as `.csv`, `.json`, or `.jsonl`

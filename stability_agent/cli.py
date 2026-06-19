@@ -5,10 +5,9 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from .analysis import AnalysisConfig, StabilityAnalyzer
+from .analysis import AnalysisConfig, StabilityAnalyzer, load_support_texts_by_index
 from .io import write_json, write_text
-from .report import render_markdown_report
-from .semantic_redundancy import load_support_texts_by_index
+from .reporting import render_markdown_report
 
 
 def build_parser() -> argparse.ArgumentParser:

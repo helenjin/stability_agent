@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from stability_agent.patterns import compare_source_pairs
+from stability_agent.analysis.patterns import compare_source_pairs
 
 
 class SourcePairComparisonTests(unittest.TestCase):

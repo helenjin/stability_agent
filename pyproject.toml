@@ -12,9 +12,11 @@ dependencies = []
 
 [project.optional-dependencies]
 compute = ["torch"]
+data = ["datasets>=2.19"]
 
 [project.scripts]
 stability-agent = "stability_agent.cli:main"
+stability-agent-popqa-export = "stability_agent.datasets.popqa:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

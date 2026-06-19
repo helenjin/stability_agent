@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from stability_agent.semantic_redundancy import (
+from stability_agent.analysis.semantic_redundancy import (
     analyze_support_texts,
     classify_pair,
     load_support_texts_by_index,

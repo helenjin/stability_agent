@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from stability_agent.popqa_summary import (
+from stability_agent.reporting.popqa_summary import (
     load_popqa_metadata,
     summarize_popqa_source_effects,
 )

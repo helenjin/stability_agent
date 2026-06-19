@@ -8,7 +8,7 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
-from .io import StabilityRun, iter_stability_runs
+from ..io import StabilityRun, iter_stability_runs
 from .patterns import compare_source_pairs, compare_sources, numeric_labels, summarize_radius, tag_patterns
 from .redundancy import infer_mask_redundancy, redundancy_summary
 from .semantic_redundancy import analyze_support_texts, semantic_summary

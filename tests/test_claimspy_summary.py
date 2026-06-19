@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from stability_agent.claimspy_summary import summarize_claimspy_source_effects
+from stability_agent.reporting.claimspy_summary import summarize_claimspy_source_effects
 
 
 class ClaimSpySummaryTests(unittest.TestCase):
