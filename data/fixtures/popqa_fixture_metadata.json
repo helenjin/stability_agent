@@ -1,0 +1,45 @@
+[
+  {
+    "id": "0",
+    "object": "politician",
+    "object_popularity": 25692.0,
+    "object_popularity_bucket": "mid",
+    "possible_answers": [
+      "politician",
+      "political leader"
+    ],
+    "property": "occupation",
+    "question": "What is George Rankin's occupation?",
+    "subject": "George Rankin",
+    "subject_popularity": 142.0,
+    "subject_popularity_bucket": "low"
+  },
+  {
+    "id": "1",
+    "object": "journalist",
+    "object_popularity": 24952.0,
+    "object_popularity_bucket": "low",
+    "possible_answers": [
+      "journalist"
+    ],
+    "property": "occupation",
+    "question": "What is John Mayne's occupation?",
+    "subject": "John Mayne",
+    "subject_popularity": 236.0,
+    "subject_popularity_bucket": "mid"
+  },
+  {
+    "id": "2",
+    "object": "Basil Dean",
+    "object_popularity": 802.0,
+    "object_popularity_bucket": "low",
+    "possible_answers": [
+      "Basil Dean"
+    ],
+    "property": "producer",
+    "question": "Who was the producer of Escape?",
+    "subject": "Escape",
+    "subject_popularity": 198.0,
+    "subject_popularity_bucket": "low"
+  }
+]

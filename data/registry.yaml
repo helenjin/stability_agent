@@ -1,0 +1,80 @@
+# Dataset registry for stability_agent.
+#
+# Single source of truth for every dataset the project uses.
+# - Local corpora live under data/raw and data/stability_runs as per-corpus
+#   symlinks to their source location (see `path`, relative to repo root).
+# - Hugging Face datasets are NOT copied; they are loaded on demand via the
+#   `datasets` library by `hf_id` (+ `split`). Pin `revision` for reproducibility.
+#
+# Symlink targets are absolute and machine-specific (this host). On a new
+# machine, re-point them or re-run scripts/setup_data.sh.
+
+local_corpora:
+  # SciFy/ClaimSpy assessment corpora: claim -> reasoning chain -> per-step typed evidence -> verdict.
+  claimspy_v1:
+    path: data/raw/claimspy_v1
+    files: 87
+    steps_per_assessment: {median: 5, max: 7}
+    per_step_evidence: true
+    source_typed_evidence: true          # web / parametric / artifact / claim
+    note: "Primary corpus. The only one with multi-step reasoning AND per-step source-typed evidence."
+  scholar_qa:
+    path: data/raw/scholar_qa
+    files: 87
+    steps_per_assessment: {median: 3, max: 6}
+    per_step_evidence: true
+    note: "Never had stability run on it yet. Same structure family as claimspy_v1."
+  scholarqa_claude45:
+    path: data/raw/scholarqa_claude45
+    files: 87
+    steps_per_assessment: {median: 3, max: 7}
+    per_step_evidence: true
+    note: "Claude 4.5 ScholarQA assessments. Unused so far."
+  claimspy_v2:
+    path: data/raw/claimspy_v2
+    files: 87
+    steps_per_assessment: {median: 2, max: 4}
+    per_step_evidence: true
+    note: "Shorter chains, messier evidence keys."
+  codescientist:
+    path: data/raw/codescientist
+    files: 91
+    steps_per_assessment: {median: 10, max: 16}
+    per_step_evidence: false             # longest chains, but no per-step evidence mapping
+    note: "Longest reasoning chains available, but evidence is a single justification field."
+  evaluation_data:
+    path: data/raw/evaluation_data
+    note: "SciFy gold problem data / merged-problem-data.jsonl. Source of gold feasibility labels."
+
+stability_runs:
+  # Soft-stability rate outputs (already computed). One dir per source condition.
+  all:        {path: data/stability_runs/all,        source_condition: web,        files: 106}
+  nonweb:     {path: data/stability_runs/nonweb,     source_condition: nonweb,     files: 107}
+  parametric: {path: data/stability_runs/parametric, source_condition: parametric, files: 107}
+  parametric_legacy: {path: data/stability_runs/parametric_legacy, source_condition: parametric, files: 35,  note: "incomplete earlier run"}
+  all_v0:     {path: data/stability_runs/all_v0,     source_condition: web,        files: 106, note: "legacy"}
+  all_v1:     {path: data/stability_runs/all_v1,     source_condition: web,        files: 106, note: "legacy"}
+
+hf_datasets:
+  # Register only: loaded via `datasets.load_dataset(hf_id, ...)`. Not stored under data/.
+  popqa:
+    hf_id: akariasai/PopQA
+    split: test
+    role: "parametric-vs-retrieval QA, entity popularity axis (Phase-3 target)"
+  frames:
+    hf_id: google/frames-benchmark
+    split: test
+    role: "multi-hop QA; evaluated, rejected (median 3 hops, no per-step evidence)"
+  strategyqa:
+    hf_id: ChilleD/StrategyQA
+    split: train
+    role: "implicit multi-step yes/no QA"
+  musique:
+    hf_id: dgslibisey/MuSiQue
+    split: train
+    role: "2-4 hop QA with per-hop decomposition"
+  eli5:
+    hf_id: sentence-transformers/eli5   # or eli5_category; confirm source
+    split: train
+    role: "long-form QA; local export present at data/eli5/ (gitignored, regenerable)"
+    note: "Pre-existing local snapshot in data/eli5/. Not committed per register-only policy."

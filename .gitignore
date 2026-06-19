@@ -2,3 +2,12 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .venv/
+
+# Machine-specific symlinks (recreate with scripts/setup_data.sh) and generated outputs.
+# data/registry.yaml, data/README.md, and data/fixtures/ stay tracked.
+data/raw/
+data/stability_runs/
+data/processed/
+# Exported HF dataset snapshots (register-only policy: load via datasets, don't commit copies)
+data/eli5/
+*.arrow

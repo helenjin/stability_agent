@@ -1,0 +1,4 @@
+id,subj,prop,obj,s_pop,o_pop,question,possible_answers
+0,George Rankin,occupation,politician,142,25692,What is George Rankin's occupation?,"[""politician"", ""political leader""]"
+1,John Mayne,occupation,journalist,236,24952,What is John Mayne's occupation?,"[""journalist""]"
+2,Escape,producer,Basil Dean,198,802,Who was the producer of Escape?,"[""Basil Dean""]"
