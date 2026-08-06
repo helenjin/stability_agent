@@ -1,0 +1,300 @@
+{
+  "summary": {
+    "n": 41,
+    "internal_score": 0.9024,
+    "retrieved_score": 0.7063,
+    "mean_delta_internal_minus_retrieved": 0.1961,
+    "internal_more_stable": 20,
+    "retrieved_more_stable": 5,
+    "tie": 16
+  },
+  "per_example": {
+    "alloys_0001": {
+      "likert": -1,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.365,
+      "delta": 0.635
+    },
+    "alloys_0005": {
+      "likert": -2,
+      "k": 3,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "alloys_0006": {
+      "likert": -1,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "alloys_0011": {
+      "likert": -2,
+      "k": 3,
+      "internal": 1.0,
+      "retrieved": 0.154,
+      "delta": 0.846
+    },
+    "alloys_0012": {
+      "likert": -2,
+      "k": 3,
+      "internal": 0.968,
+      "retrieved": 1.0,
+      "delta": -0.032
+    },
+    "alloys_0014": {
+      "likert": 2,
+      "k": 2,
+      "internal": 0.51,
+      "retrieved": 0.433,
+      "delta": 0.077
+    },
+    "alloys_0015": {
+      "likert": -1,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "alloys_0016": {
+      "likert": -1,
+      "k": 3,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "alloys_sup_0003": {
+      "likert": -2,
+      "k": 3,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "batteries_0005": {
+      "likert": -1,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.269,
+      "delta": 0.731
+    },
+    "computational_tools_0003": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "computational_tools_0004": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "computational_tools_0005": {
+      "likert": 2,
+      "k": 3,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "computational_tools_0006": {
+      "likert": -1,
+      "k": 3,
+      "internal": 0.763,
+      "retrieved": 0.538,
+      "delta": 0.224
+    },
+    "computational_tools_0007": {
+      "likert": 0,
+      "k": 3,
+      "internal": 0.84,
+      "retrieved": 0.635,
+      "delta": 0.205
+    },
+    "computational_tools_0008": {
+      "likert": 0,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.587,
+      "delta": 0.413
+    },
+    "computational_tools_0010": {
+      "likert": 0,
+      "k": 2,
+      "internal": 0.702,
+      "retrieved": 0.558,
+      "delta": 0.144
+    },
+    "computational_tools_0017": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "computational_tools_0019": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.356,
+      "delta": 0.644
+    },
+    "computational_tools_0020": {
+      "likert": -2,
+      "k": 3,
+      "internal": 1.0,
+      "retrieved": 0.179,
+      "delta": 0.821
+    },
+    "computational_tools_0021": {
+      "likert": 2,
+      "k": 2,
+      "internal": 0.558,
+      "retrieved": 0.269,
+      "delta": 0.288
+    },
+    "computational_tools_0022": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.327,
+      "delta": 0.673
+    },
+    "computational_tools_0024": {
+      "likert": -1,
+      "k": 2,
+      "internal": 0.346,
+      "retrieved": 0.885,
+      "delta": -0.538
+    },
+    "computational_tools_0025": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "computational_tools_0027": {
+      "likert": -1,
+      "k": 2,
+      "internal": 0.99,
+      "retrieved": 1.0,
+      "delta": -0.01
+    },
+    "computational_tools_0031": {
+      "likert": 1,
+      "k": 3,
+      "internal": 1.0,
+      "retrieved": 0.628,
+      "delta": 0.372
+    },
+    "computational_tools_0032": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "computational_tools_0034": {
+      "likert": -1,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.24,
+      "delta": 0.76
+    },
+    "computational_tools_0036": {
+      "likert": 2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.673,
+      "delta": 0.327
+    },
+    "computational_tools_0037": {
+      "likert": -1,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.644,
+      "delta": 0.356
+    },
+    "modalities_0001": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "modalities_0002": {
+      "likert": 1,
+      "k": 2,
+      "internal": 0.529,
+      "retrieved": 0.327,
+      "delta": 0.202
+    },
+    "modalities_0004": {
+      "likert": -1,
+      "k": 2,
+      "internal": 0.654,
+      "retrieved": 1.0,
+      "delta": -0.346
+    },
+    "semiconductors_0002": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "semiconductors_0004": {
+      "likert": -1,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.288,
+      "delta": 0.712
+    },
+    "semiconductors_0005": {
+      "likert": -1,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 0.308,
+      "delta": 0.692
+    },
+    "superconductors_0002": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "superconductors_0004": {
+      "likert": -2,
+      "k": 2,
+      "internal": 1.0,
+      "retrieved": 1.0,
+      "delta": 0.0
+    },
+    "superconductors_0007": {
+      "likert": -1,
+      "k": 3,
+      "internal": 0.814,
+      "retrieved": 1.0,
+      "delta": -0.186
+    },
+    "superconductors_0009": {
+      "likert": 0,
+      "k": 2,
+      "internal": 0.394,
+      "retrieved": 1.0,
+      "delta": -0.606
+    },
+    "superconductors_0014": {
+      "likert": 1,
+      "k": 3,
+      "internal": 0.929,
+      "retrieved": 0.295,
+      "delta": 0.635
+    }
+  }
+}

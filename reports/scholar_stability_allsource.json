@@ -1,0 +1,412 @@
+{
+  "summary": {
+    "n": 67,
+    "all_source_stability": 0.2382,
+    "low": 44,
+    "high": 0
+  },
+  "per_example": {
+    "alloys_0001": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.312
+    },
+    "alloys_0005": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 8,
+      "all_stability": 0.026
+    },
+    "alloys_0006": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.125
+    },
+    "alloys_0007": {
+      "likert": 1,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.332
+    },
+    "alloys_0011": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 8,
+      "all_stability": 0.093
+    },
+    "alloys_0012": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 7,
+      "all_stability": 0.17
+    },
+    "alloys_0014": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.369
+    },
+    "alloys_0015": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.106
+    },
+    "alloys_0016": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 8,
+      "all_stability": 0.074
+    },
+    "alloys_sup_0003": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 7,
+      "all_stability": 0.215
+    },
+    "batteries_0001": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 8,
+      "all_stability": 0.192
+    },
+    "batteries_0002": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.292
+    },
+    "batteries_0003": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.418
+    },
+    "batteries_0004": {
+      "likert": 1,
+      "judge_base_label": 0,
+      "n_units": 7,
+      "all_stability": 0.112
+    },
+    "batteries_0005": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.127
+    },
+    "computational_tools_0001": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.313
+    },
+    "computational_tools_0002": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.392
+    },
+    "computational_tools_0003": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.231
+    },
+    "computational_tools_0004": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.226
+    },
+    "computational_tools_0005": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.038
+    },
+    "computational_tools_0006": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 7,
+      "all_stability": 0.362
+    },
+    "computational_tools_0007": {
+      "likert": 0,
+      "judge_base_label": 0,
+      "n_units": 8,
+      "all_stability": 0.583
+    },
+    "computational_tools_0008": {
+      "likert": 0,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.262
+    },
+    "computational_tools_0010": {
+      "likert": 0,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.681
+    },
+    "computational_tools_0011": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.119
+    },
+    "computational_tools_0012": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 3,
+      "all_stability": 0.141
+    },
+    "computational_tools_0013": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.061
+    },
+    "computational_tools_0014": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.343
+    },
+    "computational_tools_0015": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.085
+    },
+    "computational_tools_0016": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.202
+    },
+    "computational_tools_0017": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.081
+    },
+    "computational_tools_0018": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 11,
+      "all_stability": 0.051
+    },
+    "computational_tools_0019": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.295
+    },
+    "computational_tools_0020": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.125
+    },
+    "computational_tools_0021": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.308
+    },
+    "computational_tools_0022": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.369
+    },
+    "computational_tools_0023": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 2,
+      "all_stability": 0.606
+    },
+    "computational_tools_0024": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 7,
+      "all_stability": 0.391
+    },
+    "computational_tools_0025": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.223
+    },
+    "computational_tools_0027": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.122
+    },
+    "computational_tools_0029": {
+      "likert": 1,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.301
+    },
+    "computational_tools_0031": {
+      "likert": 1,
+      "judge_base_label": 0,
+      "n_units": 8,
+      "all_stability": 0.167
+    },
+    "computational_tools_0032": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.135
+    },
+    "computational_tools_0033": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.231
+    },
+    "computational_tools_0034": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.288
+    },
+    "computational_tools_0035": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.197
+    },
+    "computational_tools_0036": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.146
+    },
+    "computational_tools_0037": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.346
+    },
+    "modalities_0001": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.045
+    },
+    "modalities_0002": {
+      "likert": 1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.3
+    },
+    "modalities_0004": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.1
+    },
+    "semiconductors_0001": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.087
+    },
+    "semiconductors_0002": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 8,
+      "all_stability": 0.016
+    },
+    "semiconductors_0004": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.142
+    },
+    "semiconductors_0005": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.169
+    },
+    "superconductors_0002": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.065
+    },
+    "superconductors_0003": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.399
+    },
+    "superconductors_0004": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 5,
+      "all_stability": 0.135
+    },
+    "superconductors_0005": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.168
+    },
+    "superconductors_0006": {
+      "likert": 2,
+      "judge_base_label": 0,
+      "n_units": 3,
+      "all_stability": 0.577
+    },
+    "superconductors_0007": {
+      "likert": -1,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.205
+    },
+    "superconductors_0008": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.221
+    },
+    "superconductors_0009": {
+      "likert": 0,
+      "judge_base_label": 0,
+      "n_units": 8,
+      "all_stability": 0.712
+    },
+    "superconductors_0011": {
+      "likert": 1,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.303
+    },
+    "superconductors_0012": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 4,
+      "all_stability": 0.447
+    },
+    "superconductors_0014": {
+      "likert": 1,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.333
+    },
+    "superconductors_0015": {
+      "likert": -2,
+      "judge_base_label": 0,
+      "n_units": 6,
+      "all_stability": 0.154
+    }
+  }
+}
