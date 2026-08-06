@@ -20,61 +20,94 @@
 
 | domain | source | n | avg stability | avg quality | low | high |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| alloys | ss_rate_dicts_all | 16 | 0.307 | 0.250 | 9 | 2 |
-| alloys | ss_rate_dicts_all_nonweb | 16 | 0.250 | 0.250 | 12 | 4 |
-| alloys | ss_rate_dicts_all_parametric_v0 | 16 | 0.651 | 0.250 | 0 | 4 |
-| alloys_sup | ss_rate_dicts_all | 4 | 0.406 | 0.250 | 1 | 0 |
-| alloys_sup | ss_rate_dicts_all_nonweb | 4 | 0.269 | 0.250 | 3 | 1 |
-| alloys_sup | ss_rate_dicts_all_parametric_v0 | 4 | 0.689 | 0.250 | 0 | 1 |
-| batteries | ss_rate_dicts_all | 5 | 0.416 | 0.250 | 2 | 1 |
-| batteries | ss_rate_dicts_all_nonweb | 5 | 0.400 | 0.250 | 3 | 2 |
-| batteries | ss_rate_dicts_all_parametric_v0 | 5 | 0.661 | 0.250 | 0 | 1 |
-| computational_tools | ss_rate_dicts_all | 37 | 0.327 | 0.419 | 22 | 7 |
-| computational_tools | ss_rate_dicts_all_nonweb | 37 | 0.333 | 0.419 | 25 | 12 |
-| computational_tools | ss_rate_dicts_all_parametric_v0 | 37 | 0.728 | 0.419 | 0 | 15 |
-| modalities | ss_rate_dicts_all | 8 | 0.300 | 0.376 | 5 | 1 |
-| modalities | ss_rate_dicts_all_nonweb | 8 | 0.276 | 0.376 | 6 | 2 |
-| modalities | ss_rate_dicts_all_parametric_v0 | 8 | 0.663 | 0.376 | 0 | 3 |
-| semiconductors | ss_rate_dicts_all | 5 | 0.201 | 0.000 | 3 | 0 |
-| semiconductors | ss_rate_dicts_all_nonweb | 5 | 0.200 | 0.000 | 4 | 1 |
-| semiconductors | ss_rate_dicts_all_parametric_v0 | 5 | 0.651 | 0.000 | 0 | 1 |
-| superconductors | ss_rate_dicts_all | 15 | 0.289 | 0.300 | 9 | 2 |
-| superconductors | ss_rate_dicts_all_nonweb | 15 | 0.339 | 0.300 | 9 | 4 |
-| superconductors | ss_rate_dicts_all_parametric_v0 | 15 | 0.678 | 0.300 | 1 | 5 |
-| unknown | ss_rate_dicts_all | 16 | 0.406 | - | 9 | 4 |
-| unknown | ss_rate_dicts_all_nonweb | 16 | 0.376 | - | 10 | 6 |
-| unknown | ss_rate_dicts_all_parametric_v0 | 16 | 0.721 | - | 0 | 6 |
+| gtri | ss_rate_dicts_all | 20 | 0.249 | 0.525 | 13 | 2 |
+| gtri | ss_rate_dicts_all_nonweb | 20 | 0.254 | 0.525 | 14 | 4 |
+| gtri | ss_rate_dicts_all_parametric_v0 | 20 | 0.717 | 0.525 | 0 | 7 |
+| matsci_db | ss_rate_dicts_all | 6 | 0.469 | 0.375 | 2 | 2 |
+| matsci_db | ss_rate_dicts_all_nonweb | 6 | 0.333 | 0.375 | 4 | 2 |
+| matsci_db | ss_rate_dicts_all_parametric_v0 | 6 | 0.635 | 0.375 | 0 | 2 |
+| mof_alloys | ss_rate_dicts_all | 3 | 0.012 | 0.417 | 3 | 0 |
+| mof_alloys | ss_rate_dicts_all_nonweb | 3 | 0.000 | 0.417 | 3 | 0 |
+| mof_alloys | ss_rate_dicts_all_parametric_v0 | 3 | 0.823 | 0.417 | 0 | 1 |
+| mof_batteries | ss_rate_dicts_all | 2 | 0.118 | 0.375 | 2 | 0 |
+| mof_batteries | ss_rate_dicts_all_nonweb | 2 | 0.000 | 0.375 | 2 | 0 |
+| mof_batteries | ss_rate_dicts_all_parametric_v0 | 2 | 0.580 | 0.375 | 0 | 0 |
+| mof_semiconductors | ss_rate_dicts_all | 2 | 0.539 | 0.500 | 0 | 0 |
+| mof_semiconductors | ss_rate_dicts_all_nonweb | 2 | 0.500 | 0.500 | 1 | 1 |
+| mof_semiconductors | ss_rate_dicts_all_parametric_v0 | 2 | 0.490 | 0.500 | 0 | 0 |
+| mof_superconductors | ss_rate_dicts_all | 3 | 0.246 | 0.167 | 2 | 0 |
+| mof_superconductors | ss_rate_dicts_all_nonweb | 3 | 0.335 | 0.167 | 2 | 1 |
+| mof_superconductors | ss_rate_dicts_all_parametric_v0 | 3 | 0.667 | 0.167 | 0 | 1 |
+| str_dft | ss_rate_dicts_all | 7 | 0.427 | 0.286 | 3 | 2 |
+| str_dft | ss_rate_dicts_all_nonweb | 7 | 0.571 | 0.286 | 3 | 4 |
+| str_dft | ss_rate_dicts_all_parametric_v0 | 7 | 0.647 | 0.286 | 1 | 2 |
+| str_pvskt | ss_rate_dicts_all | 2 | 0.120 | 0.625 | 2 | 0 |
+| str_pvskt | ss_rate_dicts_all_nonweb | 2 | 0.000 | 0.625 | 2 | 0 |
+| str_pvskt | ss_rate_dicts_all_parametric_v0 | 2 | 0.508 | 0.625 | 0 | 0 |
+| str_spectulative | ss_rate_dicts_all | 1 | 0.215 | 0.000 | 1 | 0 |
+| str_spectulative | ss_rate_dicts_all_nonweb | 1 | 0.000 | 0.000 | 1 | 0 |
+| str_spectulative | ss_rate_dicts_all_parametric_v0 | 1 | 0.975 | 0.000 | 0 | 1 |
+| str_speculative | ss_rate_dicts_all | 10 | 0.441 | 0.325 | 5 | 3 |
+| str_speculative | ss_rate_dicts_all_nonweb | 10 | 0.401 | 0.325 | 6 | 4 |
+| str_speculative | ss_rate_dicts_all_parametric_v0 | 10 | 0.723 | 0.325 | 0 | 4 |
+| umbc_alloys | ss_rate_dicts_all | 5 | 0.247 | 0.350 | 3 | 0 |
+| umbc_alloys | ss_rate_dicts_all_nonweb | 5 | 0.225 | 0.350 | 4 | 1 |
+| umbc_alloys | ss_rate_dicts_all_parametric_v0 | 5 | 0.612 | 0.350 | 0 | 1 |
+| umbc_batteries | ss_rate_dicts_all | 4 | 0.077 | 0.438 | 4 | 0 |
+| umbc_batteries | ss_rate_dicts_all_nonweb | 4 | 0.049 | 0.438 | 4 | 0 |
+| umbc_batteries | ss_rate_dicts_all_parametric_v0 | 4 | 0.763 | 0.438 | 0 | 2 |
+| umbc_semiconductors | ss_rate_dicts_all | 6 | 0.317 | 0.125 | 4 | 2 |
+| umbc_semiconductors | ss_rate_dicts_all_nonweb | 6 | 0.333 | 0.125 | 4 | 2 |
+| umbc_semiconductors | ss_rate_dicts_all_parametric_v0 | 6 | 0.766 | 0.125 | 0 | 2 |
+| umbc_superconductors | ss_rate_dicts_all | 5 | 0.273 | 0.400 | 3 | 0 |
+| umbc_superconductors | ss_rate_dicts_all_nonweb | 5 | 0.400 | 0.400 | 3 | 2 |
+| umbc_superconductors | ss_rate_dicts_all_parametric_v0 | 5 | 0.662 | 0.400 | 0 | 1 |
+| unknown | ss_rate_dicts_all | 16 | 0.340 | 0.562 | 9 | 2 |
+| unknown | ss_rate_dicts_all_nonweb | 16 | 0.325 | 0.562 | 11 | 5 |
+| unknown | ss_rate_dicts_all_parametric_v0 | 16 | 0.696 | 0.562 | 0 | 7 |
+| vis_reas_alloys | ss_rate_dicts_all | 4 | 0.406 | 0.250 | 1 | 0 |
+| vis_reas_alloys | ss_rate_dicts_all_nonweb | 4 | 0.269 | 0.250 | 3 | 1 |
+| vis_reas_alloys | ss_rate_dicts_all_parametric_v0 | 4 | 0.689 | 0.250 | 0 | 1 |
+| vis_reas_batteries | ss_rate_dicts_all | 4 | 0.516 | 0.312 | 1 | 1 |
+| vis_reas_batteries | ss_rate_dicts_all_nonweb | 4 | 0.500 | 0.312 | 2 | 2 |
+| vis_reas_batteries | ss_rate_dicts_all_parametric_v0 | 4 | 0.659 | 0.312 | 0 | 1 |
+| vis_reas_semiconductors | ss_rate_dicts_all | 1 | 0.016 | 0.250 | 1 | 0 |
+| vis_reas_semiconductors | ss_rate_dicts_all_nonweb | 1 | 0.000 | 0.250 | 1 | 0 |
+| vis_reas_semiconductors | ss_rate_dicts_all_parametric_v0 | 1 | 0.669 | 0.250 | 0 | 0 |
+| vis_reas_superconductors | ss_rate_dicts_all | 5 | 0.648 | 0.400 | 1 | 3 |
+| vis_reas_superconductors | ss_rate_dicts_all_nonweb | 5 | 0.600 | 0.400 | 2 | 3 |
+| vis_reas_superconductors | ss_rate_dicts_all_parametric_v0 | 5 | 0.787 | 0.400 | 0 | 3 |
 
 ## Stability vs Quality
 
 | source | bucket | n | avg stability | avg quality |
 | --- | --- | ---: | ---: | ---: |
-| ss_rate_dicts_all | high_quality | 30 | 0.330 | 0.958 |
-| ss_rate_dicts_all | low_quality | 60 | 0.309 | 0.009 |
-| ss_rate_dicts_all | missing | 16 | 0.406 | - |
-| ss_rate_dicts_all_nonweb | high_quality | 30 | 0.344 | 0.958 |
-| ss_rate_dicts_all_nonweb | low_quality | 60 | 0.290 | 0.009 |
-| ss_rate_dicts_all_nonweb | missing | 16 | 0.376 | - |
-| ss_rate_dicts_all_parametric_v0 | high_quality | 30 | 0.695 | 0.958 |
-| ss_rate_dicts_all_parametric_v0 | low_quality | 60 | 0.688 | 0.009 |
-| ss_rate_dicts_all_parametric_v0 | missing | 16 | 0.721 | - |
+| ss_rate_dicts_all | high_quality | 34 | 0.381 | 0.838 |
+| ss_rate_dicts_all | low_quality | 59 | 0.345 | 0.127 |
+| ss_rate_dicts_all | mid_quality | 13 | 0.123 | 0.500 |
+| ss_rate_dicts_all_nonweb | high_quality | 34 | 0.328 | 0.838 |
+| ss_rate_dicts_all_nonweb | low_quality | 59 | 0.376 | 0.127 |
+| ss_rate_dicts_all_nonweb | mid_quality | 13 | 0.027 | 0.500 |
+| ss_rate_dicts_all_parametric_v0 | high_quality | 34 | 0.698 | 0.838 |
+| ss_rate_dicts_all_parametric_v0 | low_quality | 59 | 0.711 | 0.127 |
+| ss_rate_dicts_all_parametric_v0 | mid_quality | 13 | 0.616 | 0.500 |
 
 ## Largest Source Gaps
 
 | example | problem | domain | most stable | least stable | gap | quality |
 | --- | --- | --- | --- | --- | ---: | ---: |
-| 13 | alloys_0014 | alloys | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all | 1.000 | 1.000 |
-| 43 | computational_tools_0019 | computational_tools | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all | 1.000 | 0.000 |
-| 49 | computational_tools_0025 | computational_tools | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 1.000 | 0.000 |
-| 66 | modalities_0003 | modalities | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all | 1.000 | 1.000 |
-| 7 | alloys_0008 | alloys | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.996 | 0.000 |
-| 57 | computational_tools_0033 | computational_tools | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.975 | 0.250 |
-| 93 | - | - | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.975 | - |
-| 73 | semiconductors_0004 | semiconductors | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.964 | 0.000 |
-| 85 | superconductors_0011 | superconductors | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.930 | 0.000 |
-| 34 | computational_tools_0010 | computational_tools | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.921 | 1.000 |
-| 99 | - | - | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.918 | - |
-| 52 | computational_tools_0028 | computational_tools | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all | 0.911 | 1.000 |
+| 13 | mof_alloys_0008 | mof_alloys | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all | 1.000 | 1.000 |
+| 43 | umbc_batteries_0003 | umbc_batteries | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all | 1.000 | 1.000 |
+| 49 | umbc_batteries_0004 | umbc_batteries | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 1.000 | 0.000 |
+| 66 | gtri_0001 | gtri | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all | 1.000 | 1.000 |
+| 7 | mof_superconductors_0002 | mof_superconductors | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.996 | 0.000 |
+| 57 | jhu-alloys-0008 | unknown | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.975 | 0.000 |
+| 93 | str_spectulative_01 | str_spectulative | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.975 | 0.000 |
+| 73 | gtri_0008 | gtri | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.964 | 1.000 |
+| 85 | gtri_0020 | gtri | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.930 | 0.500 |
+| 34 | umbc_semiconductors_0001 | umbc_semiconductors | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.921 | 0.000 |
+| 99 | str_speculative_11 | str_speculative | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all_nonweb | 0.918 | 0.000 |
+| 52 | jhu-alloys-0003 | unknown | ss_rate_dicts_all_parametric_v0 | ss_rate_dicts_all | 0.911 | 0.750 |
 
 ## Reading
 

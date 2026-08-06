@@ -17,7 +17,31 @@ local_corpora:
     steps_per_assessment: {median: 5, max: 7}
     per_step_evidence: true
     source_typed_evidence: true          # web / parametric / artifact / claim
-    note: "Primary corpus. The only one with multi-step reasoning AND per-step source-typed evidence."
+    note: >-
+      Primary corpus for general ClaimSpy adapter use. The only one with
+      multi-step reasoning AND per-step source-typed evidence. NOT the corpus
+      behind stability_runs/* -- its problem ids (alloys_0001, ...) are
+      disjoint from the potluck-dry-run set those runs iterate. Do not join it
+      to stability_runs by sorted-file index; use scify_potluck_raw instead
+      (see stability_agent.datasets.scify_index).
+  scify_potluck_raw:
+    path: data/raw/scify_potluck_raw
+    files: 106
+    steps_per_assessment: {median: 5, max: 7}
+    per_step_evidence: true
+    source_typed_evidence: true          # web / parametric / artifact / claim
+    note: >-
+      The corpus stability_runs/* actually iterate (SciFyDataset, task
+      data_dir=data/scify/v1, split=val, reads
+      <problem_id>/ICL-agent-1-000.json per problem). Join to stability_runs
+      by di == row index in the potluck-dry-run problem list
+      (evaluation_data/subsets/potluck-dry-run/sprint1-problems.jsonl), not by
+      sorted filename. Verified 103/106 exact match between each problem's own
+      ICL-agent-1-000.json likert_score and the parametric run's true_label.
+      Some problem folders also hold other systems' outputs (e.g.
+      PoVE-multiagent.json) -- always read ICL-agent-1-000.json specifically.
+      Use stability_agent.datasets.scify_index.load_scify_index_metadata for
+      the correct join.
   scholar_qa:
     path: data/raw/scholar_qa
     files: 87
@@ -48,6 +72,9 @@ local_corpora:
 
 stability_runs:
   # Soft-stability rate outputs (already computed). One dir per source condition.
+  # Each <di>.json's di is a row index into the potluck-dry-run problem list, not
+  # a sorted-filename index into any assessment corpus. Join metadata via
+  # scify_potluck_raw + stability_agent.datasets.scify_index, not claimspy_v1.
   all:        {path: data/stability_runs/all,        source_condition: web,        files: 106}
   nonweb:     {path: data/stability_runs/nonweb,     source_condition: nonweb,     files: 107}
   parametric: {path: data/stability_runs/parametric, source_condition: parametric, files: 107}

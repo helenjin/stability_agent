@@ -17,6 +17,10 @@ ln -sfn "$SRC/data/v2/scholarqa_assessments_claude_4.5" data/raw/scholarqa_claud
 ln -sfn "$SRC/data/v2/codescientist"                    data/raw/codescientist
 ln -sfn "$SRC/data/v2/evaluation-data"                  data/raw/evaluation_data
 
+# the corpus stability_runs/* actually iterate -- NOT claimspy_v1 (see
+# stability_agent/datasets/scify_index.py and data/registry.yaml)
+ln -sfn "$SRC/data/scify/v1/system-outputs-dry-run-&-potluck/potluck-dry-run-raw-outputs" data/raw/scify_potluck_raw
+
 # soft-stability runs -> data/stability_runs/<source condition>
 SS="$SRC/notebooks/scify_soft_stability"
 ln -sfn "$SS/ss_rate_dicts_all"               data/stability_runs/all
