@@ -18,10 +18,15 @@ Exact-Match Rate is the fraction of orderings whose predicted error set exactly 
 the ground-truth error set. Dependency-Violation Correct-Direction Rate (Experiment~2) is
 the fraction of minimal single-edge dependency-violating swaps for which the score
 actually \emph{decreased}, with a two-sided binomial test against a 50\% chance baseline;
-$N=245$ violation cases across 24 recipes.
-$^{\ddagger}$TopoVar, Threshold, and Error-Recovery columns use $\epsilon=0.1$
-(paper-faithful, $N=24$ recipes); the Dependency-Violation column uses $\epsilon=0.3$
-pending completion of the $\epsilon=0.1$ re-run.
+$N=245$ violation cases across 24 recipes. Notably, this rate is \emph{hyperparameter-
+sensitive for ARES}: at the faster $\epsilon=0.3$ setting used during development, ARES's
+correct-direction rate was 34.7\% ($p=2\times10^{-6}$, significantly \emph{worse} than
+chance); at the paper-faithful $\epsilon=0.1$ shown here it is 58.8\%
+($p=0.007$, significantly \emph{better} than chance) --- the two epsilon settings give
+opposite-sign conclusions. Entail-Prev and Entail-Base do not use $\epsilon$ and are
+stable across both settings (53.1\%/52.2\% and 6.1\%/8.2\% respectively), consistent with
+the ARES-specific shift being a real epsilon effect rather than run-to-run noise.
+All columns use $\epsilon=0.1$ (paper-faithful, $N=24$ recipes).
 }%
 \label{tab:diagnostics}
 \resizebox{\textwidth}{!}{
@@ -40,19 +45,19 @@ ARES
     & 0.175
     & 0.734
     & 0.4\%
-    & 34.7\% ($p = 2\times10^{-6}$) \\
+    & 58.8\% ($p = 0.007$) \\
 Entail-Prev
     & 0.081 \small{[0.068, 0.093]} (0.284 \small{[0.260, 0.305]})
     & 0.400
     & 0.604
     & 0.0\%
-    & 52.2\% ($p = 0.52$, n.s.) \\
+    & 53.1\% ($p = 0.37$, n.s.) \\
 Entail-Base
     & 0.032 \small{[0.023, 0.041]} (0.179 \small{[0.153, 0.202]})
     & 1.000
     & 0.903
     & 0.0\%
-    & 8.2\% ($p < 10^{-4}$) \\
+    & 6.1\% ($p < 10^{-4}$) \\
 
 \bottomrule
 \end{tabular}

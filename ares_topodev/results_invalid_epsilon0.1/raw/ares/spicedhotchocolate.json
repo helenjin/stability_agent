@@ -1,0 +1,187 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "spicedhotchocolate",
+  "method": "ares",
+  "model": "gpt-4o-mini",
+  "seed": 42,
+  "base_ordering_step_ids": [
+    6,
+    7,
+    5,
+    8,
+    2,
+    3,
+    1,
+    9
+  ],
+  "num_cases_total": 5,
+  "num_cases_done": 5,
+  "is_complete": true,
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 0,
+    "3": 1,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 1,
+    "9": 1
+  },
+  "cases": [
+    {
+      "case_index": 0,
+      "edge_violated": [
+        3,
+        1
+      ],
+      "invalid_ordering_step_ids": [
+        6,
+        7,
+        5,
+        8,
+        2,
+        1,
+        3,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 0.0,
+        "7": 0.007874015718698502,
+        "5": 0.007874015718698502,
+        "8": 0.0,
+        "2": 0.0,
+        "1": 0.0,
+        "3": 0.0,
+        "9": 0.0
+      },
+      "baseline_valid_score_u": 0.0,
+      "baseline_valid_score_v": 0.0,
+      "invalid_score_u": 0.0,
+      "invalid_score_v": 0.0
+    },
+    {
+      "case_index": 1,
+      "edge_violated": [
+        2,
+        3
+      ],
+      "invalid_ordering_step_ids": [
+        6,
+        7,
+        5,
+        8,
+        3,
+        2,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 0.003937007859349251,
+        "7": 0.03937007859349251,
+        "5": 0.019685039296746254,
+        "8": 0.009448818862438202,
+        "3": 0.0,
+        "2": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      },
+      "baseline_valid_score_u": 0.0,
+      "baseline_valid_score_v": 0.0,
+      "invalid_score_u": 0.0,
+      "invalid_score_v": 0.0
+    },
+    {
+      "case_index": 2,
+      "edge_violated": [
+        7,
+        5
+      ],
+      "invalid_ordering_step_ids": [
+        6,
+        5,
+        7,
+        8,
+        2,
+        3,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 0.007874015718698502,
+        "5": 0.0,
+        "7": 0.07086614519357681,
+        "8": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      },
+      "baseline_valid_score_u": 0.023622047156095505,
+      "baseline_valid_score_v": 0.015748031437397003,
+      "invalid_score_u": 0.07086614519357681,
+      "invalid_score_v": 0.0
+    },
+    {
+      "case_index": 3,
+      "edge_violated": [
+        1,
+        9
+      ],
+      "invalid_ordering_step_ids": [
+        6,
+        7,
+        5,
+        8,
+        2,
+        3,
+        9,
+        1
+      ],
+      "scores_by_node_id": {
+        "6": 0.0,
+        "7": 0.035433072596788406,
+        "5": 0.027559055015444756,
+        "8": 0.009448818862438202,
+        "2": 0.0,
+        "3": 0.0,
+        "9": 0.0,
+        "1": 0.0
+      },
+      "baseline_valid_score_u": 0.0,
+      "baseline_valid_score_v": 0.0,
+      "invalid_score_u": 0.0,
+      "invalid_score_v": 0.0
+    },
+    {
+      "case_index": 4,
+      "edge_violated": [
+        6,
+        7
+      ],
+      "invalid_ordering_step_ids": [
+        7,
+        6,
+        5,
+        8,
+        2,
+        3,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "7": 0.05905511975288391,
+        "6": 0.0,
+        "5": 0.04724409431219101,
+        "8": 0.015748031437397003,
+        "2": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      },
+      "baseline_valid_score_u": 0.0,
+      "baseline_valid_score_v": 0.023622047156095505,
+      "invalid_score_u": 0.0,
+      "invalid_score_v": 0.05905511975288391
+    }
+  ]
+}
