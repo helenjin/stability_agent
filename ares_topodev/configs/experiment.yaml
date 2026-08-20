@@ -16,6 +16,19 @@ p: 0.95
 temperature: 0.0
 max_new_tokens: 1000
 
+# Pure concurrency knobs -- do NOT affect epsilon/delta/sampling/scoring math,
+# only wall-clock time. entailment_batch_size: how many prompts EntailmentModel
+# fires concurrently per forward() call (vendored default is 8; the internal
+# per-step sample-chunk size in stability_deterministic.py is also 16, so 16
+# lines up with a full chunk becoming one concurrent batch instead of two).
+# recipe_concurrency: how many recipes to process in parallel via a thread
+# pool (each recipe writes only to its own output files, so this is safe --
+# see eval_harness/run_experiment.py:process_recipe). Raise cautiously: higher
+# concurrency risks more transient rate-limit errors, which currently fall
+# back to the entailment mode's default label rather than retrying.
+entailment_batch_size: 16
+recipe_concurrency: 4
+
 # Topological reordering
 K: 10
 seed: 42

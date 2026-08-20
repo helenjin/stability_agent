@@ -1,0 +1,364 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "breakfastburritos",
+  "method": "ares",
+  "method_config_key": "cert_granular_temp0_nonexact",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 48.0,
+    "exact": true,
+    "lower_bound_unique_found": 48,
+    "importance_sample_estimate": 48.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (add-Extract and add contents of an egg to a microwave-safe bowl), and have all necessary ingredients (egg), we can now do the step Whisk-Whisk the egg. And now we have completed this step Whisk-Whisk the egg.",
+    "2": "Because we have completed all previous steps (Whisk-Whisk the egg),  we can now do the step Microwave-Microwave for 3 minutes, stirring in between. And now we have completed this step Microwave-Microwave for 3 minutes, stirring in between.",
+    "3": "Because we have completed all previous steps (Microwave-Microwave for 3 minutes, stirring in between),  we can now do the step Add-Add 1/2 tbsp sweet and sour sauce to the bowl. And now we have completed this step Add-Add 1/2 tbsp sweet and sour sauce to the bowl.",
+    "4": "Because we have completed all previous steps (Pour-Pour egg mixture on top of the tortilla),  we can now do the step Sprinkle-Sprinkle 1 tbsp shredded cheddar cheese on top of the egg. And now we have completed this step Sprinkle-Sprinkle 1 tbsp shredded cheddar cheese on top of the egg.",
+    "5": "Because we have completed all previous steps (Sprinkle-Sprinkle oregano in the bowl, and Add-Add 1 tbsp salsa to the bowl, and Add-Add 1/2 tbsp sweet and sour sauce to the bowl),  we can now do the step Mix-Mix the contents of the bowl well. And now we have completed this step Mix-Mix the contents of the bowl well.",
+    "6": "Because we have completed all previous steps (START), and have all necessary ingredients (egg), we can now do the step add-Extract and add contents of an egg to a microwave-safe bowl. And now we have completed this step add-Extract and add contents of an egg to a microwave-safe bowl.",
+    "7": "Because we have completed all previous steps (Sprinkle-Sprinkle 1 tbsp shredded cheddar cheese on top of the egg),  we can now do the step Roll-Roll the tortilla from one end to another into a log shape, about 1.5 inches thick. Roll it tight enough to prevent gaps but not so tight that the filling leaks. And now we have completed this step Roll-Roll the tortilla from one end to another into a log shape, about 1.5 inches thick. Roll it tight enough to prevent gaps but not so tight that the filling leaks.",
+    "8": "Because we have completed all previous steps (Place-Place 8 inch tortilla on a cutting board, and Mix-Mix the contents of the bowl well), and have all necessary ingredients (egg, and tortilla), we can now do the step Pour-Pour egg mixture on top of the tortilla. And now we have completed this step Pour-Pour egg mixture on top of the tortilla.",
+    "9": "Because we have completed all previous steps (Microwave-Microwave for 3 minutes, stirring in between),  we can now do the step Add-Add 1 tbsp salsa to the bowl. And now we have completed this step Add-Add 1 tbsp salsa to the bowl.",
+    "10": "Because we have completed all previous steps (START),  we can now do the step Place-Place 8 inch tortilla on a cutting board. And now we have completed this step Place-Place 8 inch tortilla on a cutting board.",
+    "11": "Because we have completed all previous steps (Microwave-Microwave for 3 minutes, stirring in between), and have all necessary ingredients (oregano), we can now do the step Sprinkle-Sprinkle oregano in the bowl. And now we have completed this step Sprinkle-Sprinkle oregano in the bowl.",
+    "12": "Because we have completed all previous steps (Roll-Roll the tortilla from one end to another into a log shape, about 1.5 inches thick. Roll it tight enough to prevent gaps but not so tight that the filling leaks),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1,
+    "5": 0,
+    "6": 0,
+    "7": 1,
+    "8": 1,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 1
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        10,
+        6,
+        1,
+        2,
+        9,
+        3,
+        11,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "10": 0.7199999690055847,
+        "6": 0.6181817054748535,
+        "1": 0.9272726774215698,
+        "2": 0.8945454359054565,
+        "9": 0.26181817054748535,
+        "3": 0.8909090757369995,
+        "11": 0.0,
+        "5": 0.0981818214058876,
+        "8": 0.05818181484937668,
+        "4": 0.0,
+        "7": 0.02545454539358616,
+        "12": 0.014545454643666744
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        10,
+        6,
+        1,
+        2,
+        3,
+        11,
+        9,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "10": 0.6945453882217407,
+        "6": 0.6218181252479553,
+        "1": 0.9927272200584412,
+        "2": 0.9127272367477417,
+        "3": 0.8727271556854248,
+        "11": 0.0,
+        "9": 0.8872727751731873,
+        "5": 0.45454543828964233,
+        "8": 0.0,
+        "4": 0.0,
+        "7": 0.07636363804340363,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        10,
+        6,
+        1,
+        2,
+        3,
+        9,
+        11,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "10": 0.7709090709686279,
+        "6": 0.7345453500747681,
+        "1": 0.9890908002853394,
+        "2": 0.9941818118095398,
+        "3": 0.9490908980369568,
+        "9": 0.9418181777000427,
+        "11": 0.0181818176060915,
+        "5": 0.2800000011920929,
+        "8": 0.0,
+        "4": 0.0,
+        "7": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        6,
+        1,
+        2,
+        10,
+        11,
+        9,
+        3,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "6": 0.145454540848732,
+        "1": 0.9672727584838867,
+        "2": 0.9599999189376831,
+        "10": 0.7345454692840576,
+        "11": 0.0,
+        "9": 0.9163635969161987,
+        "3": 0.14909091591835022,
+        "5": 0.03999999910593033,
+        "8": 0.06545454263687134,
+        "4": 0.02909090928733349,
+        "7": 0.02545454539358616,
+        "12": 0.02181818149983883
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        10,
+        6,
+        1,
+        2,
+        11,
+        3,
+        9,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "10": 0.7163636088371277,
+        "6": 0.6654545068740845,
+        "1": 0.935272753238678,
+        "2": 0.8923636674880981,
+        "11": 0.05818181484937668,
+        "3": 0.8254544734954834,
+        "9": 0.832727313041687,
+        "5": 0.6472727060317993,
+        "8": 0.098181813955307,
+        "4": 0.06181818246841431,
+        "7": 0.06909091025590897,
+        "12": 0.04727272689342499
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        6,
+        1,
+        2,
+        10,
+        9,
+        3,
+        11,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "6": 0.06909090280532837,
+        "1": 0.978181779384613,
+        "2": 0.9774545431137085,
+        "10": 0.7781816720962524,
+        "9": 0.22545453906059265,
+        "3": 0.9636363387107849,
+        "11": 0.0,
+        "5": 0.04727272689342499,
+        "8": 0.007272727321833372,
+        "4": 0.007272727321833372,
+        "7": 0.007272727321833372,
+        "12": 0.014545454643666744
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        6,
+        10,
+        1,
+        2,
+        11,
+        9,
+        3,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "6": 0.1090909093618393,
+        "10": 0.24727271497249603,
+        "1": 0.9454545378684998,
+        "2": 0.9527272582054138,
+        "11": 0.036363635212183,
+        "9": 0.7854545712471008,
+        "3": 0.9054545164108276,
+        "5": 0.11636362224817276,
+        "8": 0.014545454643666744,
+        "4": 0.0,
+        "7": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        6,
+        1,
+        10,
+        2,
+        3,
+        9,
+        11,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "6": 0.11272727698087692,
+        "1": 0.9345453977584839,
+        "10": 0.82909095287323,
+        "2": 0.9178182482719421,
+        "3": 0.8399999141693115,
+        "9": 0.9345453977584839,
+        "11": 0.0,
+        "5": 0.7018181085586548,
+        "8": 0.1090909019112587,
+        "4": 0.09090909361839294,
+        "7": 0.0981818214058876,
+        "12": 0.0981818214058876
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        6,
+        10,
+        1,
+        2,
+        3,
+        9,
+        11,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "6": 0.098181813955307,
+        "10": 0.2654545307159424,
+        "1": 0.9854545593261719,
+        "2": 0.9090909957885742,
+        "3": 0.8436362743377686,
+        "9": 0.7999999523162842,
+        "11": 0.02181818149983883,
+        "5": 0.1090909093618393,
+        "8": 0.05818181857466698,
+        "4": 0.010909090749919415,
+        "7": 0.02181818149983883,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        6,
+        10,
+        1,
+        2,
+        9,
+        11,
+        3,
+        5,
+        8,
+        4,
+        7,
+        12
+      ],
+      "scores_by_node_id": {
+        "6": 0.09454545378684998,
+        "10": 0.22909091413021088,
+        "1": 0.9672726988792419,
+        "2": 0.9316363334655762,
+        "9": 0.9163635969161987,
+        "11": 0.0,
+        "3": 0.8690909147262573,
+        "5": 0.08363636583089828,
+        "8": 0.0,
+        "4": 0.0,
+        "7": 0.0,
+        "12": 0.0
+      }
+    }
+  ]
+}

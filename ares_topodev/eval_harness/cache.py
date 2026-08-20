@@ -75,6 +75,7 @@ class CachingLLM:
         self.model_name = getattr(llm, "model_name", "unknown-model")
         self.hits = 0
         self.misses = 0
+        self._counter_lock = threading.Lock()  # hits/misses are just logging counters, but keep them accurate under recipe-level concurrency
 
     def generate(
         self,
@@ -93,7 +94,8 @@ class CachingLLM:
             cached = self.cache.get(key)
             if cached is not None:
                 results[i] = cached
-                self.hits += 1
+                with self._counter_lock:
+                    self.hits += 1
             else:
                 miss_indices.append(i)
 
@@ -102,7 +104,8 @@ class CachingLLM:
             fresh_outputs = self.llm.generate(
                 miss_prompts, max_new_tokens=max_new_tokens, temperature=temperature, **kwargs
             )
-            self.misses += len(miss_indices)
+            with self._counter_lock:
+                self.misses += len(miss_indices)
             for i, output in zip(miss_indices, fresh_outputs):
                 results[i] = output
                 self.cache.put(keys[i], output)

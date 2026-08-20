@@ -13,9 +13,11 @@ Usage:
         --config ares_topodev/configs/experiment.yaml [--limit N] [--dry-run]
 """
 import argparse
+import concurrent.futures
 import json
 import os
 import sys
+import threading
 import time
 
 import yaml
@@ -56,7 +58,11 @@ def build_entailment_model(config: dict, dry_run: bool):
     cache = DiskPromptCache(cache_path)
     cached_llm = CachingLLM(base_llm, cache)
 
-    entailment_model = EntailmentModel(llm=cached_llm, max_new_tokens=config["max_new_tokens"])
+    entailment_model = EntailmentModel(
+        llm=cached_llm,
+        max_new_tokens=config["max_new_tokens"],
+        batch_size=config.get("entailment_batch_size", 8),  # vendored default is 8; pure concurrency, no effect on epsilon/delta/scoring math
+    )
     return entailment_model, cached_llm
 
 
@@ -92,7 +98,110 @@ def build_data_entry(raw_claims, derived_claims):
     return BaseDataset.get_data_entry(dummy_self, raw_claims, derived_claims)
 
 
+_print_lock = None  # set to a threading.Lock() in run() when recipe_concurrency > 1
+
+
+def _log(message: str):
+    if _print_lock is not None:
+        with _print_lock:
+            print(message, file=sys.stderr)
+    else:
+        print(message, file=sys.stderr)
+
+
+def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_by_label, cached_llm, raw_dir, dry_run):
+    """Runs one recipe through every sampled ordering x every configured
+    method, saving incrementally after each ordering. Independent across
+    recipes (own dag/example/topo_result, writes only to its own output
+    files), so this is safe to call concurrently for different recipe_names
+    from a thread pool -- see `run()`'s recipe_concurrency option. This is a
+    pure orchestration/parallelism change: it does not alter epsilon/delta,
+    sampling, or scoring math at all.
+    """
+    t0 = time.time()
+    raw = load_recipe_json(os.path.join(data_dir, f"{recipe_name}.json"))
+    example = build_recipe_example(
+        dag, raw, base_seed=config["seed"], raw_claims_shuffle_idx=config["raw_claims_shuffle_idx"]
+    )
+
+    topo_result = sample_orderings(dag, k=config["K"], seed=config["seed"], max_attempts=config["max_topo_attempts"])
+    linear_ext = count_or_estimate_linear_extensions(dag, seed=config["seed"])
+
+    # method -> ordering_index -> {node_id: score}
+    per_method_orderings = {label: [] for label in config["methods_to_run"]}
+
+    def write_results(is_complete: bool):
+        """Writes the current (possibly partial) per-method JSON files.
+        Called after every single ordering, not just once at the end, so a
+        kill/crash mid-recipe never loses more than one ordering's worth
+        of already-paid-for API calls -- `orderings` just reflects however
+        many are done so far, and `is_complete`/`num_orderings_used` make
+        partial files unambiguous rather than silently indistinguishable
+        from a finished run with a smaller K.
+        """
+        for label in config["methods_to_run"]:
+            out = {
+                "dataset": "captaincookrecipes",
+                "recipe_name": recipe_name,
+                "method": label,
+                "method_config_key": config["method_configs"][label],
+                "model": "mock-llm" if dry_run else config["backbone_model"],
+                "hyperparams": {
+                    "p": config["p"],
+                    "temperature": config.get("temperature", 0.0),
+                    **resolved_kwargs_by_label[label],
+                },
+                "seed": config["seed"],
+                "num_orderings_requested": topo_result.num_requested,
+                "num_orderings_used": len(per_method_orderings[label]),
+                "is_complete": is_complete,
+                "topo_sampling_exhausted": topo_result.exhausted,
+                "num_valid_orderings_estimate": {
+                    "value": linear_ext.value,
+                    "exact": linear_ext.exact,
+                    "lower_bound_unique_found": linear_ext.lower_bound_unique_found,
+                    "importance_sample_estimate": linear_ext.importance_sample_estimate,
+                },
+                "step_text_by_node_id": {str(k): v for k, v in example.derived_claims_by_node_id.items()},
+                "ground_truth_error_by_node_id": {
+                    str(k): v for k, v in example.ground_truth_error_by_node_id.items()
+                },
+                "orderings": per_method_orderings[label],
+            }
+            out_path = os.path.join(raw_dir, label, f"{recipe_name}.json")
+            tmp_path = out_path + f".tmp.{threading.get_ident()}"
+            with open(tmp_path, "w") as f:
+                json.dump(out, f, indent=2)
+            os.replace(tmp_path, out_path)  # atomic within this filesystem -- never a half-written file on disk
+
+    for ordering_index, order in enumerate(topo_result.orderings):
+        derived_claims = apply_ordering(example, order)
+        data_entry = build_data_entry(example.raw_claims, derived_claims)
+
+        for label, scorer in scorers.items():
+            result = scorer.get_stability_rate(data_entry)
+            scores_by_node_id = {str(node_id): score for node_id, score in zip(order, result.stability_rates)}
+            per_method_orderings[label].append(
+                {"ordering_index": ordering_index, "topo_order_step_ids": order, "scores_by_node_id": scores_by_node_id}
+            )
+
+        write_results(is_complete=(ordering_index == len(topo_result.orderings) - 1))
+        _log(
+            f"[{recipe_name}] ordering {ordering_index + 1}/{len(topo_result.orderings)} saved "
+            f"(cache_hits={cached_llm.hits} cache_misses={cached_llm.misses})"
+        )
+
+    dt = time.time() - t0
+    _log(
+        f"[{recipe_name}] nodes={len(dag.derived_node_ids)} "
+        f"orderings={len(topo_result.orderings)}/{topo_result.num_requested} "
+        f"cache_hits={cached_llm.hits} cache_misses={cached_llm.misses} time={dt:.1f}s"
+    )
+
+
 def run(config: dict, limit=None, dry_run=False):
+    global _print_lock
+
     data_dir = _abspath(config["recipe_data_dir"])
     results_dir = _abspath(config["results_dir"])
     raw_dir = os.path.join(results_dir, "raw")
@@ -108,93 +217,41 @@ def run(config: dict, limit=None, dry_run=False):
     for label in config["methods_to_run"]:
         os.makedirs(os.path.join(raw_dir, label), exist_ok=True)
 
-    for recipe_name in recipe_names:
-        t0 = time.time()
-        dag = dags[recipe_name]
-        raw = load_recipe_json(os.path.join(data_dir, f"{recipe_name}.json"))
-        example = build_recipe_example(
-            dag, raw, base_seed=config["seed"], raw_claims_shuffle_idx=config["raw_claims_shuffle_idx"]
-        )
-
-        topo_result = sample_orderings(
-            dag, k=config["K"], seed=config["seed"], max_attempts=config["max_topo_attempts"]
-        )
-        linear_ext = count_or_estimate_linear_extensions(dag, seed=config["seed"])
-
-        # method -> ordering_index -> {node_id: score}
-        per_method_orderings = {label: [] for label in config["methods_to_run"]}
-
-        def write_results(is_complete: bool):
-            """Writes the current (possibly partial) per-method JSON files.
-            Called after every single ordering, not just once at the end, so a
-            kill/crash mid-recipe never loses more than one ordering's worth
-            of already-paid-for API calls -- `orderings` just reflects however
-            many are done so far, and `is_complete`/`num_orderings_used` make
-            partial files unambiguous rather than silently indistinguishable
-            from a finished run with a smaller K.
-            """
-            for label in config["methods_to_run"]:
-                out = {
-                    "dataset": "captaincookrecipes",
-                    "recipe_name": recipe_name,
-                    "method": label,
-                    "method_config_key": config["method_configs"][label],
-                    "model": "mock-llm" if dry_run else config["backbone_model"],
-                    "hyperparams": {
-                        "p": config["p"],
-                        "temperature": config.get("temperature", 0.0),
-                        **resolved_kwargs_by_label[label],
-                    },
-                    "seed": config["seed"],
-                    "num_orderings_requested": topo_result.num_requested,
-                    "num_orderings_used": len(per_method_orderings[label]),
-                    "is_complete": is_complete,
-                    "topo_sampling_exhausted": topo_result.exhausted,
-                    "num_valid_orderings_estimate": {
-                        "value": linear_ext.value,
-                        "exact": linear_ext.exact,
-                        "lower_bound_unique_found": linear_ext.lower_bound_unique_found,
-                        "importance_sample_estimate": linear_ext.importance_sample_estimate,
-                    },
-                    "step_text_by_node_id": {str(k): v for k, v in example.derived_claims_by_node_id.items()},
-                    "ground_truth_error_by_node_id": {
-                        str(k): v for k, v in example.ground_truth_error_by_node_id.items()
-                    },
-                    "orderings": per_method_orderings[label],
-                }
-                out_path = os.path.join(raw_dir, label, f"{recipe_name}.json")
-                tmp_path = out_path + ".tmp"
-                with open(tmp_path, "w") as f:
-                    json.dump(out, f, indent=2)
-                os.replace(tmp_path, out_path)  # atomic within this filesystem -- never a half-written file on disk
-
-        for ordering_index, order in enumerate(topo_result.orderings):
-            derived_claims = apply_ordering(example, order)
-            data_entry = build_data_entry(example.raw_claims, derived_claims)
-
-            for label, scorer in scorers.items():
-                result = scorer.get_stability_rate(data_entry)
-                scores_by_node_id = {
-                    str(node_id): score for node_id, score in zip(order, result.stability_rates)
-                }
-                per_method_orderings[label].append(
-                    {"ordering_index": ordering_index, "topo_order_step_ids": order, "scores_by_node_id": scores_by_node_id}
-                )
-
-            write_results(is_complete=(ordering_index == len(topo_result.orderings) - 1))
-            print(
-                f"[{recipe_name}] ordering {ordering_index + 1}/{len(topo_result.orderings)} saved "
-                f"(cache_hits={cached_llm.hits} cache_misses={cached_llm.misses})",
-                file=sys.stderr,
+    recipe_concurrency = config.get("recipe_concurrency", 1)
+    if recipe_concurrency > 1:
+        _print_lock = threading.Lock()
+        with concurrent.futures.ThreadPoolExecutor(max_workers=recipe_concurrency) as pool:
+            futures = {
+                pool.submit(
+                    process_recipe,
+                    recipe_name,
+                    dags[recipe_name],
+                    data_dir,
+                    config,
+                    scorers,
+                    resolved_kwargs_by_label,
+                    cached_llm,
+                    raw_dir,
+                    dry_run,
+                ): recipe_name
+                for recipe_name in recipe_names
+            }
+            for future in concurrent.futures.as_completed(futures):
+                recipe_name = futures[future]
+                future.result()  # re-raises if process_recipe errored, instead of silently swallowing it
+    else:
+        for recipe_name in recipe_names:
+            process_recipe(
+                recipe_name,
+                dags[recipe_name],
+                data_dir,
+                config,
+                scorers,
+                resolved_kwargs_by_label,
+                cached_llm,
+                raw_dir,
+                dry_run,
             )
-
-        dt = time.time() - t0
-        print(
-            f"[{recipe_name}] nodes={len(dag.derived_node_ids)} "
-            f"orderings={len(topo_result.orderings)}/{topo_result.num_requested} "
-            f"cache_hits={cached_llm.hits} cache_misses={cached_llm.misses} time={dt:.1f}s",
-            file=sys.stderr,
-        )
 
 
 def main():

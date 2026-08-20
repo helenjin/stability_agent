@@ -1,0 +1,54 @@
+# Experiment 2: dependency-violating (invalid) orderings.
+#
+# For each recipe, swaps each adjacent (u, v) dependency edge in the same
+# first valid ordering Experiment 1 sampled (same seed), producing one
+# invalid ordering per violated edge. Compares the resulting scores against
+# Experiment 1's baseline_results_dir's ordering_index==0 (read directly,
+# not recomputed) to ask: does a real dependency violation move the score by
+# more than Experiment 1's already-measured ordinary valid-reordering noise?
+#
+# IMPORTANT: baseline_results_dir must have been produced with the SAME
+# seed and (ideally) the same epsilon/method hyperparameters as this config,
+# or the comparison isn't apples-to-apples -- process_recipe_invalid warns if
+# the ordering itself doesn't match, but same-epsilon is on you to keep
+# consistent across the two config files.
+
+dataset: captaincookrecipes
+recipe_data_dir: ares_topodev/vendor/ares/data/recipe_graphs
+
+backbone_model: gpt-4o-mini
+
+p: 0.95
+temperature: 0.0
+max_new_tokens: 1000
+entailment_batch_size: 16
+recipe_concurrency: 4
+
+seed: 42
+max_topo_attempts: 200
+# Cap invalid cases per recipe (None = all adjacent edges). Set low first for
+# a cheap structural/cost check before scaling up.
+max_cases_per_recipe: null
+
+method_configs:
+  ares: cert_granular_temp0_nonexact
+  entail_prev: entail_granular
+  entail_base: entail_raw_granular
+
+# Matches configs/experiment_epsilon0.3.yaml's relaxed epsilon, since that's
+# the completed baseline this config points at by default. Switch both to
+# epsilon=0.1 together if you want the paper-faithful comparison instead.
+method_kwarg_overrides:
+  ares:
+    epsilon: 0.3
+
+methods_to_run:
+  - ares
+  - entail_prev
+  - entail_base
+
+results_dir: ares_topodev/results_invalid
+cache_path: ares_topodev/results_smoketest/cache/llm_prompt_cache.jsonl
+baseline_results_dir: ares_topodev/results_epsilon0.3
+
+raw_claims_shuffle_idx: 0

@@ -12,12 +12,13 @@ data/processed/
 data/eli5/
 *.arrow
 
-# ares_topodev: generated experiment outputs and LLM prompt cache -- not source.
-ares_topodev/results/raw/*
-!ares_topodev/results/raw/.gitkeep
-ares_topodev/results/aggregate/*
-!ares_topodev/results/aggregate/.gitkeep
+# ares_topodev: LLM prompt cache is a large, non-source implementation
+# artifact -- never committed. raw/aggregate results ARE committed once real
+# (not mock/dry-run) data lands there -- see results_epsilon0.3/ and
+# results/ (the paper-faithful epsilon=0.1 run) for precedent.
 ares_topodev/results/cache/*
 !ares_topodev/results/cache/.gitkeep
 ares_topodev/results_smoketest/
+ares_topodev/results_invalid/cache/
+ares_topodev/results_invalid_epsilon0.1/cache/
 ares_topodev/vendor/ares/src/exp_helpers/models/.llms*.py.cache/

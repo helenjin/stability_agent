@@ -1,0 +1,362 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "capresebruschetta",
+  "method": "entail_prev",
+  "method_config_key": "entail_granular",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 43200.0,
+    "exact": true,
+    "lower_bound_unique_found": 43200,
+    "importance_sample_estimate": 43200.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (START), and have all necessary ingredients (mozzarella), we can now do the step add-1/8 cup shredded mozzarella to a bowl. And now we have completed this step add-1/8 cup shredded mozzarella to a bowl.",
+    "2": "Because we have completed all previous steps (START), and have all necessary ingredients (salt), we can now do the step add-1/4 tsp salt to a bowl. And now we have completed this step add-1/4 tsp salt to a bowl.",
+    "3": "Because we have completed all previous steps (START), and have all necessary ingredients (baguette), we can now do the step Slice-Slice two 1/2 inch thick rounds from a baguette (slice slanted). And now we have completed this step Slice-Slice two 1/2 inch thick rounds from a baguette (slice slanted).",
+    "4": "Because we have completed all previous steps (Toast-Toast both sides of the slices on the pan for 2 to 3 minutes until lightly charred and crispy and transfer the slices to a plate, and Combine-Combine the contents of the bowl),  we can now do the step Spoon-Spoon the mixture from the bowl onto the bread. And now we have completed this step Spoon-Spoon the mixture from the bowl onto the bread.",
+    "5": "Because we have completed all previous steps (START), and have all necessary ingredients (pepper), we can now do the step add-1/4 tsp pepper to a bowl. And now we have completed this step add-1/4 tsp pepper to a bowl.",
+    "6": "Because we have completed all previous steps (START), and have all necessary ingredients (basil), we can now do the step add-1/16 cup basil to a bowl. And now we have completed this step add-1/16 cup basil to a bowl.",
+    "7": "Because we have completed all previous steps (add-1/4 tsp salt to a bowl, and add-1/4 tsp pepper to a bowl, and add-1/16 cup basil to a bowl, and add-In a bowl, add the cut cherry tomatoes, and add-1/8 cup shredded mozzarella to a bowl),  we can now do the step Combine-Combine the contents of the bowl. And now we have completed this step Combine-Combine the contents of the bowl.",
+    "8": "Because we have completed all previous steps (Slice-Slice two 1/2 inch thick rounds from a baguette (slice slanted)), and have all necessary ingredients (baguette, and olive oil), we can now do the step Brush-Brush 2 slices of baguette with olive oil on both sides. And now we have completed this step Brush-Brush 2 slices of baguette with olive oil on both sides.",
+    "9": "Because we have completed all previous steps (START), and have all necessary ingredients (cherry tomatoes), we can now do the step Cut-Cut 1/4 cup of cherry tomatoes into halves. And now we have completed this step Cut-Cut 1/4 cup of cherry tomatoes into halves.",
+    "10": "Because we have completed all previous steps (Cut-Cut 1/4 cup of cherry tomatoes into halves), and have all necessary ingredients (cherry tomatoes), we can now do the step add-In a bowl, add the cut cherry tomatoes. And now we have completed this step add-In a bowl, add the cut cherry tomatoes.",
+    "11": "Because we have completed all previous steps (Brush-Brush 2 slices of baguette with olive oil on both sides),  we can now do the step Toast-Toast both sides of the slices on the pan for 2 to 3 minutes until lightly charred and crispy and transfer the slices to a plate. And now we have completed this step Toast-Toast both sides of the slices on the pan for 2 to 3 minutes until lightly charred and crispy and transfer the slices to a plate.",
+    "12": "Because we have completed all previous steps (Spoon-Spoon the mixture from the bowl onto the bread),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1,
+    "5": 1,
+    "6": 0,
+    "7": 1,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 1
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        5,
+        9,
+        6,
+        3,
+        8,
+        11,
+        10,
+        1,
+        2,
+        7,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "5": 0.0,
+        "9": 0.0,
+        "6": 1.0,
+        "3": 1.0,
+        "8": 1.0,
+        "11": 1.0,
+        "10": 1.0,
+        "1": 1.0,
+        "2": 1.0,
+        "7": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        5,
+        6,
+        3,
+        1,
+        2,
+        9,
+        10,
+        8,
+        7,
+        11,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "5": 0.0,
+        "6": 0.0,
+        "3": 1.0,
+        "1": 1.0,
+        "2": 1.0,
+        "9": 1.0,
+        "10": 0.0,
+        "8": 1.0,
+        "7": 1.0,
+        "11": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        5,
+        2,
+        1,
+        6,
+        3,
+        8,
+        11,
+        9,
+        10,
+        7,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "5": 0.0,
+        "2": 1.0,
+        "1": 1.0,
+        "6": 1.0,
+        "3": 0.0,
+        "8": 1.0,
+        "11": 1.0,
+        "9": 0.0,
+        "10": 1.0,
+        "7": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        2,
+        3,
+        5,
+        8,
+        11,
+        1,
+        6,
+        9,
+        10,
+        7,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "2": 1.0,
+        "3": 0.0,
+        "5": 1.0,
+        "8": 1.0,
+        "11": 1.0,
+        "1": 0.0,
+        "6": 1.0,
+        "9": 0.0,
+        "10": 1.0,
+        "7": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        5,
+        6,
+        1,
+        3,
+        9,
+        10,
+        2,
+        8,
+        7,
+        11,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "5": 0.0,
+        "6": 0.0,
+        "1": 1.0,
+        "3": 1.0,
+        "9": 1.0,
+        "10": 1.0,
+        "2": 1.0,
+        "8": 1.0,
+        "7": 1.0,
+        "11": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        6,
+        9,
+        1,
+        3,
+        2,
+        10,
+        8,
+        11,
+        5,
+        7,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "6": 0.0,
+        "9": 0.0,
+        "1": 1.0,
+        "3": 1.0,
+        "2": 1.0,
+        "10": 0.0,
+        "8": 1.0,
+        "11": 1.0,
+        "5": 0.0,
+        "7": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        2,
+        6,
+        5,
+        3,
+        9,
+        8,
+        1,
+        11,
+        10,
+        7,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "2": 1.0,
+        "6": 1.0,
+        "5": 1.0,
+        "3": 1.0,
+        "9": 1.0,
+        "8": 1.0,
+        "1": 1.0,
+        "11": 1.0,
+        "10": 1.0,
+        "7": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        5,
+        2,
+        3,
+        1,
+        6,
+        8,
+        9,
+        11,
+        10,
+        7,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "5": 0.0,
+        "2": 1.0,
+        "3": 0.0,
+        "1": 1.0,
+        "6": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "11": 0.0,
+        "10": 1.0,
+        "7": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        2,
+        1,
+        9,
+        3,
+        6,
+        10,
+        5,
+        8,
+        11,
+        7,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "2": 1.0,
+        "1": 1.0,
+        "9": 1.0,
+        "3": 1.0,
+        "6": 0.0,
+        "10": 1.0,
+        "5": 0.0,
+        "8": 1.0,
+        "11": 1.0,
+        "7": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        3,
+        9,
+        6,
+        8,
+        10,
+        1,
+        11,
+        2,
+        5,
+        7,
+        4,
+        12
+      ],
+      "scores_by_node_id": {
+        "3": 0.0,
+        "9": 1.0,
+        "6": 1.0,
+        "8": 1.0,
+        "10": 0.0,
+        "1": 1.0,
+        "11": 1.0,
+        "2": 0.0,
+        "5": 0.0,
+        "7": 1.0,
+        "4": 1.0,
+        "12": 1.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+# Experiment 2 at the paper-faithful epsilon=0.1 (matches configs/experiment.yaml,
+# which is this run's baseline_results_dir). See experiment_invalid.yaml for
+# the epsilon=0.3 version and full design notes.
+
+dataset: captaincookrecipes
+recipe_data_dir: ares_topodev/vendor/ares/data/recipe_graphs
+
+backbone_model: gpt-4o-mini
+
+p: 0.95
+temperature: 0.0
+max_new_tokens: 1000
+entailment_batch_size: 16
+recipe_concurrency: 4
+
+seed: 42
+max_topo_attempts: 200
+max_cases_per_recipe: null
+
+method_configs:
+  ares: cert_granular_temp0_nonexact
+  entail_prev: entail_granular
+  entail_base: entail_raw_granular
+
+# Paper-faithful epsilon=0.1, matching configs/experiment.yaml exactly.
+method_kwarg_overrides:
+  ares:
+    epsilon: 0.1
+
+methods_to_run:
+  - ares
+  - entail_prev
+  - entail_base
+
+results_dir: ares_topodev/results_invalid_epsilon0.1
+# Same cache file Experiment 1's epsilon=0.1 run used -- nodes before the
+# swap point in each recipe's base ordering have identical prompts already
+# cached from that run, so this gets free hits, not just a fresh cache.
+cache_path: ares_topodev/results/cache/llm_prompt_cache.jsonl
+baseline_results_dir: ares_topodev/results
+
+raw_claims_shuffle_idx: 0
