@@ -1,0 +1,65 @@
+\begin{table*}[t]
+\centering
+\caption{
+\textbf{Valid Reordering Results.}
+Sensitivity of reasoning evaluation methods to valid topological
+reorderings of the same reasoning structure.
+Lower TopoDev indicates greater invariance to logically equivalent
+orderings.
+$^\dagger$ClaimTrees is a strict linear chain in every released config
+(exactly one valid topological order), so TopoDev is structurally
+undefined there, not merely unmeasured.
+}
+\label{tab:valid_reordering}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcc}
+\toprule
+\textbf{Dataset / Method}
+& \textbf{GPT-4o-mini}
+& \textbf{Qwen3-4B} \\
+& \textbf{TopoDev $\downarrow$}
+& \textbf{TopoDev $\downarrow$} \\
+\midrule
+
+\textbf{ClaimTrees} \\
+ARES
+    & n/a$^\dagger$ & n/a$^\dagger$ \\
+Entail-Prev
+    & n/a$^\dagger$ & n/a$^\dagger$ \\
+Entail-Base
+    & n/a$^\dagger$ & n/a$^\dagger$ \\
+% ROSCOE-LI-Self
+%     & -- & -- \\
+% ROSCOE-LI-Source
+%     & -- & -- \\
+% ReCEval-Intra
+%     & -- & -- \\
+% ReCEval-Inter
+%     & -- & -- \\
+% LLM-Judge
+%     & -- & -- \\
+
+\midrule
+
+\textbf{CaptainCookRecipes} \\
+ARES
+    & 0.333 & -- \\
+Entail-Prev
+    & 0.407 & -- \\
+Entail-Base
+    & 0.148 & -- \\
+% ROSCOE-LI-Self
+%     & -- & -- \\
+% ROSCOE-LI-Source
+%     & -- & -- \\
+% ReCEval-Intra
+%     & -- & -- \\
+% ReCEval-Inter
+%     & -- & -- \\
+% LLM-Judge
+%     & -- & -- \\
+
+\bottomrule
+\end{tabular}
+}
+\end{table*}
