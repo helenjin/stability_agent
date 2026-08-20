@@ -26,6 +26,17 @@ chance); at the paper-faithful $\epsilon=0.1$ shown here it is 58.8\%
 opposite-sign conclusions. Entail-Prev and Entail-Base do not use $\epsilon$ and are
 stable across both settings (53.1\%/52.2\% and 6.1\%/8.2\% respectively), consistent with
 the ARES-specific shift being a real epsilon effect rather than run-to-run noise.
+\emph{Mechanism:} ARES's \texttt{cert\_nonexact} scorer estimates each step's soundness
+by averaging over $N\!\approx\!\log(2m/\delta)/(2\epsilon^2)$ randomly sampled premise
+subsets ($\sim$265 samples/step at $\epsilon=0.1$ vs.\ $\sim$30 at $\epsilon=0.3$); the
+coarser $\epsilon=0.3$ estimate is noisy enough to invert the \emph{aggregate direction}
+of the measured effect, not merely blur its magnitude. Even at $\epsilon=0.1$ the
+correct-direction rate is only $\sim$9 points above chance, and the effect exceeds
+ordinary valid-reordering noise (Exceeds-Noise rate, not shown) in only 15.1\% of cases
+--- a real but weak signal, not a reliable detector. This hyperparameter sensitivity is
+specific to the dependency-violation test; it does not affect the valid-reordering
+findings above (TopoDev/TopoVar/Error-Recovery replicate at both $\epsilon$ settings),
+which remain this paper's central claim.
 All columns use $\epsilon=0.1$ (paper-faithful, $N=24$ recipes).
 }%
 \label{tab:diagnostics}
