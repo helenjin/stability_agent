@@ -20,3 +20,4 @@ ares_topodev/results/aggregate/*
 ares_topodev/results/cache/*
 !ares_topodev/results/cache/.gitkeep
 ares_topodev/results_smoketest/
+ares_topodev/vendor/ares/src/exp_helpers/models/.llms*.py.cache/
