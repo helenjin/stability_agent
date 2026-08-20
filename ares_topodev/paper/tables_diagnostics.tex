@@ -4,7 +4,14 @@
 \textbf{Order-Sensitivity Diagnostics and Dependency-Violation Sensitivity, CaptainCookRecipes (GPT-4o-mini).}
 TopoVar is the variance-based companion to TopoDev (Table~\ref{tab:valid_reordering}):
 mean per-step sample variance across sampled orderings, more robust to a single outlier
-ordering than the max-min range. Error-Recovery Jaccard is the mean pairwise Jaccard
+ordering than the max-min range. TopoVar is on a \emph{squared}-score scale, so it is not
+directly comparable to a raw score or threshold; $\sqrt{\text{TopoVar}}$ (a standard
+deviation) brings it back to the original $[0,1]$ score scale and is the quantity to
+compare against the method's own error-detection threshold (also on that scale).
+Notably, ARES's typical reordering-induced swing ($\sqrt{\text{TopoVar}}=0.156$) is
+nearly equal to its own decision threshold (0.175) -- ordinary, harmless reordering
+noise alone is large enough to plausibly flip a claim across the sound/unsound boundary.
+Error-Recovery Jaccard is the mean pairwise Jaccard
 similarity between the sets of nodes flagged as errors under two different valid
 orderings of the same recipe (1.0 = predicted error set never changes with ordering).
 Exact-Match Rate is the fraction of orderings whose predicted error set exactly equals
@@ -12,33 +19,37 @@ the ground-truth error set. Dependency-Violation Correct-Direction Rate (Experim
 the fraction of minimal single-edge dependency-violating swaps for which the score
 actually \emph{decreased}, with a two-sided binomial test against a 50\% chance baseline;
 $N=245$ violation cases across 24 recipes.
-$^{\ddagger}$TopoVar and Error-Recovery columns use $\epsilon=0.1$ (paper-faithful,
-$N=24$ recipes); the Dependency-Violation column uses $\epsilon=0.3$ pending completion
-of the $\epsilon=0.1$ re-run.
+$^{\ddagger}$TopoVar, Threshold, and Error-Recovery columns use $\epsilon=0.1$
+(paper-faithful, $N=24$ recipes); the Dependency-Violation column uses $\epsilon=0.3$
+pending completion of the $\epsilon=0.1$ re-run.
 }%
 \label{tab:diagnostics}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
 \textbf{Method}
-& \textbf{TopoVar $\downarrow^{\ddagger}$}
+& \textbf{TopoVar $\downarrow^{\ddagger}$ ($\sqrt{\text{TopoVar}}$)}
+& \textbf{Threshold$^{\ddagger}$}
 & \textbf{Error-Recovery Jaccard $\uparrow^{\ddagger}$}
 & \textbf{Exact-Match Rate $\uparrow^{\ddagger}$}
 & \textbf{Dep.-Violation Correct-Direction Rate} \\
 \midrule
 
 ARES
-    & 0.024 \small{[0.019, 0.030]}
+    & 0.024 \small{[0.019, 0.030]} (0.156 \small{[0.137, 0.174]})
+    & 0.175
     & 0.734
     & 0.4\%
     & 34.7\% ($p = 2\times10^{-6}$) \\
 Entail-Prev
-    & 0.081 \small{[0.068, 0.093]}
+    & 0.081 \small{[0.068, 0.093]} (0.284 \small{[0.260, 0.305]})
+    & 0.400
     & 0.604
     & 0.0\%
     & 52.2\% ($p = 0.52$, n.s.) \\
 Entail-Base
-    & 0.032 \small{[0.023, 0.041]}
+    & 0.032 \small{[0.023, 0.041]} (0.179 \small{[0.153, 0.202]})
+    & 1.000
     & 0.903
     & 0.0\%
     & 8.2\% ($p < 10^{-4}$) \\
