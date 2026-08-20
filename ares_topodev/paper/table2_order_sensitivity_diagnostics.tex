@@ -1,0 +1,51 @@
+\begin{table*}[t]
+\centering
+\caption{
+\textbf{Order-Sensitivity Diagnostics, CaptainCookRecipes (GPT-4o-mini, $\epsilon=0.1$, $N=24$ recipes).}
+TopoVar is the variance-based companion to TopoDev (Table~\ref{tab:valid_reordering}):
+mean per-step sample variance across sampled orderings, more robust to a single outlier
+ordering than the max-min range. TopoVar is on a \emph{squared}-score scale, so it is not
+directly comparable to a raw score or threshold; $\sqrt{\text{TopoVar}}$ (a standard
+deviation) brings it back to the original $[0,1]$ score scale and is the quantity to
+compare against the method's own error-detection threshold (also on that scale). Notably,
+ARES's typical reordering-induced swing ($\sqrt{\text{TopoVar}}=0.156$) is nearly equal to
+its own decision threshold (0.175)---ordinary, harmless reordering noise alone is large
+enough to plausibly flip a claim across the sound/unsound boundary.
+Error-Recovery Jaccard is the mean pairwise Jaccard similarity between the sets of nodes
+flagged as errors under two different valid orderings of the same recipe (1.0 = predicted
+error set never changes with ordering). Exact-Match Rate is the fraction of orderings
+whose predicted error set exactly equals the ground-truth error set.
+See Table~\ref{tab:dependency_violation} for the (distinct) dependency-violation
+sensitivity result.
+}%
+\label{tab:diagnostics}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Method}
+& \textbf{TopoVar $\downarrow$ ($\sqrt{\text{TopoVar}}$)}
+& \textbf{Threshold}
+& \textbf{Error-Recovery Jaccard $\uparrow$}
+& \textbf{Exact-Match Rate $\uparrow$} \\
+\midrule
+
+ARES
+    & 0.024 \small{[0.019, 0.030]} (0.156 \small{[0.137, 0.174]})
+    & 0.175
+    & 0.734
+    & 0.4\% \\
+Entail-Prev
+    & 0.081 \small{[0.068, 0.093]} (0.284 \small{[0.260, 0.305]})
+    & 0.400
+    & 0.604
+    & 0.0\% \\
+Entail-Base
+    & 0.032 \small{[0.023, 0.041]} (0.179 \small{[0.153, 0.202]})
+    & 1.000
+    & 0.903
+    & 0.0\% \\
+
+\bottomrule
+\end{tabular}
+}
+\end{table*}

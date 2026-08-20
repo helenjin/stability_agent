@@ -1,0 +1,60 @@
+% Requires \usepackage{multirow} in the main document preamble.
+% \S\ref{sec:experiment2} is a forward reference to wherever Experiment 2's
+% methodology is described in the paper body -- update/remove if that
+% section label differs.
+\begin{table*}[t]
+\centering
+\caption{
+\textbf{Dependency-Violation Sensitivity, CaptainCookRecipes (GPT-4o-mini).}
+For each of $N=245$ minimal single-edge dependency violations (adjacent-node swaps in a
+valid ordering, each violating exactly one real dependency edge and nothing else; see
+\S\ref{sec:experiment2}), Correct-Direction Rate is the fraction of cases for which the
+score actually \emph{decreased} once the true prerequisite was displaced, tested against a
+50\% chance baseline (two-sided binomial test). Exceeds-Noise Rate is the fraction of cases
+where the violation's effect on the score exceeded that node's own Experiment-1
+valid-reordering range (TopoDev) --- i.e., where the violation is distinguishable from
+ordinary harmless-reordering noise rather than lost in it.
+\textbf{ARES's result is hyperparameter-sensitive and changes sign between the two
+$\epsilon$ settings shown}: at the faster $\epsilon=0.3$ used during development, ARES is
+significantly \emph{worse} than chance; at the paper-faithful $\epsilon=0.1$ it is
+significantly \emph{better} than chance. Mechanism: ARES's \texttt{cert\_nonexact} scorer
+averages over $N_{\text{samples}}\!\approx\!\log(2m/\delta)/(2\epsilon^2)$ randomly sampled
+premise subsets per step ($\sim$265 samples at $\epsilon=0.1$ vs.\ $\sim$30 at
+$\epsilon=0.3$); the coarser estimate is noisy enough to invert the \emph{aggregate
+direction} of the measured effect, not merely blur its magnitude. Even at $\epsilon=0.1$,
+ARES's correct-direction rate is only $\sim$9 points above chance and its Exceeds-Noise
+rate is 15.1\% --- a real but weak signal, not a reliable detector. Entail-Prev and
+Entail-Base do not use $\epsilon$ and are stable across both settings, which is what makes
+the ARES-specific sign flip credible as a genuine epsilon effect rather than run-to-run
+noise. This hyperparameter sensitivity is local to this dependency-violation test and does
+not affect the valid-reordering findings in Tables~\ref{tab:valid_reordering}
+and~\ref{tab:diagnostics}, which replicate at both $\epsilon$ settings and remain this
+paper's central claim.
+}%
+\label{tab:dependency_violation}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Method} & \boldmath{$\epsilon$}
+& \textbf{Correct-Direction Rate}
+& \textbf{$p$ vs.\ 50\% chance}
+& \textbf{95\% CI}
+& \textbf{Exceeds-Noise Rate} \\
+\midrule
+
+\multirow{2}{*}{ARES}
+    & 0.1 & 58.8\% & 0.007            & [0.523, 0.650] & 15.1\% \\
+    & 0.3 & 34.7\% & $2\times10^{-6}$ & [0.287, 0.410] & 6.5\% \\
+\midrule
+\multirow{2}{*}{Entail-Prev}
+    & 0.1 & 53.1\% & 0.37 (n.s.) & [0.466, 0.594] & 38.8\% \\
+    & 0.3 & 52.2\% & 0.52 (n.s.) & [0.458, 0.586] & 40.4\% \\
+\midrule
+\multirow{2}{*}{Entail-Base}
+    & 0.1 & 6.1\% & $<10^{-4}$ & [0.035, 0.099] & 8.2\% \\
+    & 0.3 & 8.2\% & $<10^{-4}$ & [0.051, 0.123] & 8.2\% \\
+
+\bottomrule
+\end{tabular}
+}
+\end{table*}
