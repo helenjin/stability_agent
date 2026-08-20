@@ -1,0 +1,51 @@
+# Real, reported-results run -- all 24 CaptainCookRecipes examples -- but with
+# ARES's epsilon relaxed 0.1 -> 0.3 for tractable runtime (~2.2 hours vs. ~26
+# hours at the paper-faithful epsilon=0.1; see configs/experiment.yaml).
+#
+# Per the paper's own ablation (Table 3), epsilon=0.1 vs 0.3 shows "no
+# significant difference" in reported performance on ClaimTrees/
+# CaptainCookRecipes specifically, so this is a real result set, just at a
+# laxer statistical bound than the paper's headline config -- not a smoke
+# test. Report TopoDev numbers from this run as "epsilon=0.3" explicitly,
+# not as "the ARES-epsilon0.1 config from the paper."
+#
+# cache_path intentionally reuses results_smoketest's cache file (content-
+# addressed by exact prompt text) so the ~1,050 calls already paid for during
+# the 1-recipe smoke test are free hits here, not re-paid for.
+
+dataset: captaincookrecipes
+recipe_data_dir: ares_topodev/vendor/ares/data/recipe_graphs
+
+backbone_model: gpt-4o-mini
+
+p: 0.95
+temperature: 0.0
+max_new_tokens: 1000
+
+K: 10
+seed: 42
+max_topo_attempts: 200
+
+method_configs:
+  ares: cert_granular_temp0_nonexact
+  entail_prev: entail_granular
+  entail_base: entail_raw_granular
+  roscoe_li_self: roscoe_li_self_granular
+  roscoe_li_source: roscoe_li_source_granular
+  receval_intra: receval_intra_correct_granular
+  receval_inter: receval_inter_correct_granular
+  llm_judge: llm_judge_granular
+
+method_kwarg_overrides:
+  ares:
+    epsilon: 0.3
+
+methods_to_run:
+  - ares
+  - entail_prev
+  - entail_base
+
+results_dir: ares_topodev/results_epsilon0.3
+cache_path: ares_topodev/results_smoketest/cache/llm_prompt_cache.jsonl
+
+raw_claims_shuffle_idx: 0

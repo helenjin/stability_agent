@@ -1,0 +1,16 @@
+# In addition to whatever's already in the repo's main environment
+# (torch, openai, numpy, pandas -- all present in .venv already).
+pyyaml
+pytest
+
+# Required just to satisfy vendor/ares/src/exp_helpers's import-time surface
+# (see VENDOR.md "Import-time dependency stubbing"). Only `openai_llm.py` is
+# actually exercised by this experiment; the rest are imported but unused.
+diskcache
+nltk
+anthropic
+google-genai
+torchvision
+pillow
+transformers
+# vllm is intentionally NOT installed -- see vendor/_stubs/vllm.py

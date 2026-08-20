@@ -1,0 +1,52 @@
+# Config for the CaptainCookRecipes valid-reordering (TopoDev) experiment.
+# ClaimTrees is intentionally absent -- see VENDOR.md / plan: every released
+# ClaimTrees config is a strict linear chain (exactly one valid topological
+# order), so this experiment does not apply to it.
+
+dataset: captaincookrecipes
+recipe_data_dir: ares_topodev/vendor/ares/data/recipe_graphs   # relative to repo root
+
+# Backbone entailment model. Must be a key in exp_helpers.exp_configs.MODEL_CONFIGS.
+# Swap this to test another backbone later (e.g. "gpt-4o").
+backbone_model: gpt-4o-mini
+
+# ARES hyperparameters, matching the paper's ARES-epsilon0.1 config and the
+# demo notebook (p=0.95, cert_granular_temp0_nonexact: epsilon=0.1, delta=0.1).
+p: 0.95
+temperature: 0.0
+max_new_tokens: 1000
+
+# Topological reordering
+K: 10
+seed: 42
+max_topo_attempts: 200
+
+# Methods to run, mapped to their vendored exp_helpers.exp_configs.METHOD_CONFIGS
+# key. `entailment_mode` in each of these gets overridden at runtime with the
+# custom CaptainCookRecipes prompt (entailment_prompts.py), matching what
+# ares_demo_captaincookrecipes.ipynb actually does -- not the generic
+# binary/granular prompt.
+method_configs:
+  ares: cert_granular_temp0_nonexact
+  entail_prev: entail_granular
+  entail_base: entail_raw_granular
+  roscoe_li_self: roscoe_li_self_granular
+  roscoe_li_source: roscoe_li_source_granular
+  receval_intra: receval_intra_correct_granular
+  receval_inter: receval_inter_correct_granular
+  llm_judge: llm_judge_granular
+
+# Which of the above to actually run by default. Start with the minimum
+# required set; add the others once ARES/Entail-Prev/Entail-Base results look
+# right.
+methods_to_run:
+  - ares
+  - entail_prev
+  - entail_base
+
+results_dir: ares_topodev/results
+cache_path: ares_topodev/results/cache/llm_prompt_cache.jsonl
+
+# Raw-claims shuffle index (see eval_harness/recipe_example.py docstring) --
+# fixed so a recipe's raw_claims list is identical across every ordering.
+raw_claims_shuffle_idx: 0

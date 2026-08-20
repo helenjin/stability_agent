@@ -11,3 +11,12 @@ data/processed/
 # Exported HF dataset snapshots (register-only policy: load via datasets, don't commit copies)
 data/eli5/
 *.arrow
+
+# ares_topodev: generated experiment outputs and LLM prompt cache -- not source.
+ares_topodev/results/raw/*
+!ares_topodev/results/raw/.gitkeep
+ares_topodev/results/aggregate/*
+!ares_topodev/results/aggregate/.gitkeep
+ares_topodev/results/cache/*
+!ares_topodev/results/cache/.gitkeep
+ares_topodev/results_smoketest/
