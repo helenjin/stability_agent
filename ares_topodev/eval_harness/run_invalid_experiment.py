@@ -1,5 +1,5 @@
-"""Experiment 2: evaluate methods on minimal, single-edge dependency-violating
-orderings, and compare against Experiment 1's already-computed valid-ordering
+"""Dependency-Violation Sensitivity: evaluate methods on minimal, single-edge
+dependency-violating orderings, and compare against Experiment 1's already-computed valid-ordering
 baseline for the exact same (recipe, node).
 
 Reuses the *first* valid ordering Experiment 1 sampled (same seed -> same

@@ -1,14 +1,14 @@
 % Requires \usepackage{multirow} in the main document preamble.
-% \S\ref{sec:experiment2} is a forward reference to wherever Experiment 2's
-% methodology is described in the paper body -- update/remove if that
-% section label differs.
+% \S\ref{sec:dependency_violation} is a forward reference to wherever this
+% dependency-violation experiment's methodology is described in the paper
+% body -- update/remove if that section label differs.
 \begin{table*}[t]
 \centering
 \caption{
 \textbf{Dependency-Violation Sensitivity, CaptainCookRecipes (GPT-4o-mini).}
 For each of $N=245$ minimal single-edge dependency violations (adjacent-node swaps in a
 valid ordering, each violating exactly one real dependency edge and nothing else; see
-\S\ref{sec:experiment2}), Correct-Direction Rate is the fraction of cases for which the
+\S\ref{sec:dependency_violation}), Correct-Direction Rate is the fraction of cases for which the
 score actually \emph{decreased} once the true prerequisite was displaced, tested against a
 50\% chance baseline (two-sided binomial test). Exceeds-Noise Rate is the fraction of cases
 where the violation's effect on the score exceeded that node's own Experiment-1

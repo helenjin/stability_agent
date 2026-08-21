@@ -1,4 +1,4 @@
-"""Aggregates Experiment 2 (invalid/dependency-violating orderings) results.
+"""Aggregates Dependency-Violation Sensitivity (invalid-ordering) results.
 
 Usage:
     python -m ares_topodev.analysis.report_invalid --config ares_topodev/configs/experiment_invalid.yaml
@@ -136,7 +136,7 @@ def build_invalid_report(config: dict):
 
 def _write_markdown(path, config, summaries):
     lines = [
-        "# Experiment 2: Dependency-Violation Sensitivity",
+        "# Dependency-Violation Sensitivity",
         "",
         "`v` = node whose true prerequisite got displaced (claim text still names it, but it's no longer "
         "in the premise prefix). `u` = the displaced prerequisite itself.",

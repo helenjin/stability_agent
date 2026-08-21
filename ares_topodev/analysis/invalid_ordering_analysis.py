@@ -1,4 +1,4 @@
-"""Experiment 2 analysis: for each dependency-violating swap, is the resulting
+"""Dependency-Violation Sensitivity analysis: for each dependency-violating swap, is the resulting
 score change bigger than the ordinary valid-reordering noise Experiment 1
 already measured for that same node?
 

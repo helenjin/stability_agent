@@ -1,4 +1,4 @@
-"""Experiment 2: minimal, single-edge dependency-violating orderings.
+"""Dependency-Violation Sensitivity: minimal, single-edge dependency-violating orderings.
 
 Experiment 1 asked "does a method's score change under valid, irrelevant
 reorderings?" This asks the complementary question: "does violating a real
