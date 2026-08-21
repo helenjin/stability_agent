@@ -1,0 +1,319 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "tomatomozzarellasalad",
+  "method": "roscoe_li_self",
+  "method_config_key": "roscoe_li_self_granular",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 24.0,
+    "exact": true,
+    "lower_bound_unique_found": 24,
+    "importance_sample_estimate": 24.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (dry-gently dry it with a paper/tea towel), and have all necessary ingredients (tomato), we can now do the step Slice-Slice one tomato into about 1/2 inch thick slices. And now we have completed this step Slice-Slice one tomato into about 1/2 inch thick slices.",
+    "2": "Because we have completed all previous steps (Slice-Slice one tomato into about 1/2 inch thick slices), and have all necessary ingredients (tomatoes), we can now do the step Place-Place the thick slices of tomatoes on a platter, ensuring they only make a single layer. And now we have completed this step Place-Place the thick slices of tomatoes on a platter, ensuring they only make a single layer.",
+    "3": "Because we have completed all previous steps (Sprinkle-Sprinkle mozzarella cheese on top of the tomato throughout the platter, and Season-Season the tomato slices with salt, and Garnish-Garnish platter with italian seasoning, and Season-Season platter with 1/4 teaspoon black pepper), and have all necessary ingredients (extra-virgin olive oil), we can now do the step Add-Add a drizzle of extra-virgin olive oil, about 1 tablespoon, over the entire platter. And now we have completed this step Add-Add a drizzle of extra-virgin olive oil, about 1 tablespoon, over the entire platter.",
+    "4": "Because we have completed all previous steps (Rinse-Rinse a tomato),  we can now do the step dry-gently dry it with a paper/tea towel. And now we have completed this step dry-gently dry it with a paper/tea towel.",
+    "5": "Because we have completed all previous steps (Place-Place the thick slices of tomatoes on a platter, ensuring they only make a single layer), and have all necessary ingredients (tomato, and salt), we can now do the step Season-Season the tomato slices with salt. And now we have completed this step Season-Season the tomato slices with salt.",
+    "6": "Because we have completed all previous steps (Place-Place the thick slices of tomatoes on a platter, ensuring they only make a single layer), and have all necessary ingredients (mozzarella cheese, and tomato), we can now do the step Sprinkle-Sprinkle mozzarella cheese on top of the tomato throughout the platter. And now we have completed this step Sprinkle-Sprinkle mozzarella cheese on top of the tomato throughout the platter.",
+    "7": "Because we have completed all previous steps (START), and have all necessary ingredients (tomato), we can now do the step Rinse-Rinse a tomato. And now we have completed this step Rinse-Rinse a tomato.",
+    "8": "Because we have completed all previous steps (Place-Place the thick slices of tomatoes on a platter, ensuring they only make a single layer), and have all necessary ingredients (black pepper), we can now do the step Season-Season platter with 1/4 teaspoon black pepper. And now we have completed this step Season-Season platter with 1/4 teaspoon black pepper.",
+    "9": "Because we have completed all previous steps (Place-Place the thick slices of tomatoes on a platter, ensuring they only make a single layer), and have all necessary ingredients (italian seasoning), we can now do the step Garnish-Garnish platter with italian seasoning. And now we have completed this step Garnish-Garnish platter with italian seasoning.",
+    "10": "Because we have completed all previous steps (Add-Add a drizzle of extra-virgin olive oil, about 1 tablespoon, over the entire platter),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        9,
+        8,
+        5,
+        6,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "9": 0.0,
+        "8": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        6,
+        9,
+        8,
+        5,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "6": 0.0,
+        "9": 0.0,
+        "8": 0.0,
+        "5": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        5,
+        9,
+        6,
+        8,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "5": 0.0,
+        "9": 0.0,
+        "6": 0.0,
+        "8": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        9,
+        5,
+        6,
+        8,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "9": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "8": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        9,
+        5,
+        8,
+        6,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "9": 0.0,
+        "5": 0.0,
+        "8": 0.0,
+        "6": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        6,
+        5,
+        8,
+        9,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "6": 0.0,
+        "5": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        6,
+        9,
+        5,
+        8,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "6": 0.0,
+        "9": 0.0,
+        "5": 0.0,
+        "8": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        5,
+        6,
+        9,
+        8,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "9": 0.0,
+        "8": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        8,
+        5,
+        6,
+        9,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "8": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "9": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        7,
+        4,
+        1,
+        2,
+        6,
+        5,
+        9,
+        8,
+        3,
+        10
+      ],
+      "scores_by_node_id": {
+        "7": 1,
+        "4": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "6": 0.0,
+        "5": 0.0,
+        "9": 0.0,
+        "8": 0.0,
+        "3": 0.0,
+        "10": 0.0
+      }
+    }
+  ],
+  "failed_orderings": []
+}

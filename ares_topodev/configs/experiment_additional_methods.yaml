@@ -1,0 +1,50 @@
+# Runs ROSCOE-LI-Self, ROSCOE-LI-Source, ReCEval-Intra, and ReCEval-Inter on
+# the same recipes/orderings/backbone/prompt as configs/experiment.yaml
+# (paper-faithful epsilon=0.1 setup) -- same results_dir, so these land as new
+# method subdirectories alongside the existing ares/entail_prev/entail_base,
+# ready for analysis/report_detection_sensitivity.py with no code changes.
+#
+# ARES/Entail-Prev/Entail-Base are deliberately excluded from methods_to_run
+# here so re-running this config doesn't reprocess (or waste time re-hitting
+# cache for) methods we already have real results for.
+#
+# LLM-Judge is deliberately EXCLUDED: it fails with an UnboundLocalError on
+# 100% of real GPT-4o-mini calls (not a mock artifact -- confirmed against
+# real API responses), a genuine latent bug in vendored
+# models/entailment_model.py's fallback text-parsing path (a variable
+# referenced inside an `except` block that was never assigned in that same
+# iteration). We do not modify vendored ARES code, so LLM-Judge is not
+# faithfully runnable here -- flagged as a known gap, not approximated or
+# worked around.
+
+dataset: captaincookrecipes
+recipe_data_dir: ares_topodev/vendor/ares/data/recipe_graphs
+
+backbone_model: gpt-4o-mini
+
+p: 0.95
+temperature: 0.0
+max_new_tokens: 1000
+entailment_batch_size: 16
+recipe_concurrency: 4
+
+K: 10
+seed: 42
+max_topo_attempts: 200
+
+method_configs:
+  roscoe_li_self: roscoe_li_self_granular
+  roscoe_li_source: roscoe_li_source_granular
+  receval_intra: receval_intra_correct_granular
+  receval_inter: receval_inter_correct_granular
+
+methods_to_run:
+  - roscoe_li_self
+  - roscoe_li_source
+  - receval_intra
+  - receval_inter
+
+results_dir: ares_topodev/results
+cache_path: ares_topodev/results/cache/llm_prompt_cache.jsonl
+
+raw_claims_shuffle_idx: 0

@@ -1,0 +1,183 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "spicedhotchocolate",
+  "method": "roscoe_li_self",
+  "method_config_key": "roscoe_li_self_granular",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 6,
+  "is_complete": true,
+  "topo_sampling_exhausted": true,
+  "num_valid_orderings_estimate": {
+    "value": 6.0,
+    "exact": true,
+    "lower_bound_unique_found": 6,
+    "importance_sample_estimate": 6.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (Mix-Mix the contents of the mug),  we can now do the step Heat-Heat the contents of the mug for 1 minute and serve. And now we have completed this step Heat-Heat the contents of the mug for 1 minute and serve.",
+    "2": "Because we have completed all previous steps (Microwave-Microwave the contents of the mug for 1 minute), and have all necessary ingredients (cinnamon), we can now do the step Add-Add 1/5 teaspoon cinnamon to the mug. And now we have completed this step Add-Add 1/5 teaspoon cinnamon to the mug.",
+    "3": "Because we have completed all previous steps (Add-Add 2 pieces of chocolate to the mug, and Add-Add 1 teaspoon of white sugar to the mug, and Add-Add 1/5 teaspoon cinnamon to the mug),  we can now do the step Mix-Mix the contents of the mug. And now we have completed this step Mix-Mix the contents of the mug.",
+    "5": "Because we have completed all previous steps (Microwave-Microwave the contents of the mug for 1 minute), and have all necessary ingredients (white sugar), we can now do the step Add-Add 1 teaspoon of white sugar to the mug. And now we have completed this step Add-Add 1 teaspoon of white sugar to the mug.",
+    "6": "Because we have completed all previous steps (START), and have all necessary ingredients (skimmed milk), we can now do the step Fill-Fill a microwave-safe mug with skimmed milk. And now we have completed this step Fill-Fill a microwave-safe mug with skimmed milk.",
+    "7": "Because we have completed all previous steps (Fill-Fill a microwave-safe mug with skimmed milk),  we can now do the step Microwave-Microwave the contents of the mug for 1 minute. And now we have completed this step Microwave-Microwave the contents of the mug for 1 minute.",
+    "8": "Because we have completed all previous steps (Microwave-Microwave the contents of the mug for 1 minute), and have all necessary ingredients (chocolate), we can now do the step Add-Add 2 pieces of chocolate to the mug. And now we have completed this step Add-Add 2 pieces of chocolate to the mug.",
+    "9": "Because we have completed all previous steps (Heat-Heat the contents of the mug for 1 minute and serve),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 0,
+    "3": 1,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 1,
+    "9": 1
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        6,
+        7,
+        5,
+        8,
+        2,
+        3,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 1,
+        "7": 1.0,
+        "5": 0.0,
+        "8": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        6,
+        7,
+        5,
+        2,
+        8,
+        3,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 1,
+        "7": 1.0,
+        "5": 0.0,
+        "2": 0.0,
+        "8": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        6,
+        7,
+        8,
+        2,
+        5,
+        3,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 1,
+        "7": 1.0,
+        "8": 0.0,
+        "2": 0.0,
+        "5": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        6,
+        7,
+        2,
+        8,
+        5,
+        3,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 1,
+        "7": 1.0,
+        "2": 0.0,
+        "8": 0.0,
+        "5": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        6,
+        7,
+        2,
+        5,
+        8,
+        3,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 1,
+        "7": 1.0,
+        "2": 0.0,
+        "5": 0.0,
+        "8": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        6,
+        7,
+        8,
+        5,
+        2,
+        3,
+        1,
+        9
+      ],
+      "scores_by_node_id": {
+        "6": 1,
+        "7": 1.0,
+        "8": 0.0,
+        "5": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0
+      }
+    }
+  ],
+  "failed_orderings": []
+}

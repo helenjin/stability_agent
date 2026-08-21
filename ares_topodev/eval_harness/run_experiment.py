@@ -129,6 +129,14 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
 
     # method -> ordering_index -> {node_id: score}
     per_method_orderings = {label: [] for label in config["methods_to_run"]}
+    # method -> [{"ordering_index": i, "error": "..."}] -- a single malformed
+    # LLM response (e.g. a method's expected output format not being followed)
+    # must not abort the whole run for every recipe/method. Failures are
+    # recorded and that (method, ordering) pair is skipped -- the method's
+    # own num_orderings_used/orderings list simply ends up shorter, rather
+    # than crashing process_recipe (and, via the thread pool, every other
+    # in-flight recipe too).
+    per_method_failures = {label: [] for label in config["methods_to_run"]}
 
     def write_results(is_complete: bool):
         """Writes the current (possibly partial) per-method JSON files.
@@ -167,6 +175,7 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
                     str(k): v for k, v in example.ground_truth_error_by_node_id.items()
                 },
                 "orderings": per_method_orderings[label],
+                "failed_orderings": per_method_failures[label],
             }
             out_path = os.path.join(raw_dir, label, f"{recipe_name}.json")
             tmp_path = out_path + f".tmp.{threading.get_ident()}"
@@ -179,8 +188,17 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
         data_entry = build_data_entry(example.raw_claims, derived_claims)
 
         for label, scorer in scorers.items():
-            result = scorer.get_stability_rate(data_entry)
-            scores_by_node_id = {str(node_id): score for node_id, score in zip(order, result.stability_rates)}
+            try:
+                result = scorer.get_stability_rate(data_entry)
+                scores_by_node_id = {str(node_id): score for node_id, score in zip(order, result.stability_rates)}
+            except Exception as e:  # noqa: BLE001 -- deliberately broad: a single malformed
+                # LLM response from any vendored scorer must not abort every other
+                # in-flight recipe/method. Logged and recorded, never silently dropped.
+                _log(f"ERROR [{recipe_name}/{label}] ordering {ordering_index}: {type(e).__name__}: {e}")
+                per_method_failures[label].append(
+                    {"ordering_index": ordering_index, "error": f"{type(e).__name__}: {e}"}
+                )
+                continue
             per_method_orderings[label].append(
                 {"ordering_index": ordering_index, "topo_order_step_ids": order, "scores_by_node_id": scores_by_node_id}
             )

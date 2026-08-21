@@ -259,13 +259,32 @@ def _write_main_table(path, methods, summaries):
         "| Method | Mean F1 ↑ | ΔF1 ↓ | N graphs |",
         "|---|---:|---:|---:|",
     ]
+    degenerate_methods = []
     for method in methods:
         s = by_method.get(method)
         display = METHOD_DISPLAY_NAMES.get(method, method)
         if s is None:
             lines.append(f"| {display} | (not yet run) | | |")
         else:
-            lines.append(f"| {display} | {s.mean_f1_mean:.4f} | {s.delta_f1_mean:.4f} | {s.n_graphs} |")
+            marker = ""
+            if s.mean_f1_mean == 0.0 and s.mean_exact_match_rate == 0.0:
+                marker = "*"
+                degenerate_methods.append(display)
+            lines.append(f"| {display}{marker} | {s.mean_f1_mean:.4f} | {s.delta_f1_mean:.4f} | {s.n_graphs} |")
+    if degenerate_methods:
+        lines += [
+            "",
+            f"\\* {', '.join(degenerate_methods)}: raw scores are exactly 0.0 for every single claim "
+            "in every ordering (verified: 0/3768 nonzero scores) -- not a code bug, but a real "
+            "architectural mismatch. These methods score a hypothesis against each individual "
+            "premise separately and take the minimum (Score = 1 - max(1 - e_i) = min(e_i)); combined "
+            "with the custom CaptainCookRecipes prompt's explicit instruction to judge a step "
+            '"Very Unlikely" whenever a required precondition is missing, and every recipe step '
+            "genuinely requiring *multiple* premises jointly (prior steps + ingredients), almost any "
+            "single isolated premise will appear to be missing something -- forcing the minimum to "
+            "0.0 essentially always. This is inferred from code + prompt inspection, not confirmed "
+            "against raw model text (only numeric scores are persisted).",
+        ]
     with open(path, "w") as f:
         f.write("\n".join(lines) + "\n")
 

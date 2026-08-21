@@ -1,0 +1,363 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "cucumberraita",
+  "method": "roscoe_li_source",
+  "method_config_key": "roscoe_li_source_granular",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 25080.0,
+    "exact": true,
+    "lower_bound_unique_found": 25080,
+    "importance_sample_estimate": 25080.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (whisk-In a mixing bowl, whisk 1 cup of chilled curd until smooth. Use fresh homemade or packaged curd), and have all necessary ingredients (red chilli powder), we can now do the step Add-1/4 teaspoon of red chilli powder to the bowl. And now we have completed this step Add-1/4 teaspoon of red chilli powder to the bowl.",
+    "2": "Because we have completed all previous steps (Rinse-Rinse 1 medium sized cucumber), and have all necessary ingredients (cucumber), we can now do the step peel-peel the cucumber. And now we have completed this step peel-peel the cucumber.",
+    "3": "Because we have completed all previous steps (START), and have all necessary ingredients (curd), we can now do the step whisk-In a mixing bowl, whisk 1 cup of chilled curd until smooth. Use fresh homemade or packaged curd. And now we have completed this step whisk-In a mixing bowl, whisk 1 cup of chilled curd until smooth. Use fresh homemade or packaged curd.",
+    "4": "Because we have completed all previous steps (whisk-In a mixing bowl, whisk 1 cup of chilled curd until smooth. Use fresh homemade or packaged curd), and have all necessary ingredients (salt), we can now do the step Add-1/4 teaspoon salt to the bowl. And now we have completed this step Add-1/4 teaspoon salt to the bowl.",
+    "5": "Because we have completed all previous steps (peel-peel the cucumber), and have all necessary ingredients (cucumber), we can now do the step chop or grate-chop or grate the cucumber. And now we have completed this step chop or grate-chop or grate the cucumber.",
+    "6": "Because we have completed all previous steps (Add-1/4 teaspoon of red chilli powder to the bowl, and Add-Add the chopped or grated cucumber to the whisked curd, and Add-Add 1 teaspoon of cumin powder to the bowl, and Add-1/2 teaspoon of chaat masala powder to the bowl, and add-add 1 tablespoon of chopped cilantro leaves to the bowl, and Add-1/4 teaspoon salt to the bowl),  we can now do the step Combine-Combine all the ingredients in the bowl. And now we have completed this step Combine-Combine all the ingredients in the bowl.",
+    "7": "Because we have completed all previous steps (whisk-In a mixing bowl, whisk 1 cup of chilled curd until smooth. Use fresh homemade or packaged curd), and have all necessary ingredients (cilantro leaves), we can now do the step add-add 1 tablespoon of chopped cilantro leaves to the bowl. And now we have completed this step add-add 1 tablespoon of chopped cilantro leaves to the bowl.",
+    "8": "Because we have completed all previous steps (whisk-In a mixing bowl, whisk 1 cup of chilled curd until smooth. Use fresh homemade or packaged curd), and have all necessary ingredients (cumin), we can now do the step Add-Add 1 teaspoon of cumin powder to the bowl. And now we have completed this step Add-Add 1 teaspoon of cumin powder to the bowl.",
+    "9": "Because we have completed all previous steps (START), and have all necessary ingredients (1 medium sized cucumber), we can now do the step Rinse-Rinse 1 medium sized cucumber. And now we have completed this step Rinse-Rinse 1 medium sized cucumber.",
+    "10": "Because we have completed all previous steps (chop or grate-chop or grate the cucumber, and whisk-In a mixing bowl, whisk 1 cup of chilled curd until smooth. Use fresh homemade or packaged curd), and have all necessary ingredients (cucumber, and curd), we can now do the step Add-Add the chopped or grated cucumber to the whisked curd. And now we have completed this step Add-Add the chopped or grated cucumber to the whisked curd.",
+    "11": "Because we have completed all previous steps (whisk-In a mixing bowl, whisk 1 cup of chilled curd until smooth. Use fresh homemade or packaged curd),  we can now do the step Add-1/2 teaspoon of chaat masala powder to the bowl. And now we have completed this step Add-1/2 teaspoon of chaat masala powder to the bowl.",
+    "12": "Because we have completed all previous steps (Combine-Combine all the ingredients in the bowl),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1,
+    "5": 0,
+    "6": 1,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 1
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        9,
+        3,
+        4,
+        11,
+        7,
+        2,
+        8,
+        1,
+        5,
+        10,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "9": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "11": 0.0,
+        "7": 0.0,
+        "2": 0.0,
+        "8": 0.0,
+        "1": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        9,
+        3,
+        4,
+        11,
+        1,
+        2,
+        8,
+        7,
+        5,
+        10,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "9": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "11": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "8": 0.0,
+        "7": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        9,
+        2,
+        3,
+        5,
+        1,
+        11,
+        7,
+        10,
+        8,
+        4,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "9": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "1": 0.0,
+        "11": 0.0,
+        "7": 0.0,
+        "10": 0.0,
+        "8": 0.0,
+        "4": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        3,
+        4,
+        7,
+        9,
+        11,
+        1,
+        2,
+        5,
+        8,
+        10,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "3": 0.0,
+        "4": 0.0,
+        "7": 0.0,
+        "9": 0.0,
+        "11": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "5": 0.0,
+        "8": 0.0,
+        "10": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        9,
+        3,
+        1,
+        8,
+        4,
+        11,
+        7,
+        2,
+        5,
+        10,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "9": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "8": 0.0,
+        "4": 0.0,
+        "11": 0.0,
+        "7": 0.0,
+        "2": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        3,
+        4,
+        1,
+        9,
+        11,
+        2,
+        8,
+        7,
+        5,
+        10,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "3": 0.0,
+        "4": 0.0,
+        "1": 0.0,
+        "9": 0.0,
+        "11": 0.0,
+        "2": 0.0,
+        "8": 0.0,
+        "7": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        3,
+        8,
+        7,
+        11,
+        9,
+        2,
+        1,
+        5,
+        10,
+        4,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "3": 0.0,
+        "8": 0.0,
+        "7": 0.0,
+        "11": 0.0,
+        "9": 0.0,
+        "2": 0.0,
+        "1": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "4": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        9,
+        2,
+        3,
+        1,
+        5,
+        7,
+        4,
+        11,
+        10,
+        8,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "9": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "1": 0.0,
+        "5": 0.0,
+        "7": 0.0,
+        "4": 0.0,
+        "11": 0.0,
+        "10": 0.0,
+        "8": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        3,
+        1,
+        9,
+        2,
+        5,
+        11,
+        7,
+        10,
+        8,
+        4,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "3": 0.0,
+        "1": 0.0,
+        "9": 0.0,
+        "2": 0.0,
+        "5": 0.0,
+        "11": 0.0,
+        "7": 0.0,
+        "10": 0.0,
+        "8": 0.0,
+        "4": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        9,
+        3,
+        7,
+        8,
+        1,
+        11,
+        2,
+        5,
+        4,
+        10,
+        6,
+        12
+      ],
+      "scores_by_node_id": {
+        "9": 0.0,
+        "3": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "1": 0.0,
+        "11": 0.0,
+        "2": 0.0,
+        "5": 0.0,
+        "4": 0.0,
+        "10": 0.0,
+        "6": 0.0,
+        "12": 0.0
+      }
+    }
+  ],
+  "failed_orderings": []
+}
