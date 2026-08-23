@@ -25,9 +25,11 @@ predicts every claim as ``sound'' scores exactly 0.000 on error-class F1
 $0.552$ on sound-class F1 alone (it is right about the sound majority by
 default) --- averaging the two into $0.276$ Macro-F1 makes a detector with
 zero actual detection ability look moderately capable; error-class F1 is
-what exposes that it provides no signal at all. Uncertainty is mean $\pm$
-bootstrap standard deviation, resampled over $N=24$ graphs (10{,}000
-resamples), matching the original ARES paper's own $\pm$ display convention.
+what exposes that it provides no signal at all. ``Ours, \ldots'' uncertainty
+is mean $\pm$ bootstrap standard deviation, resampled over $N=24$ graphs
+(10{,}000 resamples). ``Paper's Macro-F1'' uncertainty is the paper's own
+reported mean $\pm$ std across its 5 CV folds --- a different statistic,
+transcribed as-is from Table~1, not recomputed by us.
 }%
 \label{tab:macro_f1_comparison}
 \resizebox{\textwidth}{!}{
@@ -41,19 +43,19 @@ resamples), matching the original ARES paper's own $\pm$ display convention.
 \midrule
 
 ARES
-    & 0.633 & 0.583 $\pm$ 0.037 & 0.643 $\pm$ 0.039 & 0.523 $\pm$ 0.051 \\
+    & 0.633 $\pm$ 0.010 & 0.583 $\pm$ 0.037 & 0.643 $\pm$ 0.039 & 0.523 $\pm$ 0.051 \\
 Entail-Prev
-    & 0.428 & 0.410 $\pm$ 0.028 & 0.383 $\pm$ 0.027 & 0.437 $\pm$ 0.048 \\
+    & 0.428 $\pm$ 0.010 & 0.410 $\pm$ 0.028 & 0.383 $\pm$ 0.027 & 0.437 $\pm$ 0.048 \\
 Entail-Base
-    & 0.589 & 0.494 $\pm$ 0.023 & 0.613 $\pm$ 0.033 & 0.376 $\pm$ 0.044 \\
+    & 0.589 $\pm$ 0.007 & 0.494 $\pm$ 0.023 & 0.613 $\pm$ 0.033 & 0.376 $\pm$ 0.044 \\
 ROSCOE-LI-Self
-    & 0.483 & 0.496 $\pm$ 0.029 & 0.725 $\pm$ 0.036 & 0.266 $\pm$ 0.032 \\
+    & 0.483 $\pm$ 0.010 & 0.496 $\pm$ 0.029 & 0.725 $\pm$ 0.036 & 0.266 $\pm$ 0.032 \\
 ROSCOE-LI-Source$^\ast$
-    & 0.361 & 0.276 $\pm$ 0.024 & 0.000 $\pm$ 0.000 & 0.552 $\pm$ 0.048 \\
+    & 0.361 $\pm$ 0.007 & 0.276 $\pm$ 0.024 & 0.000 $\pm$ 0.000 & 0.552 $\pm$ 0.048 \\
 ReCEval-Intra
-    & 0.396 & 0.318 $\pm$ 0.021 & 0.100 $\pm$ 0.024 & 0.537 $\pm$ 0.044 \\
+    & 0.396 $\pm$ 0.010 & 0.318 $\pm$ 0.021 & 0.100 $\pm$ 0.024 & 0.537 $\pm$ 0.044 \\
 ReCEval-Inter$^\ast$
-    & 0.361 & 0.276 $\pm$ 0.024 & 0.000 $\pm$ 0.000 & 0.552 $\pm$ 0.048 \\
+    & 0.361 $\pm$ 0.007 & 0.276 $\pm$ 0.024 & 0.000 $\pm$ 0.000 & 0.552 $\pm$ 0.048 \\
 
 \bottomrule
 \end{tabular}

@@ -43,15 +43,19 @@ from ares_topodev.topo_reorder.dag import load_all_recipe_dags
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Table 1, arXiv:2507.12948v2, CaptainCookRecipes / GPT-4o-mini / F1 column.
+# Values are (mean, std) exactly as printed in the paper's own "mean +/- std"
+# cells (std there is taken across the paper's 5 CV folds, not a bootstrap --
+# a different uncertainty statistic than our bootstrap SD below, shown here
+# purely as the paper's own reported number, not recomputed by us).
 PAPER_MACRO_F1_CAPTAINCOOKRECIPES_GPT4OMINI = {
-    "ares": 0.633,
-    "entail_prev": 0.428,
-    "entail_base": 0.589,
-    "roscoe_li_self": 0.483,
-    "roscoe_li_source": 0.361,
-    "receval_intra": 0.396,
-    "receval_inter": 0.361,
-    "llm_judge": 0.530,
+    "ares": (0.633, 0.010),
+    "entail_prev": (0.428, 0.010),
+    "entail_base": (0.589, 0.007),
+    "roscoe_li_self": (0.483, 0.010),
+    "roscoe_li_source": (0.361, 0.007),
+    "receval_intra": (0.396, 0.010),
+    "receval_inter": (0.361, 0.007),
+    "llm_judge": (0.530, 0.028),
 }
 
 
@@ -105,11 +109,15 @@ def run(raw_results_dir: str, recipe_data_dir: str, methods, k_folds: int, seed:
         our_sound_class_mean = statistics.fmean(graph_mean_sound_class_f1)
         our_sound_class_sd = bootstrap_sd_over_graphs(graph_mean_sound_class_f1, seed=42)
 
+        paper_macro_f1, paper_macro_f1_sd = PAPER_MACRO_F1_CAPTAINCOOKRECIPES_GPT4OMINI.get(
+            method, (None, None)
+        )
         rows.append(
             {
                 "method": method,
                 "n_graphs": len(results),
-                "paper_macro_f1": PAPER_MACRO_F1_CAPTAINCOOKRECIPES_GPT4OMINI.get(method),
+                "paper_macro_f1": paper_macro_f1,
+                "paper_macro_f1_sd": paper_macro_f1_sd,
                 "our_macro_f1_mean": our_macro_mean,
                 "our_macro_f1_sd": our_macro_sd,
                 "our_error_class_f1_mean": our_error_class_mean,
@@ -138,9 +146,11 @@ def _write_markdown(path, methods, rows):
     lines = [
         "# Macro-F1 (paper's convention) vs. Error-Class-Only F1 (Experiment 2's convention)",
         "",
-        "Same predictions (same CV-thresholded raw scores) scored two ways. Uncertainty "
-        "is mean +/- bootstrap SD, resampled over graphs (ARES paper's own +/- display "
-        "style; see analysis/detection_sensitivity.py's bootstrap_sd_over_graphs).",
+        "Same predictions (same CV-thresholded raw scores) scored two ways. \"Ours, ...\" "
+        "uncertainty is mean +/- bootstrap SD, resampled over graphs (see "
+        "analysis/detection_sensitivity.py's bootstrap_sd_over_graphs). \"Paper's Macro-F1\" "
+        "uncertainty is the paper's own reported mean +/- std across its 5 CV folds -- a "
+        "different statistic, transcribed as-is, not recomputed by us.",
         "",
         "| Method | Paper's Macro-F1 | Ours, Macro-F1 | Ours, Error-Class F1 | Ours, Sound-Class F1 |",
         "|---|---:|---:|---:|---:|",
@@ -151,7 +161,11 @@ def _write_markdown(path, methods, rows):
         if r is None:
             lines.append(f"| {display} | | (not yet run) | | |")
             continue
-        paper = f"{r['paper_macro_f1']:.3f}" if r["paper_macro_f1"] is not None else "n/a"
+        paper = (
+            f"{r['paper_macro_f1']:.3f} ± {r['paper_macro_f1_sd']:.3f}"
+            if r["paper_macro_f1"] is not None
+            else "n/a"
+        )
         lines.append(
             f"| {display} | {paper} | {r['our_macro_f1_mean']:.3f} ± {r['our_macro_f1_sd']:.3f} | "
             f"{r['our_error_class_f1_mean']:.3f} ± {r['our_error_class_f1_sd']:.3f} | "
