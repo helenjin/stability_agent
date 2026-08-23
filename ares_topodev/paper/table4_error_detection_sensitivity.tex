@@ -1,0 +1,58 @@
+% \S\ref{sec:error_detection_sensitivity} is a forward reference to wherever this
+% error-detection-sensitivity experiment's methodology is described in the paper
+% body -- update/remove if that section label differs.
+\begin{table*}[t]
+\centering
+\caption{
+\textbf{Error-Detection Sensitivity Under Valid Reordering, CaptainCookRecipes (GPT-4o-mini).}
+For each method and each of $N=24$ recipe graphs, we compute node-level error-detection
+Precision/Recall/F1 (positive/``unsound'' class only, \emph{not} macro-averaged across
+both classes as in the original paper's Table~1 --- see Table~\ref{tab:macro_f1_comparison}
+for a direct, same-predictions comparison of the two conventions) at every one of Experiment~1's
+$K=10$ valid topological orderings, using the same graphs, claim IDs, ground truth, and
+decision threshold across all $K$ orderings of a given graph --- thresholds are chosen by
+5-fold cross-validation over recipes (never on the same data being scored, and never
+re-tuned on these results). Mean F1 is the per-graph mean over orderings, averaged across
+graphs. $\Delta F1(G) = \max_\pi F1 - \min_\pi F1$ is the primary sensitivity metric: how
+much a method's error-detection performance swings across logically equivalent
+presentations of the identical reasoning graph. Both metrics are treated as repeated
+measures per graph; uncertainty is reported as mean $\pm$ bootstrap standard deviation
+(resampling graphs, not orderings, 10{,}000 resamples), matching the original ARES
+paper's own $\pm$ display convention.
+$^\ast$ROSCOE-LI-Source and ReCEval-Inter output exactly 0.0 for every claim in every
+ordering (0/3768 raw scores nonzero), collapsing recall (and hence F1 and $\Delta F1$) to
+identically zero regardless of ordering --- a genuine architectural mismatch with this
+dataset's prompt, not an artifact of the sensitivity measurement itself; see
+\S\ref{sec:error_detection_sensitivity} for the mechanism. LLM-Judge is omitted: it fails
+with an unhandled exception on 100\% of real GPT-4o-mini calls, a latent bug in the
+vendored fallback text-parsing path that we did not work around.
+}%
+\label{tab:error_detection_sensitivity}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccc}
+\toprule
+\textbf{Method}
+& \textbf{Mean F1 $\uparrow$}
+& \textbf{Mean $\Delta$F1 $\downarrow$}
+& \textbf{Median $\Delta$F1 $\downarrow$} \\
+\midrule
+
+ARES
+    & 0.643 $\pm$ 0.039 & 0.279 $\pm$ 0.039 & 0.205 \\
+Entail-Prev
+    & 0.383 $\pm$ 0.027 & 0.223 $\pm$ 0.019 & 0.207 \\
+Entail-Base
+    & 0.613 $\pm$ 0.033 & 0.077 $\pm$ 0.013 & 0.065 \\
+ROSCOE-LI-Self
+    & 0.725 $\pm$ 0.036 & 0.053 $\pm$ 0.010 & 0.053 \\
+ROSCOE-LI-Source$^\ast$
+    & 0.000 $\pm$ 0.000 & 0.000 $\pm$ 0.000 & 0.000 \\
+ReCEval-Intra
+    & 0.100 $\pm$ 0.024 & 0.004 $\pm$ 0.004 & 0.000 \\
+ReCEval-Inter$^\ast$
+    & 0.000 $\pm$ 0.000 & 0.000 $\pm$ 0.000 & 0.000 \\
+
+\bottomrule
+\end{tabular}
+}
+\end{table*}

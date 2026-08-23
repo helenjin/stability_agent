@@ -202,10 +202,12 @@ def run(raw_results_dir: str, recipe_data_dir: str, methods, k_folds: int, seed:
                 "mean_f1_mean": s.mean_f1_mean,
                 "mean_f1_ci_low": s.mean_f1_ci[0],
                 "mean_f1_ci_high": s.mean_f1_ci[1],
+                "mean_f1_sd": s.mean_f1_sd,
                 "delta_f1_mean": s.delta_f1_mean,
                 "delta_f1_median": s.delta_f1_median,
                 "delta_f1_ci_low": s.delta_f1_ci[0],
                 "delta_f1_ci_high": s.delta_f1_ci[1],
+                "delta_f1_sd": s.delta_f1_sd,
                 "mean_jaccard": s.mean_jaccard,
                 "mean_exact_match_rate": s.mean_exact_match_rate,
                 "mean_flip_rate": s.mean_flip_rate,
@@ -219,10 +221,12 @@ def run(raw_results_dir: str, recipe_data_dir: str, methods, k_folds: int, seed:
             "mean_f1_mean",
             "mean_f1_ci_low",
             "mean_f1_ci_high",
+            "mean_f1_sd",
             "delta_f1_mean",
             "delta_f1_median",
             "delta_f1_ci_low",
             "delta_f1_ci_high",
+            "delta_f1_sd",
             "mean_jaccard",
             "mean_exact_match_rate",
             "mean_flip_rate",
@@ -256,6 +260,10 @@ def _write_main_table(path, methods, summaries):
     lines = [
         "# Experiment 2 Main Table: Error-Detection Sensitivity Under Valid Reordering",
         "",
+        "Uncertainty is mean +/- bootstrap SD, resampled over graphs (10000 resamples, "
+        "ARES paper's own +/- display style; see analysis/detection_sensitivity.py's "
+        "bootstrap_sd_over_graphs).",
+        "",
         "| Method | Mean F1 ↑ | ΔF1 ↓ | N graphs |",
         "|---|---:|---:|---:|",
     ]
@@ -270,7 +278,10 @@ def _write_main_table(path, methods, summaries):
             if s.mean_f1_mean == 0.0 and s.mean_exact_match_rate == 0.0:
                 marker = "*"
                 degenerate_methods.append(display)
-            lines.append(f"| {display}{marker} | {s.mean_f1_mean:.4f} | {s.delta_f1_mean:.4f} | {s.n_graphs} |")
+            lines.append(
+                f"| {display}{marker} | {s.mean_f1_mean:.4f} ± {s.mean_f1_sd:.4f} "
+                f"| {s.delta_f1_mean:.4f} ± {s.delta_f1_sd:.4f} | {s.n_graphs} |"
+            )
     if degenerate_methods:
         lines += [
             "",

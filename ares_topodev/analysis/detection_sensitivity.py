@@ -98,6 +98,33 @@ def compute_ordering_detection_results(
     return out
 
 
+def class_f1s(predicted: set, ground_truth: set, universe: set) -> Tuple[float, float]:
+    """Returns (f1_error_class, f1_sound_class). The error-class F1 treats
+    "predicted error" as the positive class (this is exactly
+    `precision_recall_f1`'s convention). The sound-class F1 is the mirror
+    computation with "predicted sound" (i.e. everything not in `predicted`)
+    as the positive class and "actually sound" (everything not in
+    `ground_truth`) as its ground truth -- same symmetric zero-division
+    handling as `precision_recall_f1`, just applied to the complement sets."""
+    _, _, f1_error, _, _ = precision_recall_f1(predicted, ground_truth)
+
+    predicted_sound = universe - predicted
+    ground_truth_sound = universe - ground_truth
+    _, _, f1_sound, _, _ = precision_recall_f1(predicted_sound, ground_truth_sound)
+
+    return f1_error, f1_sound
+
+
+def macro_f1(predicted: set, ground_truth: set, universe: set) -> float:
+    """Macro-F1: the average of the error-class and sound-class F1 from
+    `class_f1s` -- matching the paper's own evaluation convention ("we
+    evaluate using Macro-recall, Macro-precision and Macro-F1"), as opposed
+    to `precision_recall_f1`'s error-class-only convention used elsewhere in
+    this module."""
+    f1_error, f1_sound = class_f1s(predicted, ground_truth, universe)
+    return (f1_error + f1_sound) / 2
+
+
 def _jaccard(a: set, b: set) -> float:
     if not a and not b:
         return 1.0
@@ -181,24 +208,43 @@ def compute_graph_sensitivity(
     return summary, ordering_results
 
 
-def bootstrap_ci_over_graphs(values: List[float], num_resamples: int = 10000, seed: int = 42, alpha: float = 0.05):
+def _bootstrap_resampled_means(values: List[float], num_resamples: int, seed: int) -> List[float]:
     """Graph-level (not ordering-level) bootstrap: resamples entire graphs
     with replacement, since the K orderings of one graph are repeated
-    measurements, not independent draws. Never resamples orderings."""
+    measurements, not independent draws. Never resamples orderings. Shared
+    by `bootstrap_ci_over_graphs` and `bootstrap_sd_over_graphs` so that, for
+    a given seed, both statistics come from the identical resampled
+    distribution rather than two independently-drawn ones."""
     import random
 
-    if len(values) < 2:
-        return (float("nan"), float("nan"))
     rng = random.Random(seed)
     n = len(values)
     means = []
     for _ in range(num_resamples):
         resample = [values[rng.randrange(n)] for _ in range(n)]
         means.append(sum(resample) / n)
-    means.sort()
+    return means
+
+
+def bootstrap_ci_over_graphs(values: List[float], num_resamples: int = 10000, seed: int = 42, alpha: float = 0.05):
+    if len(values) < 2:
+        return (float("nan"), float("nan"))
+    means = sorted(_bootstrap_resampled_means(values, num_resamples, seed))
     lo_idx = int((alpha / 2) * num_resamples)
     hi_idx = int((1 - alpha / 2) * num_resamples) - 1
     return (means[lo_idx], means[hi_idx])
+
+
+def bootstrap_sd_over_graphs(values: List[float], num_resamples: int = 10000, seed: int = 42) -> float:
+    """Standard deviation of the bootstrap distribution of the mean (i.e. the
+    bootstrap standard error), for reporting as mean +/- SD in the ARES
+    paper's own display style, in place of a [low, high] percentile
+    interval. Same graph-level resampling as `bootstrap_ci_over_graphs`; with
+    the same seed, drawn from the identical bootstrap distribution."""
+    if len(values) < 2:
+        return float("nan")
+    means = _bootstrap_resampled_means(values, num_resamples, seed)
+    return statistics.pstdev(means)
 
 
 @dataclass
@@ -207,9 +253,11 @@ class CrossGraphSummary:
     n_graphs: int
     mean_f1_mean: float
     mean_f1_ci: Tuple[float, float]
+    mean_f1_sd: float
     delta_f1_mean: float
     delta_f1_median: float
     delta_f1_ci: Tuple[float, float]
+    delta_f1_sd: float
     mean_jaccard: float
     mean_exact_match_rate: float
     mean_flip_rate: float
@@ -226,9 +274,11 @@ def summarize_across_graphs(graph_summaries: List[GraphOrderingSensitivity]) -> 
         n_graphs=len(graph_summaries),
         mean_f1_mean=statistics.fmean(mean_f1_values),
         mean_f1_ci=bootstrap_ci_over_graphs(mean_f1_values, seed=42),
+        mean_f1_sd=bootstrap_sd_over_graphs(mean_f1_values, seed=42),
         delta_f1_mean=statistics.fmean(delta_f1_values),
         delta_f1_median=statistics.median(delta_f1_values),
         delta_f1_ci=bootstrap_ci_over_graphs(delta_f1_values, seed=43),
+        delta_f1_sd=bootstrap_sd_over_graphs(delta_f1_values, seed=43),
         mean_jaccard=statistics.fmean(g.mean_pairwise_jaccard for g in graph_summaries),
         mean_exact_match_rate=statistics.fmean(g.exact_match_rate for g in graph_summaries),
         mean_flip_rate=statistics.fmean(g.flip_rate for g in graph_summaries),

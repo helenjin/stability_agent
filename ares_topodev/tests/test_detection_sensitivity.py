@@ -3,7 +3,9 @@ import os
 import pytest
 
 from ares_topodev.analysis.detection_sensitivity import (
+    class_f1s,
     compute_graph_sensitivity,
+    macro_f1,
     precision_recall_f1,
     predicted_error_set,
     verify_ordering_is_valid_topo_sort,
@@ -59,6 +61,35 @@ def test_precision_recall_f1_empty_ground_truth_defensive_branch():
     precision, recall, f1, p_zero, r_zero = precision_recall_f1({"1"}, set())
     assert r_zero is True
     assert recall == 0.0
+
+
+def test_macro_f1_equals_error_class_f1_when_predictions_are_perfect():
+    universe = {"1", "2", "3", "4"}
+    ground_truth = {"2", "4"}
+    assert macro_f1(ground_truth, ground_truth, universe) == pytest.approx(1.0)
+
+
+def test_macro_f1_can_be_high_while_error_class_f1_is_zero():
+    """This is the exact mechanism behind the paper-vs-ours discrepancy for
+    ROSCOE-LI-Source/ReCEval-Inter: a detector that always predicts "sound"
+    gets zero error-class F1 but can still score high on Macro-F1 because it
+    is right about the (larger) sound class by default."""
+    universe = {str(i) for i in range(1, 11)}
+    ground_truth = {"1", "2", "3"}  # 3 error claims, 7 sound claims
+    predicted = set()  # always predicts "sound"
+
+    precision, recall, f1, _, _ = precision_recall_f1(predicted, ground_truth)
+    assert f1 == 0.0  # error-class-only F1 is exactly zero
+
+    macro = macro_f1(predicted, ground_truth, universe)
+    # sound-class precision=7/10, recall=7/7=1.0 -> F1=14/17; macro=(0+14/17)/2
+    assert macro == pytest.approx(7 / 17)
+    assert macro > 0.4  # looks respectable despite zero actual detection ability
+
+    f1_error, f1_sound = class_f1s(predicted, ground_truth, universe)
+    assert f1_error == 0.0
+    assert f1_sound == pytest.approx(14 / 17)
+    assert macro == pytest.approx((f1_error + f1_sound) / 2)
 
 
 def test_no_real_recipe_has_empty_ground_truth():

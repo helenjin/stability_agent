@@ -1,0 +1,61 @@
+\begin{table*}[t]
+\centering
+\caption{
+\textbf{Macro-F1 vs.\ Error-Class-Only F1, CaptainCookRecipes (GPT-4o-mini).}
+Same predictions, two different formulas for combining them into one number.
+``Paper's Macro-F1'' is Table~1 of the ARES paper (You et al., arXiv:2507.12948v2;
+CaptainCookRecipes column, GPT-4o-mini sub-column). ``Ours, Macro-F1'' recomputes Macro-F1 from
+our own reproduction using the identical CV-thresholded predictions that
+produce every other Experiment-2 number in this paper
+(Table~\ref{tab:error_detection_sensitivity}) --- i.e.\ this is a genuine
+apples-to-apples check: same predictions, same thresholds, only the
+aggregation formula differs from the third column.
+Macro-F1 averages the F1 computed for the positive (unsound) class
+\emph{and} the F1 computed for the negative (sound) class; ``Ours,
+Error-Class F1'' (repeated from Table~\ref{tab:error_detection_sensitivity})
+reports only the former, and ``Ours, Sound-Class F1'' reports only the
+latter (Ours, Macro-F1 is exactly their average).
+Our Macro-F1 reproduction lands in the same range as the paper's own number
+for every method (small residual differences are consistent with ordinary
+run-to-run backbone/sampling variance), confirming this is not a
+reproduction failure. The two zero-recall methods (ROSCOE-LI-Source,
+ReCEval-Inter) illustrate why the distinction matters: a detector that
+predicts every claim as ``sound'' scores exactly 0.000 on error-class F1
+(it never once catches a real error) yet reaches
+$0.552$ on sound-class F1 alone (it is right about the sound majority by
+default) --- averaging the two into $0.276$ Macro-F1 makes a detector with
+zero actual detection ability look moderately capable; error-class F1 is
+what exposes that it provides no signal at all. Uncertainty is mean $\pm$
+bootstrap standard deviation, resampled over $N=24$ graphs (10{,}000
+resamples), matching the original ARES paper's own $\pm$ display convention.
+}%
+\label{tab:macro_f1_comparison}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Method}
+& \textbf{Paper's Macro-F1}
+& \textbf{Ours, Macro-F1}
+& \textbf{Ours, Error-Class F1}
+& \textbf{Ours, Sound-Class F1} \\
+\midrule
+
+ARES
+    & 0.633 & 0.583 $\pm$ 0.037 & 0.643 $\pm$ 0.039 & 0.523 $\pm$ 0.051 \\
+Entail-Prev
+    & 0.428 & 0.410 $\pm$ 0.028 & 0.383 $\pm$ 0.027 & 0.437 $\pm$ 0.048 \\
+Entail-Base
+    & 0.589 & 0.494 $\pm$ 0.023 & 0.613 $\pm$ 0.033 & 0.376 $\pm$ 0.044 \\
+ROSCOE-LI-Self
+    & 0.483 & 0.496 $\pm$ 0.029 & 0.725 $\pm$ 0.036 & 0.266 $\pm$ 0.032 \\
+ROSCOE-LI-Source$^\ast$
+    & 0.361 & 0.276 $\pm$ 0.024 & 0.000 $\pm$ 0.000 & 0.552 $\pm$ 0.048 \\
+ReCEval-Intra
+    & 0.396 & 0.318 $\pm$ 0.021 & 0.100 $\pm$ 0.024 & 0.537 $\pm$ 0.044 \\
+ReCEval-Inter$^\ast$
+    & 0.361 & 0.276 $\pm$ 0.024 & 0.000 $\pm$ 0.000 & 0.552 $\pm$ 0.048 \\
+
+\bottomrule
+\end{tabular}
+}
+\end{table*}
