@@ -11,5 +11,6 @@ Uncertainty is mean +/- bootstrap SD, resampled over graphs (10000 resamples, AR
 | ROSCOE-LI-Source* | 0.0000 ± 0.0000 | 0.0000 ± 0.0000 | 24 |
 | ReCEval-Intra | 0.0998 ± 0.0243 | 0.0039 ± 0.0039 | 24 |
 | ReCEval-Inter* | 0.0000 ± 0.0000 | 0.0000 ± 0.0000 | 24 |
+| LLM-Judge-Whole | 0.1134 ± 0.0336 | 0.3787 ± 0.0611 | 24 |
 
 \* ROSCOE-LI-Source, ReCEval-Inter: raw scores are exactly 0.0 for every single claim in every ordering (verified: 0/3768 nonzero scores) -- not a code bug, but a real architectural mismatch. These methods score a hypothesis against each individual premise separately and take the minimum (Score = 1 - max(1 - e_i) = min(e_i)); combined with the custom CaptainCookRecipes prompt's explicit instruction to judge a step "Very Unlikely" whenever a required precondition is missing, and every recipe step genuinely requiring *multiple* premises jointly (prior steps + ingredients), almost any single isolated premise will appear to be missing something -- forcing the minimum to 0.0 essentially always. This is inferred from code + prompt inspection, not confirmed against raw model text (only numeric scores are persisted).

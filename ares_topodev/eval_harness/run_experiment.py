@@ -66,7 +66,21 @@ def build_entailment_model(config: dict, dry_run: bool):
     return entailment_model, cached_llm
 
 
-def build_scorers(config: dict, entailment_model):
+# Methods whose vendored scorer class expects the raw LLM object (anything
+# with a .generate() method) rather than the EntailmentModel wrapper --
+# confirmed from methods/loader.py's own type hint (Union[EntailmentModel,
+# BaseLLM]) and comment ("this can only work with LLM"). These scorers call
+# llm.generate(...) directly with their own hand-written prompt; they don't
+# do premise/hypothesis-pair entailment scoring at all, so our custom
+# per-pair recipe entailment prompt and the entailment-model-specific
+# `temperature` kwarg (LLMJudgeWholeStabilityScorer.__init__ has no such
+# parameter) don't apply to them -- injecting either would be a category
+# error, not a real config knob, and `temperature` would be an unexpected
+# keyword argument at construction time.
+METHODS_REQUIRING_RAW_LLM = {"llm_judge_whole"}
+
+
+def build_scorers(config: dict, entailment_model, cached_llm):
     from exp_helpers.exp_configs import METHOD_CONFIGS
     from exp_helpers.methods import get_stability_scorer
 
@@ -82,9 +96,16 @@ def build_scorers(config: dict, entailment_model):
         kwargs = dict(method_config["kwargs"])
         kwargs.update(overrides.get(label, {}))  # e.g. relax epsilon/delta for a faster smoke test
         resolved_kwargs_by_label[label] = {k: v for k, v in kwargs.items() if k != "entailment_mode"}
-        kwargs["entailment_mode"] = custom_entailment_mode
-        kwargs["temperature"] = config.get("temperature", 0.0)
-        scorers[label] = get_stability_scorer(method_config["method"], entailment_model, config["p"], **kwargs)
+        if method_config["method"] in METHODS_REQUIRING_RAW_LLM:
+            # Use this method's own kwargs completely unmodified (e.g. its own
+            # binary/granular `entailment_mode` string, which selects between
+            # its own two hardcoded system prompts -- not our custom recipe
+            # entailment prompt object, and not a per-pair scoring mode).
+            scorers[label] = get_stability_scorer(method_config["method"], cached_llm, config["p"], **kwargs)
+        else:
+            kwargs["entailment_mode"] = custom_entailment_mode
+            kwargs["temperature"] = config.get("temperature", 0.0)
+            scorers[label] = get_stability_scorer(method_config["method"], entailment_model, config["p"], **kwargs)
     return scorers, resolved_kwargs_by_label
 
 
@@ -190,6 +211,19 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
         for label, scorer in scorers.items():
             try:
                 result = scorer.get_stability_rate(data_entry)
+                # Most scorers loop directly over `ent_inputs` and append exactly
+                # one score per input, so len(stability_rates) == len(order) holds
+                # by construction. llm_judge_whole is different: it asks the LLM
+                # for one JSON list covering every derived claim in a single call,
+                # and nothing guarantees the model returns the same count it was
+                # given. zip() truncates silently on a length mismatch, which
+                # would misattribute scores to the wrong node ids without any
+                # error -- so this is checked explicitly rather than trusted.
+                if len(result.stability_rates) != len(order):
+                    raise ValueError(
+                        f"stability_rates length {len(result.stability_rates)} != "
+                        f"order length {len(order)}"
+                    )
                 scores_by_node_id = {str(node_id): score for node_id, score in zip(order, result.stability_rates)}
             except Exception as e:  # noqa: BLE001 -- deliberately broad: a single malformed
                 # LLM response from any vendored scorer must not abort every other
@@ -230,7 +264,7 @@ def run(config: dict, limit=None, dry_run=False):
         recipe_names = recipe_names[:limit]
 
     entailment_model, cached_llm = build_entailment_model(config, dry_run=dry_run)
-    scorers, resolved_kwargs_by_label = build_scorers(config, entailment_model)
+    scorers, resolved_kwargs_by_label = build_scorers(config, entailment_model, cached_llm)
 
     for label in config["methods_to_run"]:
         os.makedirs(os.path.join(raw_dir, label), exist_ok=True)

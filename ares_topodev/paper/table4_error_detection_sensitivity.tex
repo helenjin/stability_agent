@@ -23,9 +23,16 @@ $^\ast$ROSCOE-LI-Source and ReCEval-Inter output exactly 0.0 for every claim in 
 ordering (0/3768 raw scores nonzero), collapsing recall (and hence F1 and $\Delta F1$) to
 identically zero regardless of ordering --- a genuine architectural mismatch with this
 dataset's prompt, not an artifact of the sensitivity measurement itself; see
-\S\ref{sec:error_detection_sensitivity} for the mechanism. LLM-Judge is omitted: it fails
-with an unhandled exception on 100\% of real GPT-4o-mini calls, a latent bug in the
-vendored fallback text-parsing path that we did not work around.
+\S\ref{sec:error_detection_sensitivity} for the mechanism. LLM-Judge (step-by-step,
+routed through the entailment model) is omitted: it fails with an unhandled exception on
+100\% of real GPT-4o-mini calls, a latent bug in the vendored fallback text-parsing path
+that we did not work around. LLM-Judge-Whole is a different vendored scorer class
+(\texttt{llm\_judge\_whole}) that instead judges every claim in a graph with a single
+holistic call per ordering rather than step-by-step entailment scoring; it does not hit
+the same bug and is not reported in the original paper's Table~1, so its numbers here are
+not directly comparable to a paper-reported LLM-Judge result. Despite (or because of)
+having no explicit per-step structure at all, it has the highest $\Delta F1$ of every
+method tested, including ARES\@.
 }%
 \label{tab:error_detection_sensitivity}
 \resizebox{\textwidth}{!}{
@@ -51,6 +58,8 @@ ReCEval-Intra
     & 0.100 $\pm$ 0.024 & 0.004 $\pm$ 0.004 & 0.000 \\
 ReCEval-Inter$^\ast$
     & 0.000 $\pm$ 0.000 & 0.000 $\pm$ 0.000 & 0.000 \\
+LLM-Judge-Whole
+    & 0.113 $\pm$ 0.034 & 0.379 $\pm$ 0.061 & 0.333 \\
 
 \bottomrule
 \end{tabular}

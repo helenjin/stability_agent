@@ -9,3 +9,4 @@
 | ROSCOE-LI-Source | 1.0000 | 0.0000 | 0.0000 |
 | ReCEval-Intra | 0.9444 | 0.0000 | 0.0112 |
 | ReCEval-Inter | 1.0000 | 0.0000 | 0.0000 |
+| LLM-Judge-Whole | 0.5936 | 0.0139 | 0.3804 |

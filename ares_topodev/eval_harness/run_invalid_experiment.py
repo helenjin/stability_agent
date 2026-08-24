@@ -158,7 +158,7 @@ def run(config: dict, limit=None, dry_run=False):
         recipe_names = recipe_names[:limit]
 
     entailment_model, cached_llm = build_entailment_model(config, dry_run=dry_run)
-    scorers, resolved_kwargs_by_label = build_scorers(config, entailment_model)
+    scorers, resolved_kwargs_by_label = build_scorers(config, entailment_model, cached_llm)
 
     for label in config["methods_to_run"]:
         os.makedirs(os.path.join(raw_dir, label), exist_ok=True)

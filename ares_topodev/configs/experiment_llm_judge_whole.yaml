@@ -1,0 +1,48 @@
+# Runs LLM-Judge-Whole on the same recipes/orderings/backbone as
+# configs/experiment.yaml (paper-faithful epsilon=0.1 setup) -- same
+# results_dir, so this lands as a new method subdirectory alongside
+# ares/entail_prev/entail_base/roscoe_*/receval_*, ready for
+# analysis/report_detection_sensitivity.py with no code changes.
+#
+# This is NOT the same vendored class as `llm_judge` (which fails on 100% of
+# real GPT-4o-mini calls -- see experiment_additional_methods.yaml). Unlike
+# `llm_judge`, `llm_judge_whole` never routes through entailment_model.py's
+# buggy fallback text-parsing path: it calls the raw LLM directly with its
+# own single-shot, whole-chain JSON prompt (judge every derived claim in one
+# call, holistically, rather than step-by-step entailment scoring). Wired in
+# via eval_harness/run_experiment.py's METHODS_REQUIRING_RAW_LLM branch,
+# which passes the raw cached LLM instead of the EntailmentModel wrapper --
+# required by this scorer's own constructor signature, not a vendored-code
+# change.
+#
+# Uses `llm_judge_whole`'s own default binary system prompt (its class-level
+# BINARY_SYSTEM_PROMPT), not our custom recipe-specific entailment prompt --
+# that custom prompt is for the entailment_model's premise/hypothesis
+# scoring path, which this method doesn't use, and we have no evidence the
+# paper customizes this particular scorer's prompt per dataset.
+
+dataset: captaincookrecipes
+recipe_data_dir: ares_topodev/vendor/ares/data/recipe_graphs
+
+backbone_model: gpt-4o-mini
+
+p: 0.95
+temperature: 0.0
+max_new_tokens: 1000
+entailment_batch_size: 16
+recipe_concurrency: 4
+
+K: 10
+seed: 42
+max_topo_attempts: 200
+
+method_configs:
+  llm_judge_whole: llm_judge_whole_binary
+
+methods_to_run:
+  - llm_judge_whole
+
+results_dir: ares_topodev/results
+cache_path: ares_topodev/results/cache/llm_prompt_cache.jsonl
+
+raw_claims_shuffle_idx: 0

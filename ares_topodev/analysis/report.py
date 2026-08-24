@@ -40,6 +40,7 @@ METHOD_DISPLAY_NAMES = {
     "receval_intra": "ReCEval-Intra",
     "receval_inter": "ReCEval-Inter",
     "llm_judge": "LLM-Judge",
+    "llm_judge_whole": "LLM-Judge-Whole",
 }
 
 
