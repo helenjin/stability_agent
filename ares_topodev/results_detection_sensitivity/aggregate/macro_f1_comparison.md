@@ -11,3 +11,4 @@ Same predictions (same CV-thresholded raw scores) scored two ways. "Ours, ..." u
 | ROSCOE-LI-Source | 0.361 ± 0.007 | 0.276 ± 0.024 | 0.000 ± 0.000 | 0.552 ± 0.048 |
 | ReCEval-Intra | 0.396 ± 0.010 | 0.318 ± 0.021 | 0.100 ± 0.024 | 0.537 ± 0.044 |
 | ReCEval-Inter | 0.361 ± 0.007 | 0.276 ± 0.024 | 0.000 ± 0.000 | 0.552 ± 0.048 |
+| LLM-Judge-Whole | n/a | 0.323 ± 0.033 | 0.113 ± 0.034 | 0.533 ± 0.047 |

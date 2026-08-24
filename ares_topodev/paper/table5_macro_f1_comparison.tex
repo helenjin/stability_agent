@@ -30,6 +30,10 @@ is mean $\pm$ bootstrap standard deviation, resampled over $N=24$ graphs
 (10{,}000 resamples). ``Paper's Macro-F1'' uncertainty is the paper's own
 reported mean $\pm$ std across its 5 CV folds --- a different statistic,
 transcribed as-is from Table~1, not recomputed by us.
+$^\dagger$LLM-Judge-Whole has no paper column: it is a different vendored
+scorer than the paper's own (broken, for us) LLM-Judge --- see
+Table~\ref{tab:error_detection_sensitivity} --- so there is no paper-reported
+number for it to transcribe.
 }%
 \label{tab:macro_f1_comparison}
 \resizebox{\textwidth}{!}{
@@ -56,6 +60,8 @@ ReCEval-Intra
     & 0.396 $\pm$ 0.010 & 0.318 $\pm$ 0.021 & 0.100 $\pm$ 0.024 & 0.537 $\pm$ 0.044 \\
 ReCEval-Inter$^\ast$
     & 0.361 $\pm$ 0.007 & 0.276 $\pm$ 0.024 & 0.000 $\pm$ 0.000 & 0.552 $\pm$ 0.048 \\
+LLM-Judge-Whole$^\dagger$
+    & n/a & 0.323 $\pm$ 0.033 & 0.113 $\pm$ 0.034 & 0.533 $\pm$ 0.047 \\
 
 \bottomrule
 \end{tabular}
