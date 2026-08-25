@@ -214,6 +214,36 @@ def test_canonical_premise_ordering_multi_parent_numeric_ids(tmp_path):
 # --- Test E: ARES regression ---------------------------------------------------
 
 
+def test_sager_scorer_accepts_ancestor_closure_as_parents(tmp_path):
+    """sager_ancestors (run_experiment.py) passes the transitive-ancestor
+    closure into the exact same SagerStabilityScorer/build_graph_data_entry
+    path as direct parents -- there is no separate code path for it. This
+    verifies that end-to-end: E's ANCESTORS are {A,B,C,D} (not just its
+    direct parents {C,D}), and the scorer must run correctly and still
+    respect locality against this larger premise universe -- e.g. never
+    including a claim that ISN'T even an ancestor (there are none here, since
+    every other node in the toy graph IS an ancestor of E, but the run
+    completing without error, and node D receiving A/B correctly, would
+    still expose e.g. an off-by-one in projection column bookkeeping)."""
+    ancestors = {
+        "A": [],
+        "B": [],
+        "C": ["A"],
+        "D": ["B"],
+        "E": ["A", "B", "C", "D"],  # transitive closure, not just direct parents {C, D}
+    }
+    entailment_model, _ = _build_entailment_model(str(tmp_path / "cache_ancestors.jsonl"))
+    scorer = SagerStabilityScorer(entailment_model, p=0.95, epsilon=0.3, delta=0.3, entailment_mode="granular", temperature=0.0)
+    result = scorer.get_stability_rate(build_graph_data_entry(RAW_CLAIMS, VALID_ORDER_1, TEXT_BY_NODE, ancestors))
+
+    assert len(result.stability_rates) == 5
+    e_record = next(r for r in result.inputs if r["node_id"] == "E")
+    assert e_record["parent_ids"] == ["A", "B", "C", "D"]
+    for ancestor_id in ("A", "B", "C", "D"):  # E's premises now include every ancestor's text, not just C/D
+        assert TEXT_BY_NODE[ancestor_id] in " ".join(e_record["premises_text"])
+    assert TEXT_BY_NODE["E"] not in " ".join(e_record["premises_text"])  # never its own text
+
+
 def test_ares_regression_unaffected_by_sager_addition(tmp_path):
     """The original, unmodified ARES call path (build_data_entry +
     CertNonexactStabilityScorer) must produce identical output after sager.py
