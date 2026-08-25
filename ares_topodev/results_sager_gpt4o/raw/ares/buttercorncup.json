@@ -1,0 +1,427 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "buttercorncup",
+  "method": "ares",
+  "method_config_key": "cert_granular_temp0_nonexact",
+  "model": "gpt-4o",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 38.0,
+    "exact": true,
+    "lower_bound_unique_found": 38,
+    "importance_sample_estimate": 38.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (Microwave-Microwave the corn for 3 more minutes, and Extract-Extract lime juice from 1/3 lime), and have all necessary ingredients (lime), we can now do the step add-add lime juice to the bowl. And now we have completed this step add-add lime juice to the bowl.",
+    "2": "Because we have completed all previous steps (START), and have all necessary ingredients (corn), we can now do the step Measure-Measure 2 cups of frozen corn. And now we have completed this step Measure-Measure 2 cups of frozen corn.",
+    "3": "Because we have completed all previous steps (Microwave-Microwave the corn for 2 minutes), and have all necessary ingredients (pepper), we can now do the step Add-1 teaspoon of pepper powder to the bowl. And now we have completed this step Add-1 teaspoon of pepper powder to the bowl.",
+    "4": "Because we have completed all previous steps (START), and have all necessary ingredients (lime), we can now do the step Extract-Extract lime juice from 1/3 lime. And now we have completed this step Extract-Extract lime juice from 1/3 lime.",
+    "6": "Because we have completed all previous steps (Thaw-Thaw the frozen corn by putting it in a sieve and running it under cold water), and have all necessary ingredients (corn), we can now do the step Add-Add the corn into a microwave-safe bowl. And now we have completed this step Add-Add the corn into a microwave-safe bowl.",
+    "7": "Because we have completed all previous steps (Add-Add 1 teaspoon salt to the bowl, and add-add lime juice to the bowl),  we can now do the step Mix-Mix the contents of the bowl well. And now we have completed this step Mix-Mix the contents of the bowl well.",
+    "8": "Because we have completed all previous steps (Add-Add the corn into a microwave-safe bowl), and have all necessary ingredients (corn), we can now do the step Microwave-Microwave the corn for 2 minutes. And now we have completed this step Microwave-Microwave the corn for 2 minutes.",
+    "9": "Because we have completed all previous steps (stir-then stir the bowl), and have all necessary ingredients (corn), we can now do the step Microwave-Microwave the corn for 3 more minutes. And now we have completed this step Microwave-Microwave the corn for 3 more minutes.",
+    "10": "Because we have completed all previous steps (Add-1 teaspoon of pepper powder to the bowl, and Add-Add 1 teaspoon of softened butter),  we can now do the step stir-then stir the bowl. And now we have completed this step stir-then stir the bowl.",
+    "11": "Because we have completed all previous steps (Microwave-Microwave the corn for 3 more minutes), and have all necessary ingredients (salt), we can now do the step Add-Add 1 teaspoon salt to the bowl. And now we have completed this step Add-Add 1 teaspoon salt to the bowl.",
+    "12": "Because we have completed all previous steps (Measure-Measure 2 cups of frozen corn),  we can now do the step Thaw-Thaw the frozen corn by putting it in a sieve and running it under cold water. And now we have completed this step Thaw-Thaw the frozen corn by putting it in a sieve and running it under cold water.",
+    "13": "Because we have completed all previous steps (Microwave-Microwave the corn for 2 minutes), and have all necessary ingredients (butter), we can now do the step Add-Add 1 teaspoon of softened butter. And now we have completed this step Add-Add 1 teaspoon of softened butter.",
+    "14": "Because we have completed all previous steps (Mix-Mix the contents of the bowl well),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "6": 0,
+    "7": 1,
+    "8": 0,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 0,
+    "13": 1,
+    "14": 1
+  },
+  "parents_by_node_id": {
+    "1": [
+      9,
+      4
+    ],
+    "2": [],
+    "3": [
+      8
+    ],
+    "4": [],
+    "6": [
+      12
+    ],
+    "7": [
+      11,
+      1
+    ],
+    "8": [
+      6
+    ],
+    "9": [
+      10
+    ],
+    "10": [
+      3,
+      13
+    ],
+    "11": [
+      9
+    ],
+    "12": [
+      2
+    ],
+    "13": [
+      8
+    ],
+    "14": [
+      7
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        4,
+        2,
+        12,
+        6,
+        8,
+        3,
+        13,
+        10,
+        9,
+        1,
+        11,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "4": 0.8566307425498962,
+        "2": 0.9964157342910767,
+        "12": 0.9103943109512329,
+        "6": 0.9211469292640686,
+        "8": 0.9713261127471924,
+        "3": 0.8315411806106567,
+        "13": 0.7956988215446472,
+        "10": 0.7096774578094482,
+        "9": 0.5627239942550659,
+        "1": 0.6630823612213135,
+        "11": 0.08602149784564972,
+        "7": 0.6021504998207092,
+        "14": 0.6666666269302368
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        4,
+        2,
+        12,
+        6,
+        8,
+        13,
+        3,
+        10,
+        9,
+        1,
+        11,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "4": 0.842293918132782,
+        "2": 0.9641576409339905,
+        "12": 0.9498207569122314,
+        "6": 0.9068100452423096,
+        "8": 0.8924731016159058,
+        "13": 0.1899641454219818,
+        "3": 0.8494623899459839,
+        "10": 0.1964157670736313,
+        "9": 0.12903225421905518,
+        "1": 0.39068102836608887,
+        "11": 0.25806453824043274,
+        "7": 0.2939068078994751,
+        "14": 0.33691754937171936
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        2,
+        4,
+        12,
+        6,
+        8,
+        3,
+        13,
+        10,
+        9,
+        11,
+        1,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "2": 0.9856630563735962,
+        "4": 0.9498206973075867,
+        "12": 0.9749103784561157,
+        "6": 0.8817204236984253,
+        "8": 0.9426522850990295,
+        "3": 0.8422939777374268,
+        "13": 0.7419355511665344,
+        "10": 0.7928314805030823,
+        "9": 0.6379928588867188,
+        "11": 0.6594982147216797,
+        "1": 0.9103942513465881,
+        "7": 0.820788562297821,
+        "14": 0.8745519518852234
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        2,
+        12,
+        6,
+        8,
+        13,
+        4,
+        3,
+        10,
+        9,
+        1,
+        11,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "2": 0.9964158535003662,
+        "12": 0.9426523447036743,
+        "6": 0.8387096524238586,
+        "8": 0.9426524043083191,
+        "13": 0.6308243870735168,
+        "4": 0.8351254463195801,
+        "3": 0.9283154010772705,
+        "10": 0.6473118662834167,
+        "9": 0.4838709533214569,
+        "1": 0.7025089859962463,
+        "11": 0.07526881992816925,
+        "7": 0.6559140086174011,
+        "14": 0.6738351583480835
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        4,
+        2,
+        12,
+        6,
+        8,
+        3,
+        13,
+        10,
+        9,
+        11,
+        1,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "4": 0.842293918132782,
+        "2": 0.9784947037696838,
+        "12": 0.9534050226211548,
+        "6": 0.8996415734291077,
+        "8": 0.878136157989502,
+        "3": 0.8745519518852234,
+        "13": 0.6774193048477173,
+        "10": 0.8637993335723877,
+        "9": 0.5197132229804993,
+        "11": 0.5268816947937012,
+        "1": 0.8387097120285034,
+        "7": 0.7311828136444092,
+        "14": 0.745519757270813
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        2,
+        4,
+        12,
+        6,
+        8,
+        3,
+        13,
+        10,
+        9,
+        1,
+        11,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "2": 0.9964158535003662,
+        "4": 0.9677419662475586,
+        "12": 0.8924731612205505,
+        "6": 0.842293918132782,
+        "8": 0.9139783978462219,
+        "3": 0.9892473816871643,
+        "13": 0.9068100452423096,
+        "10": 0.9182795882225037,
+        "9": 0.637992799282074,
+        "1": 0.8602150678634644,
+        "11": 0.21863800287246704,
+        "7": 0.3584229350090027,
+        "14": 0.7347670793533325
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        2,
+        12,
+        6,
+        4,
+        8,
+        3,
+        13,
+        10,
+        9,
+        11,
+        1,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "2": 0.9964158535003662,
+        "12": 0.9318996667861938,
+        "6": 0.8888888955116272,
+        "4": 0.903225839138031,
+        "8": 0.9534050822257996,
+        "3": 0.9283153414726257,
+        "13": 0.8494622111320496,
+        "10": 0.8637992739677429,
+        "9": 0.21146953105926514,
+        "11": 0.16845877468585968,
+        "1": 0.8028674125671387,
+        "7": 0.3655914068222046,
+        "14": 0.7813618779182434
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        4,
+        2,
+        12,
+        6,
+        8,
+        13,
+        3,
+        10,
+        9,
+        11,
+        1,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "4": 0.842293918132782,
+        "2": 0.9784947037696838,
+        "12": 0.9318996071815491,
+        "6": 0.9211469888687134,
+        "8": 0.9462364912033081,
+        "13": 0.25089606642723083,
+        "3": 0.878136157989502,
+        "10": 0.27240145206451416,
+        "9": 0.23297491669654846,
+        "11": 0.24014337360858917,
+        "1": 0.7777777910232544,
+        "7": 0.7777777910232544,
+        "14": 0.7992831468582153
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        2,
+        12,
+        6,
+        4,
+        8,
+        13,
+        3,
+        10,
+        9,
+        1,
+        11,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "2": 0.9964158535003662,
+        "12": 0.9318996667861938,
+        "6": 0.8709676861763,
+        "4": 0.8817204833030701,
+        "8": 0.8817204236984253,
+        "13": 0.32974910736083984,
+        "3": 0.9103943109512329,
+        "10": 0.43440860509872437,
+        "9": 0.2939068078994751,
+        "1": 0.7634408473968506,
+        "11": 0.36917564272880554,
+        "7": 0.7311827540397644,
+        "14": 0.7921146154403687
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        2,
+        12,
+        6,
+        4,
+        8,
+        13,
+        3,
+        10,
+        9,
+        11,
+        1,
+        7,
+        14
+      ],
+      "scores_by_node_id": {
+        "2": 0.9964158535003662,
+        "12": 0.9318996667861938,
+        "6": 0.8709676861763,
+        "4": 0.8853046298027039,
+        "8": 0.8996416330337524,
+        "13": 0.2544802725315094,
+        "3": 0.9605734944343567,
+        "10": 0.4265233278274536,
+        "9": 0.2688171863555908,
+        "11": 0.23297491669654846,
+        "1": 0.3405017554759979,
+        "7": 0.2795698940753937,
+        "14": 0.30465951561927795
+      }
+    }
+  ],
+  "failed_orderings": []
+}

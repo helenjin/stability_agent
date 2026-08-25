@@ -1,0 +1,472 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "blenderbananapancakes",
+  "method": "sager",
+  "method_config_key": "sager_gold_graph_reuses_ares_epsilon_delta",
+  "model": "gpt-4o",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 288.0,
+    "exact": true,
+    "lower_bound_unique_found": 288,
+    "importance_sample_estimate": 288.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (START),  we can now do the step Add-1/2 tsp baking powder to a blender. And now we have completed this step Add-1/2 tsp baking powder to a blender.",
+    "2": "Because we have completed all previous steps (Transfer-Transfer to a plate, and Chop-Chop 1 strawberry), and have all necessary ingredients (strawberries), we can now do the step Serve-Serve the pancakes with chopped strawberries. And now we have completed this step Serve-Serve the pancakes with chopped strawberries.",
+    "3": "Because we have completed all previous steps (blitz-blitz the blender for 20 seconds), and have all necessary ingredients (butter), we can now do the step Melt-Melt a small knob of butter in a non-stick frying pan over low-medium heat. And now we have completed this step Melt-Melt a small knob of butter in a non-stick frying pan over low-medium heat.",
+    "4": "Because we have completed all previous steps (Serve-Serve the pancakes with chopped strawberries), and have all necessary ingredients (maple syrup), we can now do the step splash-splash maple syrup on plate. And now we have completed this step splash-splash maple syrup on plate.",
+    "5": "Because we have completed all previous steps (START), and have all necessary ingredients (banana), we can now do the step Add-Add 1 banana to a blender. And now we have completed this step Add-Add 1 banana to a blender.",
+    "6": "Because we have completed all previous steps (Pour-Pour three little puddles straight from the blender into the frying pan),  we can now do the step Cook-Cook for 1 min or until the tops start to bubble. And now we have completed this step Cook-Cook for 1 min or until the tops start to bubble.",
+    "7": "Because we have completed all previous steps (Add-Add 1 banana to a blender, and Add-1 heaped tbsp flour to a blender, and Add-1/2 tsp baking powder to a blender, and Add-1 egg to a blender),  we can now do the step blitz-blitz the blender for 20 seconds. And now we have completed this step blitz-blitz the blender for 20 seconds.",
+    "8": "Because we have completed all previous steps (Cook-Cook for 1 min or until the tops start to bubble),  we can now do the step Flip-Flip the pancakes with a fork or a fish slice spatula. And now we have completed this step Flip-Flip the pancakes with a fork or a fish slice spatula.",
+    "9": "Because we have completed all previous steps (START), and have all necessary ingredients (egg), we can now do the step Add-1 egg to a blender. And now we have completed this step Add-1 egg to a blender.",
+    "10": "Because we have completed all previous steps (Flip-Flip the pancakes with a fork or a fish slice spatula),  we can now do the step cook-cook for 20-30 seconds more. And now we have completed this step cook-cook for 20-30 seconds more.",
+    "11": "Because we have completed all previous steps (Melt-Melt a small knob of butter in a non-stick frying pan over low-medium heat),  we can now do the step Pour-Pour three little puddles straight from the blender into the frying pan. And now we have completed this step Pour-Pour three little puddles straight from the blender into the frying pan.",
+    "12": "Because we have completed all previous steps (START), and have all necessary ingredients (flour), we can now do the step Add-1 heaped tbsp flour to a blender. And now we have completed this step Add-1 heaped tbsp flour to a blender.",
+    "13": "Because we have completed all previous steps (START), and have all necessary ingredients (strawberry), we can now do the step Chop-Chop 1 strawberry. And now we have completed this step Chop-Chop 1 strawberry.",
+    "14": "Because we have completed all previous steps (cook-cook for 20-30 seconds more),  we can now do the step Transfer-Transfer to a plate. And now we have completed this step Transfer-Transfer to a plate.",
+    "15": "Because we have completed all previous steps (splash-splash maple syrup on plate),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 0,
+    "2": 1,
+    "3": 0,
+    "4": 1,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "13": 0,
+    "14": 0,
+    "15": 1
+  },
+  "parents_by_node_id": {
+    "1": [],
+    "2": [
+      14,
+      13
+    ],
+    "3": [
+      7
+    ],
+    "4": [
+      2
+    ],
+    "5": [],
+    "6": [
+      11
+    ],
+    "7": [
+      5,
+      12,
+      1,
+      9
+    ],
+    "8": [
+      6
+    ],
+    "9": [],
+    "10": [
+      8
+    ],
+    "11": [
+      3
+    ],
+    "12": [],
+    "13": [],
+    "14": [
+      10
+    ],
+    "15": [
+      4
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        12,
+        13,
+        5,
+        9,
+        1,
+        7,
+        3,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "12": 0.4195804297924042,
+        "13": 0.8881118893623352,
+        "5": 0.9125874042510986,
+        "9": 0.8391608595848083,
+        "1": 0.9720278978347778,
+        "7": 0.2909091114997864,
+        "3": 1.0,
+        "11": 0.10839161276817322,
+        "6": 0.88811194896698,
+        "8": 0.9790210127830505,
+        "10": 0.9860138893127441,
+        "14": 0.9370629787445068,
+        "2": 0.8356643915176392,
+        "4": 0.8566433787345886,
+        "15": 0.9090909361839294
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        12,
+        13,
+        5,
+        1,
+        9,
+        7,
+        3,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "12": 0.4195804297924042,
+        "13": 0.8881118893623352,
+        "5": 0.9125874042510986,
+        "1": 0.9405593872070312,
+        "9": 0.8776224851608276,
+        "7": 0.2790209949016571,
+        "3": 1.0,
+        "11": 0.0419580414891243,
+        "6": 0.9370629787445068,
+        "8": 0.9685314297676086,
+        "10": 0.9615384936332703,
+        "14": 1.0,
+        "2": 0.8461538553237915,
+        "4": 0.8216783404350281,
+        "15": 0.8076923489570618
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        12,
+        5,
+        13,
+        1,
+        9,
+        7,
+        3,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "12": 0.4195804297924042,
+        "5": 0.9055944681167603,
+        "13": 0.8881118893623352,
+        "1": 0.9755244851112366,
+        "9": 0.8391607999801636,
+        "7": 0.3356643617153168,
+        "3": 1.0,
+        "11": 0.07692307978868484,
+        "6": 0.9755244851112366,
+        "8": 0.996503472328186,
+        "10": 0.9790210723876953,
+        "14": 0.9860140085220337,
+        "2": 0.8391608595848083,
+        "4": 0.9650349617004395,
+        "15": 0.7727273106575012
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        5,
+        9,
+        1,
+        13,
+        12,
+        7,
+        3,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "5": 0.9510489702224731,
+        "9": 0.9020978808403015,
+        "1": 0.9545454382896423,
+        "13": 0.8846153616905212,
+        "12": 0.3776223957538605,
+        "7": 0.3762238025665283,
+        "3": 1.0,
+        "11": 0.14685314893722534,
+        "6": 0.9510489702224731,
+        "8": 1.0,
+        "10": 0.9720280170440674,
+        "14": 0.9335664510726929,
+        "2": 0.863636314868927,
+        "4": 0.9650349617004395,
+        "15": 0.7902097702026367
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        12,
+        13,
+        1,
+        9,
+        5,
+        7,
+        3,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "12": 0.4195804297924042,
+        "13": 0.8881118893623352,
+        "1": 0.9545454382896423,
+        "9": 0.8041958808898926,
+        "5": 0.881118893623352,
+        "7": 0.3328671157360077,
+        "3": 1.0,
+        "11": 0.2097902148962021,
+        "6": 0.9125874042510986,
+        "8": 0.9300699234008789,
+        "10": 0.9650349617004395,
+        "14": 0.8846153616905212,
+        "2": 0.88811194896698,
+        "4": 0.9125875234603882,
+        "15": 0.8671329021453857
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        13,
+        1,
+        5,
+        9,
+        12,
+        7,
+        3,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "13": 0.9055943489074707,
+        "1": 0.9720280766487122,
+        "5": 0.8986014723777771,
+        "9": 0.9125874042510986,
+        "12": 0.34265732765197754,
+        "7": 0.3188811242580414,
+        "3": 0.9475525617599487,
+        "11": 0.13636364042758942,
+        "6": 0.9720280170440674,
+        "8": 1.0,
+        "10": 0.9999999403953552,
+        "14": 0.8951048851013184,
+        "2": 0.9090908765792847,
+        "4": 0.8216782808303833,
+        "15": 0.9160839319229126
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        5,
+        13,
+        9,
+        12,
+        1,
+        7,
+        3,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "5": 0.9510489702224731,
+        "13": 0.8811189532279968,
+        "9": 0.9370629787445068,
+        "12": 0.36713287234306335,
+        "1": 0.9895105361938477,
+        "7": 0.29160839319229126,
+        "3": 0.982517421245575,
+        "11": 0.16083917021751404,
+        "6": 0.9685314893722534,
+        "8": 1.0,
+        "10": 0.9440560340881348,
+        "14": 0.9300699830055237,
+        "2": 0.8741258978843689,
+        "4": 0.8566433787345886,
+        "15": 0.9020978808403015
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        12,
+        5,
+        1,
+        9,
+        7,
+        3,
+        11,
+        13,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "12": 0.4195804297924042,
+        "5": 0.9055944681167603,
+        "1": 0.9755244851112366,
+        "9": 0.9020980000495911,
+        "7": 0.44545456767082214,
+        "3": 0.9999999403953552,
+        "11": 0.251748263835907,
+        "13": 0.811188817024231,
+        "6": 0.9160838723182678,
+        "8": 0.9300699234008789,
+        "10": 0.9475524425506592,
+        "14": 0.8776223659515381,
+        "2": 0.8811190128326416,
+        "4": 1.0,
+        "15": 0.8461538553237915
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        5,
+        1,
+        12,
+        9,
+        7,
+        3,
+        13,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "5": 0.9510489702224731,
+        "1": 0.9860140085220337,
+        "12": 0.37062937021255493,
+        "9": 0.8531468510627747,
+        "7": 0.290909081697464,
+        "3": 1.0,
+        "13": 0.8391608595848083,
+        "11": 0.14685314893722534,
+        "6": 1.0,
+        "8": 0.9999999403953552,
+        "10": 0.9720278978347778,
+        "14": 0.9720279574394226,
+        "2": 0.9545454978942871,
+        "4": 0.8321678638458252,
+        "15": 0.9510489702224731
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        9,
+        13,
+        5,
+        12,
+        1,
+        7,
+        3,
+        11,
+        6,
+        8,
+        10,
+        14,
+        2,
+        4,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.8566433787345886,
+        "13": 0.8531468510627747,
+        "5": 0.8496503233909607,
+        "12": 0.32517483830451965,
+        "1": 0.9580419063568115,
+        "7": 0.1986013799905777,
+        "3": 0.9860140085220337,
+        "11": 0.10489510744810104,
+        "6": 0.9265735149383545,
+        "8": 1.0,
+        "10": 0.9650350213050842,
+        "14": 0.9510489106178284,
+        "2": 0.947552502155304,
+        "4": 0.9335664510726929,
+        "15": 1.0
+      }
+    }
+  ],
+  "failed_orderings": []
+}
