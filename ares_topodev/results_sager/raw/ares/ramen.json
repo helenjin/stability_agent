@@ -1,0 +1,501 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "ramen",
+  "method": "ares",
+  "method_config_key": "cert_granular_temp0_nonexact",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 216.0,
+    "exact": true,
+    "lower_bound_unique_found": 216,
+    "importance_sample_estimate": 216.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (Add-Add basil to the bowl, and Let-Let the noodles sit for about 1 minute after the microwave stops, and Add-Add chopped cilantro to the bowl),  we can now do the step Mix-Mix in the flavour packet to the bowl. And now we have completed this step Mix-Mix in the flavour packet to the bowl.",
+    "2": "Because we have completed all previous steps (Mix-Mix in the flavour packet to the bowl),  we can now do the step Stir-Stir noodles with a spoon or fork until the flavouring dissolves. And now we have completed this step Stir-Stir noodles with a spoon or fork until the flavouring dissolves.",
+    "3": "Because we have completed all previous steps (START),  we can now do the step Remove-Remove the noodles from the package(Break Noodles / Keep them as a block). And now we have completed this step Remove-Remove the noodles from the package(Break Noodles / Keep them as a block).",
+    "4": "Because we have completed all previous steps (Cover-Cover with a lid (or paper towel) to prevent splattering),  we can now do the step Microwave-Microwave the ramen for 4 minutes. And now we have completed this step Microwave-Microwave the ramen for 4 minutes.",
+    "5": "Because we have completed all previous steps (Peel-Peel 1 medium onion), and have all necessary ingredients (1/4 medium onion), we can now do the step slice-slice 1/4 medium onion into pieces. And now we have completed this step slice-slice 1/4 medium onion into pieces.",
+    "6": "Because we have completed all previous steps (START), and have all necessary ingredients (1 medium onion), we can now do the step Peel-Peel 1 medium onion. And now we have completed this step Peel-Peel 1 medium onion.",
+    "7": "Because we have completed all previous steps (Microwave-Microwave the ramen for 4 minutes),  we can now do the step Let-Let the noodles sit for about 1 minute after the microwave stops. And now we have completed this step Let-Let the noodles sit for about 1 minute after the microwave stops.",
+    "8": "Because we have completed all previous steps (cover-cover the noodles with water),  we can now do the step Cover-Cover with a lid (or paper towel) to prevent splattering. And now we have completed this step Cover-Cover with a lid (or paper towel) to prevent splattering.",
+    "9": "Because we have completed all previous steps (Microwave-Microwave the ramen for 4 minutes), and have all necessary ingredients (basil), we can now do the step Add-Add basil to the bowl. And now we have completed this step Add-Add basil to the bowl.",
+    "10": "Because we have completed all previous steps (Peel-Peel 1 garlic clove), and have all necessary ingredients (garlic clove), we can now do the step Chop-Chop 1 garlic clove on a cutting board. And now we have completed this step Chop-Chop 1 garlic clove on a cutting board.",
+    "11": "Because we have completed all previous steps (Remove-Remove the noodles from the package(Break Noodles / Keep them as a block), and Put-Put all the Vegetables in a microwave-safe bowl),  we can now do the step Add-Add the noodles to the bowl. And now we have completed this step Add-Add the noodles to the bowl.",
+    "12": "Because we have completed all previous steps (Microwave-Microwave the ramen for 4 minutes), and have all necessary ingredients (cilantro), we can now do the step Add-Add chopped cilantro to the bowl. And now we have completed this step Add-Add chopped cilantro to the bowl.",
+    "13": "Because we have completed all previous steps (Chop-Chop 1 garlic clove on a cutting board, and slice-slice 1/4 medium onion into pieces),  we can now do the step Put-Put all the Vegetables in a microwave-safe bowl. And now we have completed this step Put-Put all the Vegetables in a microwave-safe bowl.",
+    "14": "Because we have completed all previous steps (START), and have all necessary ingredients (garlic clove), we can now do the step Peel-Peel 1 garlic clove. And now we have completed this step Peel-Peel 1 garlic clove.",
+    "15": "Because we have completed all previous steps (Add-Add the noodles to the bowl),  we can now do the step cover-cover the noodles with water. And now we have completed this step cover-cover the noodles with water.",
+    "16": "Because we have completed all previous steps (Stir-Stir noodles with a spoon or fork until the flavouring dissolves),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 1,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 1,
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "13": 0,
+    "14": 0,
+    "15": 0,
+    "16": 1
+  },
+  "parents_by_node_id": {
+    "1": [
+      9,
+      7,
+      12
+    ],
+    "2": [
+      1
+    ],
+    "3": [],
+    "4": [
+      8
+    ],
+    "5": [
+      6
+    ],
+    "6": [],
+    "7": [
+      4
+    ],
+    "8": [
+      15
+    ],
+    "9": [
+      4
+    ],
+    "10": [
+      14
+    ],
+    "11": [
+      3,
+      13
+    ],
+    "12": [
+      4
+    ],
+    "13": [
+      10,
+      5
+    ],
+    "14": [],
+    "15": [
+      11
+    ],
+    "16": [
+      2
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        6,
+        14,
+        5,
+        10,
+        13,
+        3,
+        11,
+        15,
+        8,
+        4,
+        12,
+        7,
+        9,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "6": 0.3944636583328247,
+        "14": 0.9238754510879517,
+        "5": 0.017301037907600403,
+        "10": 0.9861591458320618,
+        "13": 0.982698917388916,
+        "3": 0.889273464679718,
+        "11": 0.12456747889518738,
+        "15": 0.11764705181121826,
+        "8": 0.14532871544361115,
+        "4": 0.16955018043518066,
+        "12": 0.2456747442483902,
+        "7": 0.3148788809776306,
+        "9": 0.0,
+        "1": 0.0,
+        "2": 0.020761245861649513,
+        "16": 0.0
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        6,
+        5,
+        14,
+        3,
+        10,
+        13,
+        11,
+        15,
+        8,
+        4,
+        12,
+        7,
+        9,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "6": 0.3494809567928314,
+        "5": 0.044290658086538315,
+        "14": 0.9204152226448059,
+        "3": 0.878892719745636,
+        "10": 0.8858130574226379,
+        "13": 0.8387542366981506,
+        "11": 0.6124567985534668,
+        "15": 0.5397924184799194,
+        "8": 0.5674740672111511,
+        "4": 0.5501729846000671,
+        "12": 0.20761248469352722,
+        "7": 0.5467128157615662,
+        "9": 0.0,
+        "1": 0.0,
+        "2": 0.0034602077212184668,
+        "16": 0.010380622930824757
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        6,
+        14,
+        3,
+        5,
+        10,
+        13,
+        11,
+        15,
+        8,
+        4,
+        7,
+        12,
+        9,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "6": 0.3494809567928314,
+        "14": 0.9100345969200134,
+        "3": 0.9446367025375366,
+        "5": 0.0,
+        "10": 0.8442906141281128,
+        "13": 0.7820069193840027,
+        "11": 0.7024222016334534,
+        "15": 0.6332180500030518,
+        "8": 0.6816608905792236,
+        "4": 0.6193771958351135,
+        "7": 0.9100346565246582,
+        "12": 0.21799308061599731,
+        "9": 0.0,
+        "1": 0.0,
+        "2": 0.038062285631895065,
+        "16": 0.017301037907600403
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        3,
+        6,
+        5,
+        14,
+        10,
+        13,
+        11,
+        15,
+        8,
+        4,
+        7,
+        9,
+        12,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "3": 0.9480968713760376,
+        "6": 0.9238754510879517,
+        "5": 0.0,
+        "14": 0.871972382068634,
+        "10": 0.8477508425712585,
+        "13": 0.8698961734771729,
+        "11": 0.7404844760894775,
+        "15": 0.6747404932975769,
+        "8": 0.7128028273582458,
+        "4": 0.6608995199203491,
+        "7": 0.9204152822494507,
+        "9": 0.04498269781470299,
+        "12": 0.06228373944759369,
+        "1": 0.0,
+        "2": 0.2456747442483902,
+        "16": 0.020761245861649513
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        6,
+        5,
+        3,
+        14,
+        10,
+        13,
+        11,
+        15,
+        8,
+        4,
+        9,
+        7,
+        12,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "6": 0.3494809567928314,
+        "5": 0.027681661769747734,
+        "3": 0.9723183512687683,
+        "14": 0.8304498791694641,
+        "10": 0.8235293626785278,
+        "13": 0.7750865817070007,
+        "11": 0.38062286376953125,
+        "15": 0.2456747442483902,
+        "8": 0.28373703360557556,
+        "4": 0.318339079618454,
+        "9": 0.024221453815698624,
+        "7": 0.39100345969200134,
+        "12": 0.07612456381320953,
+        "1": 0.024221453815698624,
+        "2": 0.11764705926179886,
+        "16": 0.05882352963089943
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        14,
+        10,
+        3,
+        6,
+        5,
+        13,
+        11,
+        15,
+        8,
+        4,
+        7,
+        12,
+        9,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "14": 0.9653978943824768,
+        "10": 0.9792388081550598,
+        "3": 0.9031141400337219,
+        "6": 0.41107267141342163,
+        "5": 0.0,
+        "13": 0.6124566793441772,
+        "11": 0.3771626055240631,
+        "15": 0.29411762952804565,
+        "8": 0.2456747442483902,
+        "4": 0.17993080615997314,
+        "7": 0.9792386889457703,
+        "12": 0.06228373572230339,
+        "9": 0.0,
+        "1": 0.0,
+        "2": 0.2525951564311981,
+        "16": 0.0
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        3,
+        14,
+        10,
+        6,
+        5,
+        13,
+        11,
+        15,
+        8,
+        4,
+        9,
+        7,
+        12,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "3": 0.9480968713760376,
+        "14": 0.986159086227417,
+        "10": 0.9515570998191833,
+        "6": 0.7404844760894775,
+        "5": 0.0,
+        "13": 0.43598616123199463,
+        "11": 0.314878910779953,
+        "15": 0.2110726535320282,
+        "8": 0.17993079125881195,
+        "4": 0.10726643353700638,
+        "9": 0.0,
+        "7": 0.14186851680278778,
+        "12": 0.010380622930824757,
+        "1": 0.0,
+        "2": 0.04844290763139725,
+        "16": 0.0034602077212184668
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        6,
+        3,
+        5,
+        14,
+        10,
+        13,
+        11,
+        15,
+        8,
+        4,
+        12,
+        7,
+        9,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "6": 0.3494809567928314,
+        "3": 0.9723182320594788,
+        "5": 0.0,
+        "14": 0.9273356199264526,
+        "10": 0.9446366429328918,
+        "13": 0.8242214918136597,
+        "11": 0.8166090250015259,
+        "15": 0.6608997583389282,
+        "8": 0.6712802648544312,
+        "4": 0.6539792418479919,
+        "12": 0.5979238748550415,
+        "7": 0.7266436219215393,
+        "9": 0.0,
+        "1": 0.0,
+        "2": 0.7301037907600403,
+        "16": 0.07958477735519409
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        3,
+        6,
+        14,
+        5,
+        10,
+        13,
+        11,
+        15,
+        8,
+        4,
+        9,
+        7,
+        12,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "3": 0.9480968713760376,
+        "6": 0.9238754510879517,
+        "14": 0.8062283992767334,
+        "5": 0.0,
+        "10": 0.7854670286178589,
+        "13": 0.8318339586257935,
+        "11": 0.7923875451087952,
+        "15": 0.6816608905792236,
+        "8": 0.733564019203186,
+        "4": 0.6643598675727844,
+        "9": 0.041522491723299026,
+        "7": 0.12110726535320282,
+        "12": 0.010380622930824757,
+        "1": 0.0,
+        "2": 0.23529410362243652,
+        "16": 0.11072664707899094
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        6,
+        14,
+        5,
+        10,
+        13,
+        3,
+        11,
+        15,
+        8,
+        4,
+        12,
+        9,
+        7,
+        1,
+        2,
+        16
+      ],
+      "scores_by_node_id": {
+        "6": 0.3494809567928314,
+        "14": 0.9100345969200134,
+        "5": 0.017301037907600403,
+        "10": 0.9584774971008301,
+        "13": 0.9688580632209778,
+        "3": 0.8200692534446716,
+        "11": 0.10380622744560242,
+        "15": 0.08650518953800201,
+        "8": 0.08304498344659805,
+        "4": 0.10380622744560242,
+        "12": 0.10311418771743774,
+        "9": 0.004152249079197645,
+        "7": 0.7820069789886475,
+        "1": 0.0,
+        "2": 0.024221453815698624,
+        "16": 0.0
+      }
+    }
+  ],
+  "failed_orderings": []
+}

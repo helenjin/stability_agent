@@ -48,12 +48,19 @@ method_configs:
   receval_intra: receval_intra_correct_granular
   receval_inter: receval_inter_correct_granular
   llm_judge: llm_judge_granular
+  # Not a vendored ares/exp_helpers config key -- sager is constructed
+  # directly (see run_experiment.build_scorers/METHODS_REQUIRING_GRAPH) and
+  # always resolves its actual epsilon/delta from method_configs["ares"]
+  # above, so this string is descriptive/for-the-record only (written into
+  # each output file's "method_config_key" field), not looked up anywhere.
+  sager: sager_gold_graph_reuses_ares_epsilon_delta
 
 # Which of the above to actually run by default. Start with the minimum
 # required set; add the others once ARES/Entail-Prev/Entail-Base results look
 # right.
 methods_to_run:
   - ares
+  - sager
   - entail_prev
   - entail_base
 

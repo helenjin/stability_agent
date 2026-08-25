@@ -1,0 +1,425 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "microwaveeggsandwich",
+  "method": "sager",
+  "method_config_key": "sager_gold_graph_reuses_ares_epsilon_delta",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 45.0,
+    "exact": true,
+    "lower_bound_unique_found": 45,
+    "importance_sample_estimate": 45.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (Coat -Coat a 6-oz. ramekin cup with cooking spray), and have all necessary ingredients (egg), we can now do the step Pour-Pour 1 egg into the ramekin cup. And now we have completed this step Pour-Pour 1 egg into the ramekin cup.",
+    "2": "Because we have completed all previous steps (Microwave -Microwave just until cheese melts, about 10 seconds, and Line -Line the bottom piece of the English muffin with lettuce), and have all necessary ingredients (egg, and lettuce), we can now do the step Place -Place the egg from the cup over the lettuce. And now we have completed this step Place -Place the egg from the cup over the lettuce.",
+    "3": "Because we have completed all previous steps (START),  we can now do the step Coat -Coat a 6-oz. ramekin cup with cooking spray. And now we have completed this step Coat -Coat a 6-oz. ramekin cup with cooking spray.",
+    "4": "Because we have completed all previous steps (Pour-Pour 1 egg into the ramekin cup),  we can now do the step Microwave-Microwave the ramekin cup uncovered on high for 30 seconds. And now we have completed this step Microwave-Microwave the ramekin cup uncovered on high for 30 seconds.",
+    "5": "Because we have completed all previous steps (Top -Top cup with 1 tablespoon of salsa), and have all necessary ingredients (cheese), we can now do the step sprinkle -sprinkle 1 tablespoon of cheese on cup. And now we have completed this step sprinkle -sprinkle 1 tablespoon of cheese on cup.",
+    "6": "Because we have completed all previous steps (Microwave -Continue to Microwave for 15-30 more seconds or until the egg is almost set),  we can now do the step Top -Top cup with 1 tablespoon of salsa. And now we have completed this step Top -Top cup with 1 tablespoon of salsa.",
+    "7": "Because we have completed all previous steps (Place -Place the egg from the cup over the lettuce),  we can now do the step replace -replace the top of the English muffin. And now we have completed this step replace -replace the top of the English muffin.",
+    "8": "Because we have completed all previous steps (stir-stir the ramekin cup),  we can now do the step Microwave -Continue to Microwave for 15-30 more seconds or until the egg is almost set. And now we have completed this step Microwave -Continue to Microwave for 15-30 more seconds or until the egg is almost set.",
+    "9": "Because we have completed all previous steps (Cut -Cut the English muffin into two pieces with a knife), and have all necessary ingredients (lettuce), we can now do the step Line -Line the bottom piece of the English muffin with lettuce. And now we have completed this step Line -Line the bottom piece of the English muffin with lettuce.",
+    "10": "Because we have completed all previous steps (sprinkle -sprinkle 1 tablespoon of cheese on cup), and have all necessary ingredients (cheese), we can now do the step Microwave -Microwave just until cheese melts, about 10 seconds. And now we have completed this step Microwave -Microwave just until cheese melts, about 10 seconds.",
+    "11": "Because we have completed all previous steps (Microwave-Microwave the ramekin cup uncovered on high for 30 seconds),  we can now do the step stir-stir the ramekin cup. And now we have completed this step stir-stir the ramekin cup.",
+    "12": "Because we have completed all previous steps (START),  we can now do the step Cut -Cut the English muffin into two pieces with a knife. And now we have completed this step Cut -Cut the English muffin into two pieces with a knife.",
+    "13": "Because we have completed all previous steps (replace -replace the top of the English muffin),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 0,
+    "2": 1,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 1,
+    "8": 0,
+    "9": 1,
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "13": 1
+  },
+  "parents_by_node_id": {
+    "1": [
+      3
+    ],
+    "2": [
+      10,
+      9
+    ],
+    "3": [],
+    "4": [
+      1
+    ],
+    "5": [
+      6
+    ],
+    "6": [
+      8
+    ],
+    "7": [
+      2
+    ],
+    "8": [
+      11
+    ],
+    "9": [
+      12
+    ],
+    "10": [
+      5
+    ],
+    "11": [
+      4
+    ],
+    "12": [],
+    "13": [
+      7
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        12,
+        9,
+        3,
+        1,
+        4,
+        11,
+        8,
+        6,
+        5,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "12": 0.07526881247758865,
+        "9": 0.9462366104125977,
+        "3": 0.06093189865350723,
+        "1": 0.22580644488334656,
+        "4": 0.7240143418312073,
+        "11": 0.7311827540397644,
+        "8": 0.9534049034118652,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.00358422938734293,
+        "2": 0.0695340484380722,
+        "7": 0.7992830872535706,
+        "13": 0.21146953105926514
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        12,
+        3,
+        1,
+        9,
+        4,
+        11,
+        8,
+        6,
+        5,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "12": 0.05734767019748688,
+        "3": 0.05017921328544617,
+        "1": 0.2616487741470337,
+        "9": 0.8924732208251953,
+        "4": 0.7526882290840149,
+        "11": 0.6774193644523621,
+        "8": 0.9462366104125977,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "2": 0.062365591526031494,
+        "7": 0.9175627827644348,
+        "13": 0.4050179421901703
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        3,
+        1,
+        4,
+        12,
+        11,
+        8,
+        6,
+        5,
+        9,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "3": 0.11469534039497375,
+        "1": 0.2795698940753937,
+        "4": 0.7634408473968506,
+        "12": 0.10752688348293304,
+        "11": 0.7419355511665344,
+        "8": 0.9333332777023315,
+        "6": 0.0,
+        "5": 0.0,
+        "9": 0.9749103784561157,
+        "10": 0.0,
+        "2": 0.034408606588840485,
+        "7": 0.8351255059242249,
+        "13": 0.17204301059246063
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        3,
+        1,
+        4,
+        12,
+        11,
+        8,
+        9,
+        6,
+        5,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "3": 0.09677419066429138,
+        "1": 0.2222222238779068,
+        "4": 0.7706093788146973,
+        "12": 0.09677419066429138,
+        "11": 0.7777777314186096,
+        "8": 0.9175626635551453,
+        "9": 0.9928314685821533,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "2": 0.050896055996418,
+        "7": 0.7956989407539368,
+        "13": 0.18637992441654205
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        3,
+        12,
+        9,
+        1,
+        4,
+        11,
+        8,
+        6,
+        5,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "3": 0.09677419066429138,
+        "12": 0.06451612710952759,
+        "9": 0.9569892883300781,
+        "1": 0.3225806653499603,
+        "4": 0.8637992143630981,
+        "11": 0.7885304689407349,
+        "8": 0.9068100452423096,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "2": 0.03870967775583267,
+        "7": 0.7849462628364563,
+        "13": 0.10394265502691269
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        12,
+        3,
+        1,
+        4,
+        9,
+        11,
+        8,
+        6,
+        5,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "12": 0.05734767019748688,
+        "3": 0.05017921328544617,
+        "1": 0.2616487741470337,
+        "4": 0.7634408473968506,
+        "9": 0.9139784574508667,
+        "11": 0.6953404545783997,
+        "8": 0.9318995475769043,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.01433691754937172,
+        "2": 0.1548387110233307,
+        "7": 0.9068100452423096,
+        "13": 0.4050179123878479
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        3,
+        1,
+        12,
+        4,
+        9,
+        11,
+        8,
+        6,
+        5,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "3": 0.09677419066429138,
+        "1": 0.2222222238779068,
+        "12": 0.09318996965885162,
+        "4": 0.827957034111023,
+        "9": 0.9641578197479248,
+        "11": 0.8458781242370605,
+        "8": 0.9318996071815491,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "2": 0.040143366903066635,
+        "7": 0.7025089263916016,
+        "13": 0.10394264757633209
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        12,
+        3,
+        9,
+        1,
+        4,
+        11,
+        8,
+        6,
+        5,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "12": 0.05734767019748688,
+        "3": 0.05017921328544617,
+        "9": 0.9462366104125977,
+        "1": 0.3333333432674408,
+        "4": 0.7634408473968506,
+        "11": 0.6738351583480835,
+        "8": 0.9498208165168762,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.017921147868037224,
+        "2": 0.07096774131059647,
+        "7": 0.820788562297821,
+        "13": 0.2759856879711151
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        3,
+        1,
+        4,
+        12,
+        11,
+        9,
+        8,
+        6,
+        5,
+        10,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "3": 0.09677419066429138,
+        "1": 0.2222222238779068,
+        "4": 0.7706093788146973,
+        "12": 0.09677419066429138,
+        "11": 0.7777777314186096,
+        "9": 0.9569892287254333,
+        "8": 0.91756272315979,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "2": 0.03799283131957054,
+        "7": 0.827957034111023,
+        "13": 0.21863798797130585
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        3,
+        12,
+        1,
+        4,
+        11,
+        8,
+        6,
+        5,
+        10,
+        9,
+        2,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "3": 0.09677419066429138,
+        "12": 0.06451612710952759,
+        "1": 0.2795698940753937,
+        "4": 0.8279569745063782,
+        "11": 0.8387095928192139,
+        "8": 0.9354838728904724,
+        "6": 0.0,
+        "5": 0.0,
+        "10": 0.0,
+        "9": 0.985663115978241,
+        "2": 0.06379928439855576,
+        "7": 0.8996415138244629,
+        "13": 0.20071685314178467
+      }
+    }
+  ],
+  "failed_orderings": []
+}

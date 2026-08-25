@@ -27,6 +27,7 @@ from ares_topodev.eval_harness.cache import CachingLLM, DiskPromptCache
 from ares_topodev.eval_harness.entailment_prompts import build_recipe_entailment_mode
 from ares_topodev.eval_harness.mock_llm import MockLLM
 from ares_topodev.eval_harness.recipe_example import apply_ordering, build_recipe_example
+from ares_topodev.eval_harness.sager import SagerStabilityScorer, build_graph_data_entry
 from ares_topodev.topo_reorder.dag import extract_recipe_dag, load_all_recipe_dags, load_recipe_json
 from ares_topodev.topo_reorder.topo_sample import count_or_estimate_linear_extensions, sample_orderings
 
@@ -79,6 +80,17 @@ def build_entailment_model(config: dict, dry_run: bool):
 # keyword argument at construction time.
 METHODS_REQUIRING_RAW_LLM = {"llm_judge_whole"}
 
+# SAGER (gold-graph) is not a vendored ARES method -- it lives in
+# ares_topodev.eval_harness.sager, not vendor/ares, per the "create a new
+# scorer rather than silently modifying ARES in place" rule. It is
+# constructed directly rather than through the vendored
+# `get_stability_scorer` loader, but resolves its epsilon/delta from the
+# SAME `method_configs["ares"]` config-key kwargs `ares` itself uses (see
+# `build_scorers` below), so the two methods are never accidentally run
+# under different epsilon/delta -- required for the section-11 comparison to
+# manipulate only the premise universe, nothing else.
+METHODS_REQUIRING_GRAPH = {"sager"}
+
 
 def build_scorers(config: dict, entailment_model, cached_llm):
     from exp_helpers.exp_configs import METHOD_CONFIGS
@@ -91,6 +103,25 @@ def build_scorers(config: dict, entailment_model, cached_llm):
     scorers = {}
     resolved_kwargs_by_label = {}  # JSON-serializable record of what was actually used, per method
     for label in config["methods_to_run"]:
+        if label in METHODS_REQUIRING_GRAPH:
+            if "ares" not in config["method_configs"]:
+                raise ValueError(
+                    "'sager' resolves its epsilon/delta from method_configs['ares'] "
+                    "(so the two methods are guaranteed to share them) -- 'ares' must "
+                    "also be listed in method_configs, even if not in methods_to_run."
+                )
+            ares_config_key = config["method_configs"]["ares"]
+            kwargs = {
+                k: v for k, v in METHOD_CONFIGS[ares_config_key]["kwargs"].items() if k != "entailment_mode"
+            }
+            kwargs.update(overrides.get(label, {}))
+            resolved_kwargs_by_label[label] = dict(kwargs)
+            kwargs["entailment_mode"] = custom_entailment_mode
+            kwargs["temperature"] = config.get("temperature", 0.0)
+            kwargs["seed"] = config["seed"]
+            scorers[label] = SagerStabilityScorer(entailment_model, p=config["p"], **kwargs)
+            continue
+
         config_key = config["method_configs"][label]
         method_config = METHOD_CONFIGS[config_key]
         kwargs = dict(method_config["kwargs"])
@@ -144,6 +175,17 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
     example = build_recipe_example(
         dag, raw, base_seed=config["seed"], raw_claims_shuffle_idx=config["raw_claims_shuffle_idx"]
     )
+    # Gold dependency graph, restricted to derived-claim nodes: Pa_G(c) for
+    # SAGER, direct edges only (dag.full_tgt2src is built straight from the
+    # recipe JSON's `edges`, independent of any topo_order -- see
+    # topo_reorder/dag.py). START is excluded as a parent since it's not a
+    # derived claim (mirrors BaseDataset.get_data_entry never turning START
+    # into a premise "claim" either) -- a node whose only real predecessor is
+    # START has Pa_G(c) = {} and is scored from raw claims only, same as any
+    # other graph root.
+    parents_by_node_id = {
+        nid: [p for p in dag.full_tgt2src.get(nid, []) if p != dag.start_id] for nid in dag.derived_node_ids
+    }
 
     topo_result = sample_orderings(dag, k=config["K"], seed=config["seed"], max_attempts=config["max_topo_attempts"])
     linear_ext = count_or_estimate_linear_extensions(dag, seed=config["seed"])
@@ -195,6 +237,12 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
                 "ground_truth_error_by_node_id": {
                     str(k): v for k, v in example.ground_truth_error_by_node_id.items()
                 },
+                # Gold dependency graph, fixed per recipe (not per ordering) --
+                # Pa_G(c) for every derived node. Present for every method's
+                # output file (not just sager's) so ARES's raw files also
+                # carry the graph for reference/comparison, even though ARES
+                # itself never reads it.
+                "parents_by_node_id": {str(k): v for k, v in parents_by_node_id.items()},
                 "orderings": per_method_orderings[label],
                 "failed_orderings": per_method_failures[label],
             }
@@ -207,10 +255,21 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
     for ordering_index, order in enumerate(topo_result.orderings):
         derived_claims = apply_ordering(example, order)
         data_entry = build_data_entry(example.raw_claims, derived_claims)
+        # `order` is reused here purely as a traversal/computation sequence for
+        # SAGER (it is a valid topological order of the same graph) -- unlike
+        # `data_entry` above, `graph_data_entry`'s premises are determined by
+        # `parents_by_node_id`, never by position in `order`. This is what
+        # Sanity Check 1 (topological invariance) exercises: the same K
+        # orderings already sampled for ARES are reused as SAGER's traversal
+        # orders too.
+        graph_data_entry = build_graph_data_entry(
+            example.raw_claims, order, example.derived_claims_by_node_id, parents_by_node_id
+        )
 
         for label, scorer in scorers.items():
             try:
-                result = scorer.get_stability_rate(data_entry)
+                entry = graph_data_entry if label in METHODS_REQUIRING_GRAPH else data_entry
+                result = scorer.get_stability_rate(entry)
                 # Most scorers loop directly over `ent_inputs` and append exactly
                 # one score per input, so len(stability_rates) == len(order) holds
                 # by construction. llm_judge_whole is different: it asks the LLM

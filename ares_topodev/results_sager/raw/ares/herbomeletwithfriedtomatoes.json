@@ -1,0 +1,498 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "herbomeletwithfriedtomatoes",
+  "method": "ares",
+  "method_config_key": "cert_granular_temp0_nonexact",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 252.0,
+    "exact": true,
+    "lower_bound_unique_found": 252,
+    "importance_sample_estimate": 252.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (Beat-Beat the contents of the bowl, and Cut-Cut tomato into two pieces), and have all necessary ingredients (oil), we can now do the step Heat-Heat 1 tbsp oil in a non-stick frying pan. And now we have completed this step Heat-Heat 1 tbsp oil in a non-stick frying pan.",
+    "2": "Because we have completed all previous steps (Scoop-Scoop the tomatoes from the pan),  we can now do the step put-put tomatoes on a serving plate. And now we have completed this step put-put tomatoes on a serving plate.",
+    "3": "Because we have completed all previous steps (START), and have all necessary ingredients (cilantro), we can now do the step Chop-Chop 2 tbsp cilantro. And now we have completed this step Chop-Chop 2 tbsp cilantro.",
+    "4": "Because we have completed all previous steps (Pour-Pour the egg mixture into the pan),  we can now do the step stir-stir gently with a wooden spoon so the egg that sets on the base of the pan moves to enable the uncooked egg to flow into the space. And now we have completed this step stir-stir gently with a wooden spoon so the egg that sets on the base of the pan moves to enable the uncooked egg to flow into the space.",
+    "5": "Because we have completed all previous steps (START), and have all necessary ingredients (egg), we can now do the step crack-crack one egg in a bowl. And now we have completed this step crack-crack one egg in a bowl.",
+    "6": "Because we have completed all previous steps (Heat-Heat 1 tbsp oil in a non-stick frying pan), and have all necessary ingredients (tomatoes), we can now do the step cook-cook the tomatoes cut-side down until they start to soften and colour. And now we have completed this step cook-cook the tomatoes cut-side down until they start to soften and colour.",
+    "7": "Because we have completed all previous steps (put-put tomatoes on a serving plate),  we can now do the step Pour-Pour the egg mixture into the pan. And now we have completed this step Pour-Pour the egg mixture into the pan.",
+    "8": "Because we have completed all previous steps (Chop-Chop 2 tbsp cilantro), and have all necessary ingredients (cilantro), we can now do the step add-add the chopped cilantro to the bowl. And now we have completed this step add-add the chopped cilantro to the bowl.",
+    "9": "Because we have completed all previous steps (Stop-Stop stirring when it's nearly cooked to allow it to set into an omelette),  we can now do the step Transfer-Transfer omelette to the plate and serve with the tomatoes. And now we have completed this step Transfer-Transfer omelette to the plate and serve with the tomatoes.",
+    "10": "Because we have completed all previous steps (cook-cook the tomatoes cut-side down until they start to soften and colour),  we can now do the step Scoop-Scoop the tomatoes from the pan. And now we have completed this step Scoop-Scoop the tomatoes from the pan.",
+    "11": "Because we have completed all previous steps (stir-stir gently with a wooden spoon so the egg that sets on the base of the pan moves to enable the uncooked egg to flow into the space),  we can now do the step Stop-Stop stirring when it's nearly cooked to allow it to set into an omelette. And now we have completed this step Stop-Stop stirring when it's nearly cooked to allow it to set into an omelette.",
+    "12": "Because we have completed all previous steps (Take-Take a tomato), and have all necessary ingredients (tomato), we can now do the step Cut-Cut tomato into two pieces. And now we have completed this step Cut-Cut tomato into two pieces.",
+    "13": "Because we have completed all previous steps (START), and have all necessary ingredients (tomato), we can now do the step Take-Take a tomato. And now we have completed this step Take-Take a tomato.",
+    "14": "Because we have completed all previous steps (add-add the chopped cilantro to the bowl, and crack-crack one egg in a bowl, and add-1/2 tsp ground black pepper to the bowl),  we can now do the step Beat-Beat the contents of the bowl. And now we have completed this step Beat-Beat the contents of the bowl.",
+    "15": "Because we have completed all previous steps (START), and have all necessary ingredients (ground black pepper), we can now do the step add-1/2 tsp ground black pepper to the bowl. And now we have completed this step add-1/2 tsp ground black pepper to the bowl.",
+    "16": "Because we have completed all previous steps (Transfer-Transfer omelette to the plate and serve with the tomatoes),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 0,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 0,
+    "13": 0,
+    "14": 1,
+    "15": 0,
+    "16": 1
+  },
+  "parents_by_node_id": {
+    "1": [
+      14,
+      12
+    ],
+    "2": [
+      10
+    ],
+    "3": [],
+    "4": [
+      7
+    ],
+    "5": [],
+    "6": [
+      1
+    ],
+    "7": [
+      2
+    ],
+    "8": [
+      3
+    ],
+    "9": [
+      11
+    ],
+    "10": [
+      6
+    ],
+    "11": [
+      4
+    ],
+    "12": [
+      13
+    ],
+    "13": [],
+    "14": [
+      8,
+      5,
+      15
+    ],
+    "15": [],
+    "16": [
+      9
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        15,
+        13,
+        5,
+        12,
+        3,
+        8,
+        14,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "15": 0.5467128157615662,
+        "13": 0.14532874524593353,
+        "5": 0.14532873034477234,
+        "12": 0.27681660652160645,
+        "3": 0.08304498344659805,
+        "8": 0.18339098989963531,
+        "14": 0.7266435623168945,
+        "1": 0.387543261051178,
+        "6": 0.6920415759086609,
+        "10": 0.7688581347465515,
+        "2": 0.9134948253631592,
+        "7": 0.38062283396720886,
+        "4": 0.41868510842323303,
+        "11": 0.4221453368663788,
+        "9": 0.46020761132240295,
+        "16": 0.6124567985534668
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        15,
+        5,
+        13,
+        3,
+        8,
+        14,
+        12,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "15": 0.4913494884967804,
+        "5": 0.0,
+        "13": 0.15570934116840363,
+        "3": 0.0,
+        "8": 0.2006920427083969,
+        "14": 0.8858131766319275,
+        "12": 0.31141868233680725,
+        "1": 0.0,
+        "6": 0.17993079125881195,
+        "10": 0.8096886277198792,
+        "2": 0.46712803840637207,
+        "7": 0.010380622930824757,
+        "4": 0.0069204154424369335,
+        "11": 0.38062283396720886,
+        "9": 0.5467128157615662,
+        "16": 0.7681660652160645
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        15,
+        13,
+        3,
+        12,
+        5,
+        8,
+        14,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "15": 0.4913494884967804,
+        "13": 0.2525951564311981,
+        "3": 0.0,
+        "12": 0.5467128157615662,
+        "5": 0.1141868531703949,
+        "8": 0.19169551134109497,
+        "14": 0.7404844164848328,
+        "1": 0.06920415163040161,
+        "6": 0.24221453070640564,
+        "10": 0.43598613142967224,
+        "2": 0.6435986757278442,
+        "7": 0.05536332353949547,
+        "4": 0.04498269781470299,
+        "11": 0.03806228190660477,
+        "9": 0.14186851680278778,
+        "16": 0.3148788809776306
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        5,
+        3,
+        8,
+        15,
+        14,
+        13,
+        12,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "5": 0.0,
+        "3": 0.0,
+        "8": 0.7301037907600403,
+        "15": 0.1660899668931961,
+        "14": 0.8615916967391968,
+        "13": 0.48788928985595703,
+        "12": 0.7024222612380981,
+        "1": 0.031141867861151695,
+        "6": 0.21799308061599731,
+        "10": 0.7612457275390625,
+        "2": 0.40138405561447144,
+        "7": 0.10380622744560242,
+        "4": 0.1141868531703949,
+        "11": 0.12110726535320282,
+        "9": 0.159169539809227,
+        "16": 0.24221453070640564
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        15,
+        5,
+        3,
+        13,
+        8,
+        14,
+        12,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "15": 0.4913494884967804,
+        "5": 0.0,
+        "3": 0.0,
+        "13": 0.21799306571483612,
+        "8": 0.2837370038032532,
+        "14": 0.8235293626785278,
+        "12": 0.34602078795433044,
+        "1": 0.0,
+        "6": 0.26643598079681396,
+        "10": 0.6055363416671753,
+        "2": 0.5605536699295044,
+        "7": 0.0,
+        "4": 0.027681661769747734,
+        "11": 0.15916955471038818,
+        "9": 0.3044982850551605,
+        "16": 0.39792385697364807
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        3,
+        8,
+        5,
+        15,
+        14,
+        13,
+        12,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "3": 0.0,
+        "8": 0.2802768349647522,
+        "5": 0.027681661769747734,
+        "15": 0.5688581466674805,
+        "14": 0.8166090250015259,
+        "13": 0.21799308061599731,
+        "12": 0.34602075815200806,
+        "1": 0.0034602077212184668,
+        "6": 0.4982699155807495,
+        "10": 0.5674740076065063,
+        "2": 0.6712803244590759,
+        "7": 0.0,
+        "4": 0.0,
+        "11": 0.020761245861649513,
+        "9": 0.15570934116840363,
+        "16": 0.512110710144043
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        5,
+        13,
+        12,
+        15,
+        3,
+        8,
+        14,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "5": 0.0,
+        "13": 0.6020761132240295,
+        "12": 0.8581315875053406,
+        "15": 0.009688581340014935,
+        "3": 0.03806228190660477,
+        "8": 0.10034602135419846,
+        "14": 0.38062283396720886,
+        "1": 0.015224914066493511,
+        "6": 0.4498269557952881,
+        "10": 0.5709342360496521,
+        "2": 0.5536332130432129,
+        "7": 0.0968858078122139,
+        "4": 0.11072663962841034,
+        "11": 0.08304498344659805,
+        "9": 0.1141868531703949,
+        "16": 0.16262975335121155
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        15,
+        3,
+        5,
+        8,
+        13,
+        12,
+        14,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "15": 0.4913494884967804,
+        "3": 0.0,
+        "5": 0.0069204154424369335,
+        "8": 0.366782009601593,
+        "13": 0.1764705777168274,
+        "12": 0.7231833934783936,
+        "14": 0.2975778579711914,
+        "1": 0.0,
+        "6": 0.29411765933036804,
+        "10": 0.6608996391296387,
+        "2": 0.4671280086040497,
+        "7": 0.0,
+        "4": 0.0,
+        "11": 0.0,
+        "9": 0.39100342988967896,
+        "16": 0.32871973514556885
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        5,
+        3,
+        13,
+        8,
+        12,
+        15,
+        14,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "5": 0.0,
+        "3": 0.0,
+        "13": 0.3425605297088623,
+        "8": 0.245674729347229,
+        "12": 0.8027681708335876,
+        "15": 0.11764705181121826,
+        "14": 0.6782007217407227,
+        "1": 0.0,
+        "6": 0.19031143188476562,
+        "10": 0.23252595961093903,
+        "2": 0.6159169673919678,
+        "7": 0.07266435772180557,
+        "4": 0.020761245861649513,
+        "11": 0.034602075815200806,
+        "9": 0.0795847699046135,
+        "16": 0.2802768051624298
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        13,
+        15,
+        5,
+        12,
+        3,
+        8,
+        14,
+        1,
+        6,
+        10,
+        2,
+        7,
+        4,
+        11,
+        9,
+        16
+      ],
+      "scores_by_node_id": {
+        "13": 0.5674740076065063,
+        "15": 0.1314878910779953,
+        "5": 0.5605536103248596,
+        "12": 0.7024220824241638,
+        "3": 0.0,
+        "8": 0.08996539562940598,
+        "14": 0.3771626353263855,
+        "1": 0.017301037907600403,
+        "6": 0.2588235139846802,
+        "10": 0.754325270652771,
+        "2": 0.8650519251823425,
+        "7": 0.034602075815200806,
+        "4": 0.031141869723796844,
+        "11": 0.08304499089717865,
+        "9": 0.10726643353700638,
+        "16": 0.15916955471038818
+      }
+    }
+  ],
+  "failed_orderings": []
+}

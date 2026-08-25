@@ -1,0 +1,453 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "zoodles",
+  "method": "ares",
+  "method_config_key": "cert_granular_temp0_nonexact",
+  "model": "gpt-4o-mini",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 48.0,
+    "exact": true,
+    "lower_bound_unique_found": 48,
+    "importance_sample_estimate": 48.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (season-season with salt, and Add-Add the zucchini noodles, and Add-1/6 cup grated parmesan cheese, and season-pepper to taste),  we can now do the step Cook-Cook for 2 minutes or until the zoodles are done. And now we have completed this step Cook-Cook for 2 minutes or until the zoodles are done.",
+    "2": "Because we have completed all previous steps (Cook-Cook garlic until fragrant (about 1 minutes). Be careful not to burn garlic),  we can now do the step Add-1/6 cup grated parmesan cheese. And now we have completed this step Add-1/6 cup grated parmesan cheese.",
+    "3": "Because we have completed all previous steps (Cook-Cook garlic until fragrant (about 1 minutes). Be careful not to burn garlic), and have all necessary ingredients (pepper), we can now do the step season-pepper to taste. And now we have completed this step season-pepper to taste.",
+    "4": "Because we have completed all previous steps (Remove-Remove from heat), and have all necessary ingredients (parmesan), we can now do the step Top-Top with more parmesan if desired. And now we have completed this step Top-Top with more parmesan if desired.",
+    "5": "Because we have completed all previous steps (Spiralize-Spiralize 1 medium zucchini into thin noodles using a spiralizer, and Peel-Peel 1 garlic cloves),  we can now do the step Heat-Heat a large pan on medium heat. And now we have completed this step Heat-Heat a large pan on medium heat.",
+    "6": "Because we have completed all previous steps (Cook-Cook for 2 minutes or until the zoodles are done),  we can now do the step Remove-Remove from heat. And now we have completed this step Remove-Remove from heat.",
+    "7": "Because we have completed all previous steps (Cook-Cook garlic until fragrant (about 1 minutes). Be careful not to burn garlic), and have all necessary ingredients (salt), we can now do the step season-season with salt. And now we have completed this step season-season with salt.",
+    "8": "Because we have completed all previous steps (Melt-Melt 1 tablespoons of softened butter), and have all necessary ingredients (garlic), we can now do the step Add-Add 1 large minced garlic cloves to the pan. And now we have completed this step Add-Add 1 large minced garlic cloves to the pan.",
+    "9": "Because we have completed all previous steps (START), and have all necessary ingredients (garlic cloves), we can now do the step Peel-Peel 1 garlic cloves. And now we have completed this step Peel-Peel 1 garlic cloves.",
+    "10": "Because we have completed all previous steps (Cook-Cook garlic until fragrant (about 1 minutes). Be careful not to burn garlic), and have all necessary ingredients (zucchini), we can now do the step Add-Add the zucchini noodles. And now we have completed this step Add-Add the zucchini noodles.",
+    "11": "Because we have completed all previous steps (Add-Add 1 large minced garlic cloves to the pan), and have all necessary ingredients (garlic), we can now do the step Cook-Cook garlic until fragrant (about 1 minutes). Be careful not to burn garlic. And now we have completed this step Cook-Cook garlic until fragrant (about 1 minutes). Be careful not to burn garlic.",
+    "12": "Because we have completed all previous steps (START), and have all necessary ingredients (1 medium zucchini), we can now do the step Spiralize-Spiralize 1 medium zucchini into thin noodles using a spiralizer. And now we have completed this step Spiralize-Spiralize 1 medium zucchini into thin noodles using a spiralizer.",
+    "13": "Because we have completed all previous steps (Heat-Heat a large pan on medium heat), and have all necessary ingredients (butter), we can now do the step Melt-Melt 1 tablespoons of softened butter. And now we have completed this step Melt-Melt 1 tablespoons of softened butter.",
+    "14": "Because we have completed all previous steps (Top-Top with more parmesan if desired),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 0,
+    "10": 1,
+    "11": 1,
+    "12": 1,
+    "13": 1,
+    "14": 1
+  },
+  "parents_by_node_id": {
+    "1": [
+      7,
+      10,
+      2,
+      3
+    ],
+    "2": [
+      11
+    ],
+    "3": [
+      11
+    ],
+    "4": [
+      6
+    ],
+    "5": [
+      12,
+      9
+    ],
+    "6": [
+      1
+    ],
+    "7": [
+      11
+    ],
+    "8": [
+      13
+    ],
+    "9": [],
+    "10": [
+      11
+    ],
+    "11": [
+      8
+    ],
+    "12": [],
+    "13": [
+      5
+    ],
+    "14": [
+      4
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        12,
+        9,
+        5,
+        13,
+        8,
+        11,
+        3,
+        10,
+        2,
+        7,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "12": 0.7198581099510193,
+        "9": 0.03191489353775978,
+        "5": 0.4645389914512634,
+        "13": 0.695035457611084,
+        "8": 0.7056736946105957,
+        "11": 0.7375885844230652,
+        "3": 0.73758864402771,
+        "10": 0.0,
+        "2": 0.35106387734413147,
+        "7": 0.07801418751478195,
+        "1": 0.08865247666835785,
+        "6": 0.04609929025173187,
+        "4": 0.03191489353775978,
+        "14": 0.014184396713972092
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        12,
+        9,
+        5,
+        13,
+        8,
+        11,
+        10,
+        3,
+        2,
+        7,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "12": 0.7127659320831299,
+        "9": 0.042553190141916275,
+        "5": 0.347517728805542,
+        "13": 0.6347517967224121,
+        "8": 0.6205673813819885,
+        "11": 0.7092198133468628,
+        "10": 0.0,
+        "3": 0.8226950168609619,
+        "2": 0.26595744490623474,
+        "7": 0.11347517371177673,
+        "1": 0.05673758685588837,
+        "6": 0.06382978707551956,
+        "4": 0.07801418006420135,
+        "14": 0.028368793427944183
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        12,
+        9,
+        5,
+        13,
+        8,
+        11,
+        10,
+        3,
+        7,
+        2,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "12": 0.7127659320831299,
+        "9": 0.028368793427944183,
+        "5": 0.43617019057273865,
+        "13": 0.7021277546882629,
+        "8": 0.6702127456665039,
+        "11": 0.7446808815002441,
+        "10": 0.0,
+        "3": 0.585106372833252,
+        "7": 0.3617021143436432,
+        "2": 0.3652482330799103,
+        "1": 0.03191488981246948,
+        "6": 0.08510638773441315,
+        "4": 0.03900709003210068,
+        "14": 0.024822695180773735
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        9,
+        12,
+        5,
+        13,
+        8,
+        11,
+        3,
+        2,
+        7,
+        10,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "9": 0.06382978707551956,
+        "12": 0.44680848717689514,
+        "5": 0.3758864998817444,
+        "13": 0.3333333432674408,
+        "8": 0.6702127456665039,
+        "11": 0.7234042882919312,
+        "3": 0.852482259273529,
+        "2": 0.3900708854198456,
+        "7": 0.2943262457847595,
+        "10": 0.0,
+        "1": 0.042553190141916275,
+        "6": 0.06028369069099426,
+        "4": 0.03191489353775978,
+        "14": 0.01773049682378769
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        12,
+        9,
+        5,
+        13,
+        8,
+        11,
+        2,
+        7,
+        10,
+        3,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "12": 0.7127659320831299,
+        "9": 0.028368793427944183,
+        "5": 0.42907798290252686,
+        "13": 0.6205674409866333,
+        "8": 0.5744681358337402,
+        "11": 0.6560283303260803,
+        "2": 0.8865248560905457,
+        "7": 0.6347517371177673,
+        "10": 0.0,
+        "3": 0.8617020845413208,
+        "1": 0.1560283601284027,
+        "6": 0.1631205677986145,
+        "4": 0.1631205677986145,
+        "14": 0.0
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        9,
+        12,
+        5,
+        13,
+        8,
+        11,
+        10,
+        2,
+        3,
+        7,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "9": 0.06382978707551956,
+        "12": 0.47163116931915283,
+        "5": 0.40425533056259155,
+        "13": 0.3404255211353302,
+        "8": 0.6063829660415649,
+        "11": 0.6808510422706604,
+        "10": 0.03191489353775978,
+        "2": 0.8794325590133667,
+        "3": 0.8439716100692749,
+        "7": 0.24822695553302765,
+        "1": 0.11702127754688263,
+        "6": 0.13475176692008972,
+        "4": 0.06382978707551956,
+        "14": 0.01773049682378769
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        9,
+        12,
+        5,
+        13,
+        8,
+        11,
+        10,
+        3,
+        2,
+        7,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "9": 0.06382978707551956,
+        "12": 0.47163116931915283,
+        "5": 0.3652482330799103,
+        "13": 0.28014183044433594,
+        "8": 0.5815603137016296,
+        "11": 0.6241134405136108,
+        "10": 0.021276596933603287,
+        "3": 0.7304964661598206,
+        "2": 0.36595743894577026,
+        "7": 0.152482271194458,
+        "1": 0.39716315269470215,
+        "6": 0.38652482628822327,
+        "4": 0.152482271194458,
+        "14": 0.0
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        12,
+        9,
+        5,
+        13,
+        8,
+        11,
+        2,
+        10,
+        7,
+        3,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "12": 0.7127659320831299,
+        "9": 0.028368793427944183,
+        "5": 0.42907798290252686,
+        "13": 0.6205674409866333,
+        "8": 0.5744681358337402,
+        "11": 0.6560283303260803,
+        "2": 0.8865248560905457,
+        "10": 0.012765957973897457,
+        "7": 0.6808511018753052,
+        "3": 0.8404254913330078,
+        "1": 0.4680851399898529,
+        "6": 0.44680851697921753,
+        "4": 0.3191489577293396,
+        "14": 0.03191489353775978
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        9,
+        12,
+        5,
+        13,
+        8,
+        11,
+        7,
+        3,
+        2,
+        10,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "9": 0.06382978707551956,
+        "12": 0.47163116931915283,
+        "5": 0.3652482330799103,
+        "13": 0.29432621598243713,
+        "8": 0.5780141353607178,
+        "11": 0.6666666865348816,
+        "7": 0.7751772403717041,
+        "3": 0.7411347031593323,
+        "2": 0.5851064324378967,
+        "10": 0.0,
+        "1": 0.24468085169792175,
+        "6": 0.3368794322013855,
+        "4": 0.1773049533367157,
+        "14": 0.007092198356986046
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        12,
+        9,
+        5,
+        13,
+        8,
+        11,
+        7,
+        2,
+        3,
+        10,
+        1,
+        6,
+        4,
+        14
+      ],
+      "scores_by_node_id": {
+        "12": 0.7127659320831299,
+        "9": 0.028368793427944183,
+        "5": 0.42907798290252686,
+        "13": 0.6205674409866333,
+        "8": 0.5744681358337402,
+        "11": 0.6560283303260803,
+        "7": 0.804964542388916,
+        "2": 0.7241134643554688,
+        "3": 0.9148935675621033,
+        "10": 0.0,
+        "1": 0.1489361822605133,
+        "6": 0.08156028389930725,
+        "4": 0.04964539036154747,
+        "14": 0.028368793427944183
+      }
+    }
+  ],
+  "failed_orderings": []
+}
