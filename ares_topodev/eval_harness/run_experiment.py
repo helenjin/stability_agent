@@ -58,7 +58,15 @@ def build_entailment_model(config: dict, dry_run: bool):
         if model_config.get("model_type") == "openai":
             from ares_topodev.eval_harness import usage_tracker
 
-            usage_tracker.enable(_abspath(config.get("usage_log_path", "ares_topodev/results/usage_log.jsonl")))
+            # Default scoped to THIS config's own results_dir, not a fixed
+            # shared path -- experiment.yaml, experiment_sager.yaml, and
+            # experiment_sager_ancestors.yaml all have different results_dir
+            # values; defaulting to one fixed path would silently merge
+            # every config's token usage into a single file with no way to
+            # attribute cost back to which run produced it. Pass
+            # usage_log_path explicitly if a shared log is actually wanted.
+            default_usage_log_path = os.path.join(config["results_dir"], "usage_log.jsonl")
+            usage_tracker.enable(_abspath(config.get("usage_log_path", default_usage_log_path)))
 
     cache_path = _abspath(config["cache_path"])
     cache = DiskPromptCache(cache_path)
@@ -141,8 +149,8 @@ def build_scorers(config: dict, entailment_model, cached_llm):
         if label in METHODS_REQUIRING_GRAPH:
             if "ares" not in config["method_configs"]:
                 raise ValueError(
-                    "'sager' resolves its epsilon/delta from method_configs['ares'] "
-                    "(so the two methods are guaranteed to share them) -- 'ares' must "
+                    f"'{label}' resolves its epsilon/delta from method_configs['ares'] "
+                    "(so it's guaranteed to share them with ares) -- 'ares' must "
                     "also be listed in method_configs, even if not in methods_to_run."
                 )
             ares_config_key = config["method_configs"]["ares"]
@@ -222,12 +230,19 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
         nid: [p for p in dag.full_tgt2src.get(nid, []) if p != dag.start_id] for nid in dag.derived_node_ids
     }
     # Anc_G(c): full transitive-ancestor closure, for the sager_ancestors
-    # variant (see GRAPH_METHOD_KEYS docstring above). Computed unconditionally
+    # variant (see METHODS_REQUIRING_GRAPH's comment above). Computed unconditionally
     # (cheap for recipe-sized graphs) so it's always available for the raw
     # output's reference fields, regardless of whether sager_ancestors is
     # actually in methods_to_run.
     ancestors_by_node_id = compute_ancestors_by_node_id(dag)
     graph_by_label = {"sager": parents_by_node_id, "sager_ancestors": ancestors_by_node_id}
+    # graph_by_label's keys must exactly track METHODS_REQUIRING_GRAPH -- a
+    # future graph-based method added to one but not the other would
+    # otherwise surface as a bare KeyError deep in the per-ordering loop
+    # below instead of failing immediately, clearly, here.
+    assert set(graph_by_label.keys()) == METHODS_REQUIRING_GRAPH, (
+        f"graph_by_label keys {set(graph_by_label.keys())} != METHODS_REQUIRING_GRAPH {METHODS_REQUIRING_GRAPH}"
+    )
 
     topo_result = sample_orderings(dag, k=config["K"], seed=config["seed"], max_attempts=config["max_topo_attempts"])
     linear_ext = count_or_estimate_linear_extensions(dag, seed=config["seed"])

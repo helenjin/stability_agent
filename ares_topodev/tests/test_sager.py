@@ -13,6 +13,7 @@ Covers the five test categories from the SAGER spec:
 Uses MockLLM throughout (deterministic, content-dependent, zero API cost) --
 never a real API call.
 """
+import concurrent.futures
 import math
 
 from ares_topodev.eval_harness import _bootstrap  # noqa: F401
@@ -212,6 +213,45 @@ def test_canonical_premise_ordering_multi_parent_numeric_ids(tmp_path):
 
 
 # --- Test E: ARES regression ---------------------------------------------------
+
+
+def test_concurrent_scoring_is_reproducible_under_recipe_concurrency(tmp_path):
+    """Regression test for the RNG race a code review caught:
+    torch.manual_seed() sets process-global state, and run_experiment.py's
+    recipe_concurrency runs multiple recipes' scoring in concurrent threads.
+    Before _locked_sample_s_pertbs existed, one thread's manual_seed(x)
+    could land between another thread's manual_seed(y) and its actual
+    torch.rand/multinomial draw, silently making results depend on thread
+    interleaving. This runs the SAME deterministic computation (same graph,
+    same order, same seed) from several threads at once and asserts they are
+    all bit-identical to a plain sequential run -- flaky before the fix
+    (probabilistically, not always, which is exactly why a single sequential
+    test run would never have caught it), deterministic after it."""
+    def run_once(cache_suffix):
+        entailment_model, _ = _build_entailment_model(str(tmp_path / f"cache_conc_{cache_suffix}.jsonl"))
+        rates, _ = graph_tree_stability_rate(
+            entailment_model,
+            node_order=VALID_ORDER_1,
+            parents_by_node_id=PARENTS,
+            text_by_node_id=TEXT_BY_NODE,
+            raw_claims=RAW_CLAIMS,
+            p=0.95,
+            epsilon=0.3,
+            delta=0.3,
+            entailment_mode="granular",
+            temperature=0.0,
+            seed=123,
+        )
+        return dict(zip(VALID_ORDER_1, rates))
+
+    baseline = run_once("baseline")
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        futures = [pool.submit(run_once, f"thread{i}") for i in range(8)]
+        results = [f.result() for f in futures]
+
+    for i, result in enumerate(results):
+        assert result == baseline, f"thread {i} result diverged from sequential baseline: {result} vs {baseline}"
 
 
 def test_sager_scorer_accepts_ancestor_closure_as_parents(tmp_path):

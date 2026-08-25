@@ -95,7 +95,7 @@ premise universe ARES's own first-in-sequence claim gets (`ki=0` in
 `stability_rate_deterministic` call path (raw claims run through
 `sample_s_pertbs`'s fresh-Bernoulli branch) is reused exactly, whether that
 root happens to be first in the traversal order or not. See
-`_score_node`'s `full_samples is None` branch (true only for literally the
+`graph_tree_stability_rate`'s `full_samples is None` branch (true only for literally the
 first node scored in the whole run -- necessarily a graph root, since
 `node_order` is required to be topological) vs. the general branch (a later
 root just projects onto raw-claims-only columns).
@@ -147,6 +147,7 @@ than assumed to be zero.
 """
 import hashlib
 import math
+import threading
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
@@ -189,7 +190,36 @@ def _append_column(samples: torch.Tensor, counts: torch.Tensor, y: torch.Tensor)
     return new_samples, new_counts
 
 
-def _resample_bounded(samples: torch.Tensor, counts: torch.Tensor, num_samples: int):
+_RNG_LOCK = threading.Lock()
+
+
+def _locked_sample_s_pertbs(seed_value: int, *args, **kwargs):
+    """Reseed torch's global RNG and immediately call `sample_s_pertbs`,
+    atomically. `torch.manual_seed` sets *process-global* state, and
+    `run_experiment.py`'s `recipe_concurrency` runs multiple recipes'
+    scoring concurrently in separate threads, all sharing this process's one
+    RNG. Without a lock, thread A's `manual_seed(x)` can land between thread
+    B's `manual_seed(y)` and B's actual `torch.rand`/`torch.multinomial`
+    draw -- silently defeating the node-id-keyed "common random numbers"
+    scheme `_seed_for` exists to provide, with no error or symptom other
+    than results quietly not being what a fixed seed would predict.
+
+    Deliberately scoped to just this fast, CPU-only call, not the slower
+    network-bound entailment scoring that follows it in
+    `graph_tree_stability_rate` -- that part stays unlocked, so
+    `recipe_concurrency`'s actual benefit (overlapping API latency across
+    recipes) is preserved. This is why `graph_tree_stability_rate` always
+    pre-computes its samples here and hands them to
+    `stability_rate_deterministic` with `exact=True` (skip re-sampling,
+    use what I already gave you) rather than letting that function call
+    `sample_s_pertbs` internally, unlocked, on its own.
+    """
+    with _RNG_LOCK:
+        torch.manual_seed(seed_value)
+        return sample_s_pertbs(*args, **kwargs)
+
+
+def _resample_bounded(samples: torch.Tensor, counts: torch.Tensor, num_samples: int, seed_value: int):
     """Resample <=num_samples unique rows from (samples, counts), weighted by
     counts -- reuses `sample_s_pertbs`'s existing-samples branch verbatim
     (the same multinomial-then-unique step ARES already runs on its carried
@@ -197,8 +227,8 @@ def _resample_bounded(samples: torch.Tensor, counts: torch.Tensor, num_samples: 
     this branch (only its shape matters, and only when existing_samples is
     None, which it never is here)."""
     dummy_s = torch.ones(samples.shape[1])
-    resampled, new_counts, _, _ = sample_s_pertbs(
-        dummy_s, p=1.0, num_samples=num_samples, exact=False, existing_samples=samples, existing_counts=counts
+    resampled, new_counts, _, _ = _locked_sample_s_pertbs(
+        seed_value, dummy_s, p=1.0, num_samples=num_samples, exact=False, existing_samples=samples, existing_counts=counts
     )
     return resampled, new_counts
 
@@ -311,7 +341,16 @@ def graph_tree_stability_rate(
                     "node_order must be a valid topological order of the graph"
                 )
             premises = raw_labeled
-            torch.manual_seed(_seed_for(seed, node_id, "score"))
+            pre_samples, pre_counts, _, _ = _locked_sample_s_pertbs(
+                _seed_for(seed, node_id, "score"), torch.ones(n_raw), p=p, num_samples=N, exact=False
+            )
+            # exact=True here means "use the samples/counts I'm handing you
+            # as-is, don't call sample_s_pertbs yourself" -- NOT literally
+            # exhaustive-subset enumeration (that's sample_s_pertbs's own,
+            # differently-scoped `exact` flag, which we already resolved
+            # above under the lock). This is what lets the network-bound
+            # entailment scoring below run unlocked/concurrently: all RNG
+            # consumption for this node already happened, atomically, above.
             stab = stability_rate_deterministic(
                 entailment_model,
                 premises,
@@ -319,9 +358,9 @@ def graph_tree_stability_rate(
                 p=p,
                 epsilon=epsilon,
                 delta=delta,
-                samples=None,
-                counts=None,
-                exact=False,
+                samples=pre_samples,
+                counts=pre_counts,
+                exact=True,
                 entailment_mode=entailment_mode,
                 N=N,
                 num_raw=0,
@@ -342,17 +381,25 @@ def graph_tree_stability_rate(
             proj_counts = full_counts
             premises = raw_labeled + [f"step{pid}: {text_by_node_id[pid]}" for pid in parent_ids]
 
-            torch.manual_seed(_seed_for(seed, node_id, "score"))
-            stab = stability_rate_deterministic(
+            pre_samples, pre_counts, _, _ = _locked_sample_s_pertbs(
+                _seed_for(seed, node_id, "score"),
+                torch.ones(len(proj_col_idxs)),
+                p=p,
+                num_samples=N,
+                exact=False,
+                existing_samples=proj_samples,
+                existing_counts=proj_counts,
+            )
+            stab = stability_rate_deterministic(  # exact=True: see bootstrap branch's comment above
                 entailment_model,
                 premises,
                 hyp_text,
                 p=p,
                 epsilon=epsilon,
                 delta=delta,
-                samples=proj_samples,
-                counts=proj_counts,
-                exact=False,
+                samples=pre_samples,
+                counts=pre_counts,
+                exact=True,
                 entailment_mode=entailment_mode,
                 N=N,
                 num_raw=0,
@@ -367,8 +414,9 @@ def graph_tree_stability_rate(
             y_broadcast, num_uncovered = _broadcast_scores(full_proj_view, query_samples, query_y, query_counts)
             full_samples, full_counts = _append_column(full_samples, full_counts, y_broadcast)
 
-        torch.manual_seed(_seed_for(seed, node_id, "resample"))
-        full_samples, full_counts = _resample_bounded(full_samples, full_counts, N)
+        full_samples, full_counts = _resample_bounded(
+            full_samples, full_counts, N, _seed_for(seed, node_id, "resample")
+        )
 
         col_ids.append(f"step{node_id}")
         node_col_idx[node_id] = len(col_ids) - 1
