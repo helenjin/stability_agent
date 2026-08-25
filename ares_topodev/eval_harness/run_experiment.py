@@ -19,6 +19,7 @@ import os
 import sys
 import threading
 import time
+from collections import deque
 
 import yaml
 
@@ -54,6 +55,10 @@ def build_entailment_model(config: dict, dry_run: bool):
     else:
         model_config = MODEL_CONFIGS[config["backbone_model"]]
         base_llm = get_llm(**model_config)
+        if model_config.get("model_type") == "openai":
+            from ares_topodev.eval_harness import usage_tracker
+
+            usage_tracker.enable(_abspath(config.get("usage_log_path", "ares_topodev/results/usage_log.jsonl")))
 
     cache_path = _abspath(config["cache_path"])
     cache = DiskPromptCache(cache_path)
@@ -89,7 +94,37 @@ METHODS_REQUIRING_RAW_LLM = {"llm_judge_whole"}
 # `build_scorers` below), so the two methods are never accidentally run
 # under different epsilon/delta -- required for the section-11 comparison to
 # manipulate only the premise universe, nothing else.
-METHODS_REQUIRING_GRAPH = {"sager"}
+METHODS_REQUIRING_GRAPH = {"sager", "sager_ancestors"}
+
+# sager_ancestors is an exploratory variant: instead of Pa_G(c) (direct graph
+# parents), it uses Anc_G(c) -- the full transitive-ancestor closure -- as
+# the premise universe. Reuses SagerStabilityScorer/graph_tree_stability_rate
+# completely unmodified: that code only ever asks "what does this dict say
+# c's premise-defining nodes are," and has no notion of "direct" vs
+# "transitive" baked in. Anc_G(c) is still a function of node identity only
+# (never of a traversal order), so it's just as order-invariant as Pa_G(c) --
+# this tests whether SAGER's F1 gap vs ARES is really about SPARSITY (too few
+# premises) rather than about being graph-conditioned per se, while keeping
+# everything else (canonical ordering, projection, broadcast, epsilon/delta)
+# identical.
+
+
+def compute_ancestors_by_node_id(dag):
+    """Anc_G(c) = every node with a directed path to c, i.e. the transitive
+    closure of Pa_G under dag.full_tgt2src -- excluding START (not a derived
+    claim, same exclusion Pa_G(c) already applies) and excluding c itself."""
+    ancestors_by_node_id = {}
+    for nid in dag.derived_node_ids:
+        visited = set()
+        frontier = deque(p for p in dag.full_tgt2src.get(nid, []) if p != dag.start_id)
+        while frontier:
+            p = frontier.popleft()
+            if p in visited:
+                continue
+            visited.add(p)
+            frontier.extend(q for q in dag.full_tgt2src.get(p, []) if q != dag.start_id)
+        ancestors_by_node_id[nid] = sorted(visited)
+    return ancestors_by_node_id
 
 
 def build_scorers(config: dict, entailment_model, cached_llm):
@@ -186,6 +221,13 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
     parents_by_node_id = {
         nid: [p for p in dag.full_tgt2src.get(nid, []) if p != dag.start_id] for nid in dag.derived_node_ids
     }
+    # Anc_G(c): full transitive-ancestor closure, for the sager_ancestors
+    # variant (see GRAPH_METHOD_KEYS docstring above). Computed unconditionally
+    # (cheap for recipe-sized graphs) so it's always available for the raw
+    # output's reference fields, regardless of whether sager_ancestors is
+    # actually in methods_to_run.
+    ancestors_by_node_id = compute_ancestors_by_node_id(dag)
+    graph_by_label = {"sager": parents_by_node_id, "sager_ancestors": ancestors_by_node_id}
 
     topo_result = sample_orderings(dag, k=config["K"], seed=config["seed"], max_attempts=config["max_topo_attempts"])
     linear_ext = count_or_estimate_linear_extensions(dag, seed=config["seed"])
@@ -243,6 +285,7 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
                 # carry the graph for reference/comparison, even though ARES
                 # itself never reads it.
                 "parents_by_node_id": {str(k): v for k, v in parents_by_node_id.items()},
+                "ancestors_by_node_id": {str(k): v for k, v in ancestors_by_node_id.items()},
                 "orderings": per_method_orderings[label],
                 "failed_orderings": per_method_failures[label],
             }
@@ -262,13 +305,17 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
         # Sanity Check 1 (topological invariance) exercises: the same K
         # orderings already sampled for ARES are reused as SAGER's traversal
         # orders too.
-        graph_data_entry = build_graph_data_entry(
-            example.raw_claims, order, example.derived_claims_by_node_id, parents_by_node_id
-        )
+        graph_data_entry_by_label = {
+            graph_label: build_graph_data_entry(
+                example.raw_claims, order, example.derived_claims_by_node_id, graph_by_label[graph_label]
+            )
+            for graph_label in METHODS_REQUIRING_GRAPH
+            if graph_label in config["methods_to_run"]
+        }
 
         for label, scorer in scorers.items():
             try:
-                entry = graph_data_entry if label in METHODS_REQUIRING_GRAPH else data_entry
+                entry = graph_data_entry_by_label[label] if label in METHODS_REQUIRING_GRAPH else data_entry
                 result = scorer.get_stability_rate(entry)
                 # Most scorers loop directly over `ent_inputs` and append exactly
                 # one score per input, so len(stability_rates) == len(order) holds

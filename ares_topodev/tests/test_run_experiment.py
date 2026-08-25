@@ -8,11 +8,12 @@ time (unexpected `temperature` kwarg) or at call time (no `.generate()` on
 needing any real API calls.
 """
 import os
+from typing import Dict, List, Tuple
 
 from ares_topodev.eval_harness import _bootstrap  # noqa: F401
 from ares_topodev.eval_harness.cache import CachingLLM, DiskPromptCache
 from ares_topodev.eval_harness.mock_llm import MockLLM
-from ares_topodev.eval_harness.run_experiment import build_scorers
+from ares_topodev.eval_harness.run_experiment import build_scorers, compute_ancestors_by_node_id
 
 
 def _build_entailment_model(mock_llm, cache_path):
@@ -57,3 +58,40 @@ def test_build_scorers_still_injects_custom_prompt_for_normal_methods(tmp_path):
     scorer = scorers["entail_prev"]
     assert scorer.entailment_model is entailment_model
     assert scorer.temperature == 0.0
+
+
+def _build_dag(steps: Dict[int, str], edges: List[Tuple[int, int]], recipe_name: str = "toy"):
+    from ares_topodev.topo_reorder.dag import extract_recipe_dag
+
+    return extract_recipe_dag({"steps": {str(k): v for k, v in steps.items()}, "edges": edges}, recipe_name)
+
+
+def test_ancestors_equal_direct_parents_for_the_spec_example():
+    # START -> A, START -> B, A -> C, B -> D, C -> E, D -> E, E -> END
+    # (the SAGER spec's own worked example: A->C, B->D, C,D->E)
+    steps = {0: "START", 1: "A", 2: "B", 3: "C", 4: "D", 5: "E", 6: "END"}
+    edges = [(0, 1), (0, 2), (1, 3), (2, 4), (3, 5), (4, 5), (5, 6)]
+    dag = _build_dag(steps, edges)
+
+    ancestors = compute_ancestors_by_node_id(dag)
+    assert ancestors[1] == []  # A: root
+    assert ancestors[2] == []  # B: root
+    assert ancestors[3] == [1]  # C: ancestors == direct parents == {A}
+    assert ancestors[4] == [2]  # D: ancestors == direct parents == {B}
+    assert ancestors[5] == [1, 2, 3, 4]  # E: Pa_G(E)={C,D}, but Anc_G(E)={A,B,C,D}
+    assert ancestors[6] == [1, 2, 3, 4, 5]  # END: every other node
+
+
+def test_ancestors_transitive_closure_diamond():
+    # START -> A -> B -> C, and A -> C directly too (a diamond): Anc_G(C)
+    # must include A via BOTH paths, deduplicated, not double-counted or
+    # missed because it's already reachable via B.
+    steps = {0: "START", 1: "A", 2: "B", 3: "C", 4: "END"}
+    edges = [(0, 1), (1, 2), (2, 3), (1, 3), (3, 4)]
+    dag = _build_dag(steps, edges)
+
+    ancestors = compute_ancestors_by_node_id(dag)
+    assert ancestors[1] == []
+    assert ancestors[2] == [1]
+    assert ancestors[3] == [1, 2]  # both A and B, not just A (direct) or just B
+    assert ancestors[4] == [1, 2, 3]
