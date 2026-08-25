@@ -10,8 +10,26 @@ def _make_fixed_llm():
     llm = QwenLLMFixed.__new__(QwenLLMFixed)  # bypass __init__ (which loads real weights)
     llm.default_params = {"temperature": 0.0, "max_new_tokens": 500, "top_p": 0.8, "repetition_penalty": 1.1}
     llm.tokenizer = MagicMock(eos_token_id=0)
+    llm.tokenizer.apply_chat_template.side_effect = lambda messages, **kw: f"<templated>{messages[0]['content']}</templated>"
     llm.pipeline = MagicMock(return_value=[[{"generated_text": "Very Likely"}]])
     return llm
+
+
+def test_prompt_is_wrapped_in_chat_template_as_a_single_user_turn():
+    """Regression test: an un-templated raw prompt sent to Qwen produces
+    base-model continuation, not an instruction-following reply (verified
+    directly against the real model -- see module docstring fix (4))."""
+    llm = _make_fixed_llm()
+    llm.generate(["my recipe entailment prompt"], temperature=0.0)
+
+    call_args = llm.tokenizer.apply_chat_template.call_args
+    messages, kwargs = call_args.args[0], call_args.kwargs
+    assert messages == [{"role": "user", "content": "my recipe entailment prompt"}]
+    assert kwargs["add_generation_prompt"] is True
+
+    # the pipeline must receive the TEMPLATED string, not the raw prompt
+    batch_arg = llm.pipeline.call_args.args[0]
+    assert batch_arg == ["<templated>my recipe entailment prompt</templated>"]
 
 
 def test_temperature_zero_uses_greedy_decoding_not_do_sample():

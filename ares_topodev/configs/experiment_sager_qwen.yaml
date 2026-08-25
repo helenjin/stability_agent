@@ -1,0 +1,28 @@
+dataset: captaincookrecipes
+recipe_data_dir: ares_topodev/vendor/ares/data/recipe_graphs
+backbone_model: qwen2.5-7b-instruct
+p: 0.95
+temperature: 0.0
+max_new_tokens: 1000
+entailment_batch_size: 16
+recipe_concurrency: 4
+K: 10
+seed: 42
+max_topo_attempts: 200
+method_configs:
+  ares: cert_granular_temp0_nonexact
+  entail_prev: entail_granular
+  entail_base: entail_raw_granular
+  roscoe_li_self: roscoe_li_self_granular
+  roscoe_li_source: roscoe_li_source_granular
+  receval_intra: receval_intra_correct_granular
+  receval_inter: receval_inter_correct_granular
+  llm_judge: llm_judge_granular
+  sager: sager_gold_graph_reuses_ares_epsilon_delta
+methods_to_run:
+- ares
+- sager
+results_dir: ares_topodev/results_sager_qwen
+cache_path: ares_topodev/results_sager_qwen/cache/llm_prompt_cache.jsonl
+raw_claims_shuffle_idx: 0
+qwen_num_gpus: 2

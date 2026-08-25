@@ -18,15 +18,30 @@ as a candidate backbone:
    several instances (e.g. one per recipe-processing thread, for real
    parallelism across this machine's multiple idle GPUs) would pile them
    all onto the same device instead of spreading across them.
+4. `batch_generate` sends the raw prompt string straight to the
+   text-generation pipeline with NO chat template applied. Qwen2.5-7B-
+   Instruct only behaves like an instruction-following assistant when its
+   input is wrapped in its chat template (`<|im_start|>user\n...<|im_end|>\n
+   <|im_start|>assistant\n`); fed a bare string, it's just a base LM
+   continuing arbitrary text. Verified directly: an un-templated "hi"
+   produced an unrelated coding-help continuation; the same string run
+   through `tokenizer.apply_chat_template(...)` produced a normal reply.
+   This affects every real prompt sent to Qwen, not just toy examples.
 
 Fixed here by subclassing rather than editing the vendored file (same
 pattern as `cache.CachingLLM` wrapping any `BaseLLM`, or `usage_tracker`
 monkey-patching `openai_client`): `do_sample` is now derived from whether
 `temperature > 0` (greedy decoding at temperature=0, matching every other
 backbone's "temp0" behavior in this codebase), `return_full_text=False` is
-passed explicitly, and `__init__` accepts an optional `device` (e.g.
-`"cuda:1"`) to pin a specific instance to a specific GPU instead of always
-"auto".
+passed explicitly, `__init__` accepts an optional `device` (e.g. `"cuda:1"`)
+to pin a specific instance to a specific GPU instead of always "auto", and
+each prompt is now run through the chat template as a single "user" turn
+before generation -- matching `openai_llm.py`'s `cached_openai_generate`,
+which also sends the ENTIRE constructed prompt (system instructions +
+context + hypothesis all together) as one `{"role": "user", ...}` message,
+not split into separate system/user roles. Matching that structure here
+keeps the ARES-vs-SAGER comparison about the backbone model, not an
+incidental difference in how each backbone's prompt is structured.
 """
 import os
 from typing import Any, List, Optional
@@ -90,14 +105,24 @@ class QwenLLMFixed(QwenLLM):
             pipeline_kwargs["device"] = int(device.split(":")[1]) if device.startswith("cuda:") else device
         self.pipeline = transformers.pipeline("text-generation", **pipeline_kwargs)
 
+    def _apply_chat_template(self, prompt: str) -> str:
+        """Wraps a raw prompt as a single user turn and renders it through
+        Qwen's chat template -- see fix (4) in the module docstring. Without
+        this, generation is base-model continuation, not instruction
+        following."""
+        return self.tokenizer.apply_chat_template(
+            [{"role": "user", "content": prompt}], tokenize=False, add_generation_prompt=True
+        )
+
     def batch_generate(self, prompts: List[str], batch_size: int = 8, **kwargs: Any) -> List[str]:
         outputs = []
         params = {**self.default_params, **kwargs}
         temperature = params.get("temperature", 0.0)
         do_sample = temperature > 0
+        templated_prompts = [self._apply_chat_template(p) for p in prompts]
 
-        for i in range(0, len(prompts), batch_size):
-            batch = prompts[i : i + batch_size]
+        for i in range(0, len(templated_prompts), batch_size):
+            batch = templated_prompts[i : i + batch_size]
             generate_kwargs = dict(
                 max_new_tokens=params.get("max_new_tokens", 500),
                 pad_token_id=self.tokenizer.eos_token_id,

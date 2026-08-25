@@ -46,7 +46,7 @@ def load_config(path: str) -> dict:
         return yaml.safe_load(f)
 
 
-def build_entailment_model(config: dict, dry_run: bool):
+def build_entailment_model(config: dict, dry_run: bool, device: str = None):
     from exp_helpers.exp_configs import MODEL_CONFIGS
     from exp_helpers.models import EntailmentModel, get_llm
 
@@ -58,10 +58,15 @@ def build_entailment_model(config: dict, dry_run: bool):
             # The vendored QwenLLM crashes at temperature=0.0 (our standard
             # setting) and echoes the full prompt back in its output -- see
             # qwen_llm_fixed.py. Construct the fixed subclass directly
-            # instead of the vendored loader's plain QwenLLM.
+            # instead of the vendored loader's plain QwenLLM. `device`
+            # (e.g. "cuda:1") pins this specific instance to one GPU, for
+            # run()'s multi-GPU path below -- None means QwenLLMFixed's own
+            # "auto" placement, unchanged from single-instance behavior.
             from ares_topodev.eval_harness.qwen_llm_fixed import QwenLLMFixed
 
-            base_llm = QwenLLMFixed(**{k: v for k, v in model_config.items() if k != "model_type"})
+            base_llm = QwenLLMFixed(
+                device=device, **{k: v for k, v in model_config.items() if k != "model_type"}
+            )
         else:
             base_llm = get_llm(**model_config)
         if model_config.get("model_type") == "openai":
@@ -381,6 +386,47 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
     )
 
 
+def _run_multi_gpu_qwen(config: dict, recipe_names, dags, data_dir: str, raw_dir: str, num_gpus: int):
+    """One dedicated (entailment_model, cached_llm, scorers) set per GPU --
+    Qwen2.5-7B comfortably fits on a single 20GB GPU (see qwen_llm_fixed.py),
+    so this machine's otherwise-idle additional GPUs can each run their own
+    model instance in parallel rather than sitting unused while one GPU
+    serializes every recipe. `process_recipe` itself is reused completely
+    unchanged -- each GPU worker just calls it sequentially over its own
+    slice of recipes, exactly like the single-instance recipe_concurrency
+    path does over the whole list.
+
+    Cache safety note: each GPU worker gets its OWN DiskPromptCache instance
+    pointed at the SAME file. Two workers computing the exact same prompt
+    concurrently could each append a (harmless, duplicate) cache line -- not
+    a correctness risk here specifically, since recipes (and therefore their
+    prompts) are partitioned disjointly across workers, so this can't
+    actually happen in practice, only in principle.
+    """
+    global _print_lock
+    _print_lock = threading.Lock()
+
+    gpu_setups = []
+    for gpu_id in range(num_gpus):
+        entailment_model, cached_llm = build_entailment_model(config, dry_run=False, device=f"cuda:{gpu_id}")
+        scorers, resolved_kwargs_by_label = build_scorers(config, entailment_model, cached_llm)
+        gpu_setups.append((cached_llm, scorers, resolved_kwargs_by_label))
+
+    def process_bucket(gpu_id, bucket):
+        cached_llm, scorers, resolved_kwargs_by_label = gpu_setups[gpu_id]
+        for recipe_name in bucket:
+            process_recipe(
+                recipe_name, dags[recipe_name], data_dir, config, scorers,
+                resolved_kwargs_by_label, cached_llm, raw_dir, dry_run=False,
+            )
+
+    buckets = [recipe_names[i::num_gpus] for i in range(num_gpus)]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=num_gpus) as pool:
+        futures = [pool.submit(process_bucket, gpu_id, bucket) for gpu_id, bucket in enumerate(buckets) if bucket]
+        for future in concurrent.futures.as_completed(futures):
+            future.result()  # re-raises if a bucket errored, instead of silently swallowing it
+
+
 def run(config: dict, limit=None, dry_run=False):
     global _print_lock
 
@@ -393,11 +439,19 @@ def run(config: dict, limit=None, dry_run=False):
     if limit is not None:
         recipe_names = recipe_names[:limit]
 
-    entailment_model, cached_llm = build_entailment_model(config, dry_run=dry_run)
-    scorers, resolved_kwargs_by_label = build_scorers(config, entailment_model, cached_llm)
-
     for label in config["methods_to_run"]:
         os.makedirs(os.path.join(raw_dir, label), exist_ok=True)
+
+    qwen_num_gpus = config.get("qwen_num_gpus", 1)  # opt-in: default 1 leaves every non-Qwen config's behavior untouched
+    if not dry_run and qwen_num_gpus > 1:
+        from exp_helpers.exp_configs import MODEL_CONFIGS
+
+        if MODEL_CONFIGS.get(config["backbone_model"], {}).get("model_type") == "qwen":
+            _run_multi_gpu_qwen(config, recipe_names, dags, data_dir, raw_dir, qwen_num_gpus)
+            return
+
+    entailment_model, cached_llm = build_entailment_model(config, dry_run=dry_run)
+    scorers, resolved_kwargs_by_label = build_scorers(config, entailment_model, cached_llm)
 
     recipe_concurrency = config.get("recipe_concurrency", 1)
     if recipe_concurrency > 1:
