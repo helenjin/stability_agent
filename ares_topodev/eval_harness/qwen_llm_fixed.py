@@ -11,21 +11,85 @@ as a candidate backbone:
 2. The HF pipeline's default `return_full_text=True` means `generated_text`
    includes the entire input prompt, not just the completion -- never
    verified because (1) always threw first.
+3. `__init__` hardcodes `device_map="auto"` for both the model and the
+   pipeline, with no way to pin an instance to a specific GPU. Qwen2.5-7B in
+   bfloat16 (~14-15GB) comfortably fits on a single 20GB GPU, so "auto"
+   always places the whole model on one device anyway -- meaning loading
+   several instances (e.g. one per recipe-processing thread, for real
+   parallelism across this machine's multiple idle GPUs) would pile them
+   all onto the same device instead of spreading across them.
 
 Fixed here by subclassing rather than editing the vendored file (same
 pattern as `cache.CachingLLM` wrapping any `BaseLLM`, or `usage_tracker`
 monkey-patching `openai_client`): `do_sample` is now derived from whether
 `temperature > 0` (greedy decoding at temperature=0, matching every other
-backbone's "temp0" behavior in this codebase), and `return_full_text=False`
-is passed explicitly.
+backbone's "temp0" behavior in this codebase), `return_full_text=False` is
+passed explicitly, and `__init__` accepts an optional `device` (e.g.
+`"cuda:1"`) to pin a specific instance to a specific GPU instead of always
+"auto".
 """
-from typing import Any, List
+import os
+from typing import Any, List, Optional
+
+import torch
+import transformers
 
 from ares_topodev.eval_harness import _bootstrap  # noqa: F401  (sys.path + OPENAI_API_KEY placeholder)
 from exp_helpers.models.qwen_llm import QwenLLM
 
 
 class QwenLLMFixed(QwenLLM):
+    def __init__(
+        self,
+        model_name: str = "Qwen/Qwen2.5-7B-Instruct",
+        cache_dir: Optional[str] = None,
+        device: Optional[str] = None,
+        **kwargs: Any,
+    ):
+        # Deliberately does NOT call QwenLLM.__init__ (which hardcodes
+        # device_map="auto") -- mirrors it exactly otherwise, going one
+        # level up to BaseLLM.__init__ instead.
+        from exp_helpers.models.base_llm import BaseLLM
+
+        BaseLLM.__init__(self, model_name, **kwargs)
+
+        if cache_dir:
+            os.environ["HF_HOME"] = cache_dir
+
+        self.device = device
+        # A plain device string (not the {"": device} dict form some HF
+        # versions document/accept) -- verified empirically against the
+        # transformers version actually installed here: the dict form is
+        # silently mishandled (falls back to placing everything on cuda:0
+        # regardless of the requested device), while the bare string
+        # correctly pins the whole model to that one device.
+        device_map = device if device else "auto"
+
+        self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+        self.default_params = {
+            "temperature": kwargs.get("temperature", 0.0),
+            "max_new_tokens": kwargs.get("max_new_tokens", 500),
+            "top_p": kwargs.get("top_p", 0.8),
+            "repetition_penalty": kwargs.get("repetition_penalty", 1.1),
+        }
+        self.model = transformers.AutoModelForCausalLM.from_pretrained(
+            model_name, device_map=device_map, torch_dtype=torch.bfloat16, trust_remote_code=True
+        )
+        # CRITICAL, verified empirically: constructing transformers.pipeline()
+        # with an already-loaded, already-correctly-placed `model=` object
+        # MOVES that model -- to cuda:0, regardless of where it actually was
+        # -- unless given an explicit integer `device=` index. This happens
+        # even with NO device_map/device kwarg at all (that's why the "auto"
+        # case looked fine before this was caught: auto-placement already
+        # puts a single-GPU-sized model on cuda:0, so the erroneous move was
+        # invisible). Passing device_map=<string> here (what an earlier,
+        # broken version of this file did) does NOT prevent the move either
+        # -- only the integer `device=` pipeline kwarg does.
+        pipeline_kwargs = dict(model=self.model, tokenizer=self.tokenizer, **self.default_params)
+        if device:
+            pipeline_kwargs["device"] = int(device.split(":")[1]) if device.startswith("cuda:") else device
+        self.pipeline = transformers.pipeline("text-generation", **pipeline_kwargs)
+
     def batch_generate(self, prompts: List[str], batch_size: int = 8, **kwargs: Any) -> List[str]:
         outputs = []
         params = {**self.default_params, **kwargs}

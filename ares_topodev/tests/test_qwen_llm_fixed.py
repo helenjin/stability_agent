@@ -1,6 +1,7 @@
-"""Tests for QwenLLMFixed's two fixes over the vendored QwenLLM -- mocking
-the HF pipeline, never loading real model weights or touching a GPU."""
-from unittest.mock import MagicMock
+"""Tests for QwenLLMFixed's fixes over the vendored QwenLLM -- mocking the
+HF pipeline/model loading, never loading real model weights or touching a
+GPU."""
+from unittest.mock import MagicMock, patch
 
 from ares_topodev.eval_harness.qwen_llm_fixed import QwenLLMFixed
 
@@ -47,3 +48,32 @@ def test_pipeline_exception_falls_back_to_empty_strings_not_crash():
 
     outputs = llm.batch_generate(["a", "b"], batch_size=2, temperature=0.0)
     assert outputs == ["", ""]
+
+
+def test_explicit_device_pins_a_single_gpu_instead_of_auto():
+    with patch("ares_topodev.eval_harness.qwen_llm_fixed.transformers") as mock_transformers, \
+         patch("ares_topodev.eval_harness.qwen_llm_fixed.torch"):
+        QwenLLMFixed(model_name="Qwen/Qwen2.5-7B-Instruct", device="cuda:1")
+
+        model_call_kwargs = mock_transformers.AutoModelForCausalLM.from_pretrained.call_args.kwargs
+        pipeline_call_kwargs = mock_transformers.pipeline.call_args.kwargs
+        # from_pretrained wants a bare device string (verified empirically:
+        # the {"": device} dict form is silently mishandled by the installed
+        # transformers version). pipeline() is different again: passing it
+        # ANY device_map/device kwarg other than an integer index -- or even
+        # omitting the kwarg entirely -- was verified to MOVE an
+        # already-placed model back to cuda:0. Only an int index prevents that.
+        assert model_call_kwargs["device_map"] == "cuda:1"
+        assert pipeline_call_kwargs["device"] == 1
+        assert "device_map" not in pipeline_call_kwargs
+
+
+def test_no_device_falls_back_to_auto():
+    with patch("ares_topodev.eval_harness.qwen_llm_fixed.transformers") as mock_transformers, \
+         patch("ares_topodev.eval_harness.qwen_llm_fixed.torch"):
+        QwenLLMFixed(model_name="Qwen/Qwen2.5-7B-Instruct")
+
+        model_call_kwargs = mock_transformers.AutoModelForCausalLM.from_pretrained.call_args.kwargs
+        pipeline_call_kwargs = mock_transformers.pipeline.call_args.kwargs
+        assert model_call_kwargs["device_map"] == "auto"
+        assert "device" not in pipeline_call_kwargs  # no explicit pin requested -> don't force one
