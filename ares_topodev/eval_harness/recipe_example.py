@@ -58,6 +58,15 @@ class RecipeExample:
     ground_truth_error_by_node_id: Dict[int, int]
     deleted_ingredient: str
     deleted_ingredient_idx: int
+    # Finer-grained than ground_truth_error_by_node_id's binary label -- one of:
+    #   "source"             the step directly needing the deleted ingredient
+    #   "propagated"         forward-reachable from a source step (error_set - source)
+    #   "ancestor_of_source" causally upstream of a source step (backward-reachable
+    #                        via tgt2src); necessarily ground-truth-sound, since no
+    #                        DAG can have a source step reachable from its own ancestor
+    #   "independent"        ground-truth-sound and neither of the above -- on a
+    #                        branch causally unrelated to the deleted ingredient
+    error_category_by_node_id: Dict[int, str]
 
 
 def build_recipe_example(
@@ -138,10 +147,35 @@ def build_recipe_example(
             if dstep not in all_error_step_ids:
                 dq.append(dstep)
     error_set = set(all_error_step_ids)
+    source_ids = set(initial_error_step_ids)
+
+    # Backward BFS from source_ids via tgt2src: every step causally upstream
+    # of a source step. Disjoint from error_set by construction -- an
+    # ancestor of a source cannot itself be forward-reachable from any
+    # source without a cycle, which extract_recipe_dag's callers already
+    # guarantee doesn't exist.
+    ancestor_of_source_ids: set = set()
+    dq = deque(source_ids)
+    while dq:
+        step_id = dq.popleft()
+        for pstep in tgt2src.get(step_id, []):
+            if pstep not in ancestor_of_source_ids and pstep not in source_ids:
+                ancestor_of_source_ids.add(pstep)
+                dq.append(pstep)
 
     derived_claims_by_node_id: Dict[int, str] = {}
     ground_truth_error_by_node_id: Dict[int, int] = {}
+    error_category_by_node_id: Dict[int, str] = {}
     for nid in dag.derived_node_ids:  # every node except START
+        if nid in source_ids:
+            error_category_by_node_id[nid] = "source"
+        elif nid in error_set:
+            error_category_by_node_id[nid] = "propagated"
+        elif nid in ancestor_of_source_ids:
+            error_category_by_node_id[nid] = "ancestor_of_source"
+        else:
+            error_category_by_node_id[nid] = "independent"
+
         preds = tgt2src.get(nid, [])
         if preds:
             previous_steps_str = ", and ".join([steps[p] for p in preds])
@@ -165,6 +199,7 @@ def build_recipe_example(
         ground_truth_error_by_node_id=ground_truth_error_by_node_id,
         deleted_ingredient=deleted_ingredient,
         deleted_ingredient_idx=deleted_ingredient_idx,
+        error_category_by_node_id=error_category_by_node_id,
     )
 
 

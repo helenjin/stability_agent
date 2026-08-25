@@ -78,3 +78,25 @@ def test_orderings_permute_only_presentation_not_node_set():
     orderings = sample_orderings(dag, k=5, seed=1).orderings
     for order in orderings:
         assert sorted(order) == sorted(example.derived_claims_by_node_id.keys())
+
+
+def test_error_category_partitions_nodes_consistently_with_binary_label():
+    for name in ("ramen", "coffee", "zoodles", "blenderbananapancakes"):
+        raw, dag = _load(name)
+        example = build_recipe_example(dag, raw, base_seed=42)
+
+        assert set(example.error_category_by_node_id.keys()) == set(example.derived_claims_by_node_id.keys())
+        for nid, category in example.error_category_by_node_id.items():
+            assert category in ("source", "propagated", "ancestor_of_source", "independent")
+            is_error_category = category in ("source", "propagated")
+            is_error_label = example.ground_truth_error_by_node_id[nid] == 1
+            # source/propagated together must be EXACTLY the binary-error-labeled
+            # nodes -- neither more (a false split) nor fewer (a missed one).
+            assert is_error_category == is_error_label, (name, nid, category)
+
+        # ancestor_of_source must never overlap the error set -- a source's
+        # own ancestor cannot be forward-reachable from that same source
+        # without a cycle, which the DAG doesn't have.
+        ancestors = {nid for nid, c in example.error_category_by_node_id.items() if c == "ancestor_of_source"}
+        errors = {nid for nid, e in example.ground_truth_error_by_node_id.items() if e == 1}
+        assert ancestors & errors == set()
