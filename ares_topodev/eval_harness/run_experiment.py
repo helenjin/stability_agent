@@ -54,7 +54,16 @@ def build_entailment_model(config: dict, dry_run: bool):
         base_llm = MockLLM()
     else:
         model_config = MODEL_CONFIGS[config["backbone_model"]]
-        base_llm = get_llm(**model_config)
+        if model_config.get("model_type") == "qwen":
+            # The vendored QwenLLM crashes at temperature=0.0 (our standard
+            # setting) and echoes the full prompt back in its output -- see
+            # qwen_llm_fixed.py. Construct the fixed subclass directly
+            # instead of the vendored loader's plain QwenLLM.
+            from ares_topodev.eval_harness.qwen_llm_fixed import QwenLLMFixed
+
+            base_llm = QwenLLMFixed(**{k: v for k, v in model_config.items() if k != "model_type"})
+        else:
+            base_llm = get_llm(**model_config)
         if model_config.get("model_type") == "openai":
             from ares_topodev.eval_harness import usage_tracker
 
