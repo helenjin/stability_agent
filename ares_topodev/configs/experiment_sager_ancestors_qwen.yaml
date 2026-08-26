@@ -3,10 +3,7 @@ recipe_data_dir: ares_topodev/vendor/ares/data/recipe_graphs
 backbone_model: qwen2.5-7b-instruct
 p: 0.95
 temperature: 0.0
-max_new_tokens: 40  # Qwen tends to write an explanation after its label (unlike gpt-4o/-mini, which
-                     # stop almost immediately -- confirmed ~3 output tokens/call on average); the recipe
-                     # prompt's own instructions put the label FIRST, so a small cap still captures it
-                     # while skipping the costly rambling that follows on local GPU inference.
+max_new_tokens: 40
 entailment_batch_size: 16
 recipe_concurrency: 4
 K: 10
@@ -22,9 +19,11 @@ method_configs:
   receval_inter: receval_inter_correct_granular
   llm_judge: llm_judge_granular
   sager: sager_gold_graph_reuses_ares_epsilon_delta
+  sager_ancestors: sager_ancestors_gold_graph_transitive_closure
 methods_to_run:
 - ares
 - sager
+- sager_ancestors
 results_dir: ares_topodev/results_sager_qwen
 cache_path: ares_topodev/results_sager_qwen/cache/llm_prompt_cache.jsonl
 raw_claims_shuffle_idx: 0

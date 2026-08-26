@@ -7,13 +7,14 @@ time (unexpected `temperature` kwarg) or at call time (no `.generate()` on
 `EntailmentModel`). These tests catch a regression in that routing without
 needing any real API calls.
 """
+import json
 import os
 from typing import Dict, List, Tuple
 
 from ares_topodev.eval_harness import _bootstrap  # noqa: F401
 from ares_topodev.eval_harness.cache import CachingLLM, DiskPromptCache
 from ares_topodev.eval_harness.mock_llm import MockLLM
-from ares_topodev.eval_harness.run_experiment import build_scorers, compute_ancestors_by_node_id
+from ares_topodev.eval_harness.run_experiment import build_scorers, compute_ancestors_by_node_id, run
 
 
 def _build_entailment_model(mock_llm, cache_path):
@@ -95,3 +96,81 @@ def test_ancestors_transitive_closure_diamond():
     assert ancestors[2] == [1]
     assert ancestors[3] == [1, 2]  # both A and B, not just A (direct) or just B
     assert ancestors[4] == [1, 2, 3]
+
+
+def _base_config(tmp_path, methods_to_run):
+    return {
+        "dataset": "captaincookrecipes",
+        "recipe_data_dir": "ares_topodev/vendor/ares/data/recipe_graphs",
+        "backbone_model": "gpt-4o-mini",
+        "p": 0.95,
+        "temperature": 0.0,
+        "max_new_tokens": 100,
+        "entailment_batch_size": 8,
+        "recipe_concurrency": 1,
+        "K": 2,
+        "seed": 42,
+        "max_topo_attempts": 200,
+        "method_configs": {
+            "ares": "cert_granular_temp0_nonexact",
+            "sager": "sager_gold_graph_reuses_ares_epsilon_delta",
+        },
+        "methods_to_run": methods_to_run,
+        "results_dir": str(tmp_path / "results"),
+        "cache_path": str(tmp_path / "cache.jsonl"),
+        "raw_claims_shuffle_idx": 0,
+    }
+
+
+def test_already_complete_method_is_not_recomputed_or_rewritten(tmp_path):
+    """Regression test: re-running with an already-complete method (e.g.
+    ares) alongside a new one (e.g. sager) must skip the complete method
+    entirely -- not silently overwrite its file with an in-progress partial
+    state from this run's own (even if cache-hit-fast) recomputation. This
+    is exactly what happened running sager_ancestors on top of already-
+    complete ares/sager Qwen results before this fix."""
+    config = _base_config(tmp_path, ["ares"])
+    run(config, limit=1, dry_run=True)
+
+    ares_path = os.path.join(config["results_dir"], "raw", "ares", "blenderbananapancakes.json")
+    assert os.path.exists(ares_path)
+    before = json.load(open(ares_path))
+    assert before["is_complete"] is True
+    assert before["num_orderings_used"] == 2
+    mtime_before = os.path.getmtime(ares_path)
+
+    # Re-run with ares + a NEW method. ares must be left completely untouched.
+    config["methods_to_run"] = ["ares", "sager"]
+    run(config, limit=1, dry_run=True)
+
+    after = json.load(open(ares_path))
+    assert after == before  # byte-identical content, not just equivalent
+    assert os.path.getmtime(ares_path) == mtime_before  # never rewritten
+
+    sager_path = os.path.join(config["results_dir"], "raw", "sager", "blenderbananapancakes.json")
+    assert os.path.exists(sager_path)
+    sager_result = json.load(open(sager_path))
+    assert sager_result["is_complete"] is True
+    assert sager_result["num_orderings_used"] == 2
+
+
+def test_partial_existing_file_is_not_skipped(tmp_path):
+    """A file marked is_complete=False (or with fewer orderings than
+    requested) must still be (re)computed -- the skip only applies to
+    genuinely complete results, never to partial ones."""
+    config = _base_config(tmp_path, ["ares"])
+    ares_dir = os.path.join(config["results_dir"], "raw", "ares")
+    os.makedirs(ares_dir, exist_ok=True)
+    partial = {
+        "dataset": "captaincookrecipes", "recipe_name": "blenderbananapancakes", "method": "ares",
+        "is_complete": False, "num_orderings_used": 1, "num_orderings_requested": 2,
+        "orderings": [], "failed_orderings": [],
+    }
+    with open(os.path.join(ares_dir, "blenderbananapancakes.json"), "w") as f:
+        json.dump(partial, f)
+
+    run(config, limit=1, dry_run=True)
+
+    result = json.load(open(os.path.join(ares_dir, "blenderbananapancakes.json")))
+    assert result["is_complete"] is True
+    assert result["num_orderings_used"] == 2  # actually recomputed, not left partial

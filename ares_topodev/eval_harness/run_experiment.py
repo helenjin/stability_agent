@@ -261,8 +261,44 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
     topo_result = sample_orderings(dag, k=config["K"], seed=config["seed"], max_attempts=config["max_topo_attempts"])
     linear_ext = count_or_estimate_linear_extensions(dag, seed=config["seed"])
 
+    # Skip a label entirely -- no recompute, no rewrite -- if it already has a
+    # complete result on disk for exactly this many orderings. Without this,
+    # re-running a config that mixes an already-complete method (e.g. ares,
+    # sager -- fast, cache-hit-only) with a genuinely new one (e.g.
+    # sager_ancestors) would still re-walk the complete method's own ordering
+    # loop from empty per_method_orderings, and write_results (below) writes
+    # EVERY label in methods_to_run after every ordering -- so the already-
+    # complete method's file gets overwritten with THIS run's own in-progress
+    # partial state until it separately re-reaches the same K, transiently
+    # (and, if this run is killed first, permanently) regressing a complete
+    # file back to incomplete for no reason. seed/K/max_topo_attempts are
+    # deterministic, so a file already at this exact K is trusted rather than
+    # reproduced. (limit=len(topo_result.orderings), not num_requested: a DAG
+    # with fewer than K valid orderings could have topo_sampling_exhausted
+    # with fewer than num_requested -- that's still "as complete as this
+    # config can get", not partial.)
+    labels_to_run = []
+    for label in config["methods_to_run"]:
+        existing_path = os.path.join(raw_dir, label, f"{recipe_name}.json")
+        skip = False
+        if os.path.exists(existing_path):
+            try:
+                with open(existing_path) as f:
+                    existing = json.load(f)
+                skip = existing.get("is_complete") and existing.get("num_orderings_used") == len(topo_result.orderings)
+            except (json.JSONDecodeError, OSError):
+                skip = False  # a corrupt/half-written file is not "already complete" -- redo it
+        if skip:
+            _log(f"[{recipe_name}/{label}] already complete at {len(topo_result.orderings)} orderings -- skipping")
+        else:
+            labels_to_run.append(label)
+
+    if not labels_to_run:
+        _log(f"[{recipe_name}] all methods already complete -- nothing to do")
+        return
+
     # method -> ordering_index -> {node_id: score}
-    per_method_orderings = {label: [] for label in config["methods_to_run"]}
+    per_method_orderings = {label: [] for label in labels_to_run}
     # method -> [{"ordering_index": i, "error": "..."}] -- a single malformed
     # LLM response (e.g. a method's expected output format not being followed)
     # must not abort the whole run for every recipe/method. Failures are
@@ -270,7 +306,7 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
     # own num_orderings_used/orderings list simply ends up shorter, rather
     # than crashing process_recipe (and, via the thread pool, every other
     # in-flight recipe too).
-    per_method_failures = {label: [] for label in config["methods_to_run"]}
+    per_method_failures = {label: [] for label in labels_to_run}
 
     def write_results(is_complete: bool):
         """Writes the current (possibly partial) per-method JSON files.
@@ -279,9 +315,10 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
         of already-paid-for API calls -- `orderings` just reflects however
         many are done so far, and `is_complete`/`num_orderings_used` make
         partial files unambiguous rather than silently indistinguishable
-        from a finished run with a smaller K.
+        from a finished run with a smaller K. Only writes labels_to_run --
+        an already-complete label (see above) is never touched.
         """
-        for label in config["methods_to_run"]:
+        for label in labels_to_run:
             out = {
                 "dataset": "captaincookrecipes",
                 "recipe_name": recipe_name,
@@ -339,10 +376,11 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
                 example.raw_claims, order, example.derived_claims_by_node_id, graph_by_label[graph_label]
             )
             for graph_label in METHODS_REQUIRING_GRAPH
-            if graph_label in config["methods_to_run"]
+            if graph_label in labels_to_run
         }
 
-        for label, scorer in scorers.items():
+        for label in labels_to_run:
+            scorer = scorers[label]
             try:
                 entry = graph_data_entry_by_label[label] if label in METHODS_REQUIRING_GRAPH else data_entry
                 result = scorer.get_stability_rate(entry)
