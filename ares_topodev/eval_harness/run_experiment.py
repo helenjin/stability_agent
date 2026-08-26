@@ -406,9 +406,34 @@ def process_recipe(recipe_name, dag, data_dir, config, scorers, resolved_kwargs_
                     {"ordering_index": ordering_index, "error": f"{type(e).__name__}: {e}"}
                 )
                 continue
-            per_method_orderings[label].append(
-                {"ordering_index": ordering_index, "topo_order_step_ids": order, "scores_by_node_id": scores_by_node_id}
-            )
+            ordering_record = {
+                "ordering_index": ordering_index,
+                "topo_order_step_ids": order,
+                "scores_by_node_id": scores_by_node_id,
+            }
+            # Opt-in (default off -- this is real data volume, and every
+            # existing run/config predates this field): the per-node queried
+            # weighted-sample population SagerStabilityScorer already computes
+            # to reach `stability_rate`, otherwise discarded once aggregated.
+            # Lets a later analysis attribute how much any single premise
+            # (e.g. one specific ancestor, for sager_ancestors) moved a node's
+            # score -- by correlating that premise's retention bit against
+            # query_y across these rows -- at zero additional model calls,
+            # since it's the same computation already paid for, not a fresh
+            # leave-one-out ablation (see conversation: that needs k+1 full
+            # node-scorings per node and doesn't scale to a full dataset).
+            if config.get("save_particle_data", False) and label in METHODS_REQUIRING_GRAPH:
+                ordering_record["particle_data_by_node_id"] = {
+                    str(r["node_id"]): {
+                        "parent_ids": r["parent_ids"],
+                        "premises_text": r["premises_text"],
+                        "query_samples": r["query_samples"],
+                        "query_y": r["query_y"],
+                        "query_counts": r["query_counts"],
+                    }
+                    for r in result.stab_rate_results
+                }
+            per_method_orderings[label].append(ordering_record)
 
         write_results(is_complete=(ordering_index == len(topo_result.orderings) - 1))
         _log(

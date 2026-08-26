@@ -288,6 +288,20 @@ class GraphNodeRecord:
     N: int
     seed: int
     num_uncovered_rows: int
+    # The queried weighted-sample population for THIS node, in the same
+    # column order as premises_text (query_samples[r][i] = 1 iff premises_text[i]
+    # was retained in sampled row r). This is data stability_rate_deterministic
+    # already computes to reach `stability_rate` -- previously discarded once
+    # aggregated. Persisting it lets a later analysis attribute how much any
+    # single premise (e.g. one specific ancestor, for sager_ancestors) moved
+    # the score, by correlating that premise's retention bit against query_y
+    # across these rows -- at ZERO additional model calls, since this is
+    # exactly the data already paid for scoring the node once, not a new
+    # leave-one-out ablation (which needs k+1 fresh full node-scorings per
+    # node and does not scale to a full dataset -- see conversation).
+    query_samples: List[List[int]]
+    query_y: List[float]
+    query_counts: List[int]
 
 
 def graph_tree_stability_rate(
@@ -432,6 +446,13 @@ def graph_tree_stability_rate(
                 N=N,
                 seed=seed,
                 num_uncovered_rows=num_uncovered,
+                # stab["samples"]/["y_pertbs"]/["counts"] are already plain
+                # Python lists (stability_rate_deterministic's own
+                # return_all=True branch calls .tolist()) -- same column
+                # order as `premises` above.
+                query_samples=stab["samples"],
+                query_y=stab["y_pertbs"],
+                query_counts=stab["counts"],
             )
         )
 
@@ -506,10 +527,14 @@ class SagerStabilityScorer(BaseStabilityScorer):
                 {
                     "node_id": r.node_id,
                     "parent_ids": r.parent_ids,
+                    "premises_text": r.premises_text,  # same column order as query_samples below
                     "stability_rate": r.stability_rate,
                     "N": r.N,
                     "seed": r.seed,
                     "num_uncovered_rows": r.num_uncovered_rows,
+                    "query_samples": r.query_samples,
+                    "query_y": r.query_y,
+                    "query_counts": r.query_counts,
                 }
                 for r in records
             ],

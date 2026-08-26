@@ -174,3 +174,36 @@ def test_partial_existing_file_is_not_skipped(tmp_path):
     result = json.load(open(os.path.join(ares_dir, "blenderbananapancakes.json")))
     assert result["is_complete"] is True
     assert result["num_orderings_used"] == 2  # actually recomputed, not left partial
+
+
+def test_particle_data_is_opt_in_and_only_for_graph_methods(tmp_path):
+    """save_particle_data defaults to off (every existing run/config predates
+    this field, and it's real data volume). When enabled, it's only written
+    for graph-conditioned methods (sager/sager_ancestors) -- ares has no
+    such per-node weighted-sample population to expose."""
+    config = _base_config(tmp_path, ["ares", "sager"])
+    run(config, limit=1, dry_run=True)
+
+    ares_result = json.load(open(os.path.join(config["results_dir"], "raw", "ares", "blenderbananapancakes.json")))
+    sager_result = json.load(open(os.path.join(config["results_dir"], "raw", "sager", "blenderbananapancakes.json")))
+    assert "particle_data_by_node_id" not in ares_result["orderings"][0]
+    assert "particle_data_by_node_id" not in sager_result["orderings"][0]
+
+    config2 = _base_config(tmp_path, ["ares", "sager"])
+    config2["results_dir"] = str(tmp_path / "results2")
+    config2["save_particle_data"] = True
+    run(config2, limit=1, dry_run=True)
+
+    ares_result2 = json.load(open(os.path.join(config2["results_dir"], "raw", "ares", "blenderbananapancakes.json")))
+    sager_result2 = json.load(open(os.path.join(config2["results_dir"], "raw", "sager", "blenderbananapancakes.json")))
+    assert "particle_data_by_node_id" not in ares_result2["orderings"][0]  # ares still never gets it
+    particle_data = sager_result2["orderings"][0]["particle_data_by_node_id"]
+    assert len(particle_data) > 0
+    sample_node = next(iter(particle_data.values()))
+    assert set(sample_node.keys()) == {"parent_ids", "premises_text", "query_samples", "query_y", "query_counts"}
+    assert len(sample_node["query_samples"]) == len(sample_node["query_y"]) == len(sample_node["query_counts"])
+    # every query_samples row is as long as premises_text -- one retention
+    # bit per premise, so a later analysis can correlate a specific
+    # premise's column against query_y
+    for row in sample_node["query_samples"]:
+        assert len(row) == len(sample_node["premises_text"])
