@@ -1,0 +1,719 @@
+<title>Recipe Dependency Explorer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #f5f6f7;
+    --panel: #ffffff;
+    --panel-2: #fafbfb;
+    --ink: #1b1f23;
+    --ink-soft: #565d64;
+    --ink-faint: #8b9096;
+    --border: #dde1e4;
+    --border-strong: #c3c8cc;
+
+    --amber: #c97f1e;
+    --amber-fill: rgba(201, 127, 30, 0.16);
+    --amber-line: #c97f1e;
+
+    --slate: #3f5a76;
+    --slate-fill: rgba(63, 90, 118, 0.16);
+    --slate-line: #3f5a76;
+
+    --sage: #4f8a72;
+    --sage-fill: rgba(79, 138, 114, 0.16);
+    --sage-line: #4f8a72;
+
+    --edge: #b6bcc2;
+    --dim-opacity: 0.22;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171a;
+      --panel: #1b1f23;
+      --panel-2: #202428;
+      --ink: #eceeef;
+      --ink-soft: #a8adb3;
+      --ink-faint: #75797f;
+      --border: #2b3034;
+      --border-strong: #383e43;
+
+      --amber: #e3a24a;
+      --amber-fill: rgba(227, 162, 74, 0.18);
+      --amber-line: #e3a24a;
+
+      --slate: #8aabc9;
+      --slate-fill: rgba(138, 171, 201, 0.18);
+      --slate-line: #8aabc9;
+
+      --sage: #7fb89c;
+      --sage-fill: rgba(127, 184, 156, 0.18);
+      --sage-line: #7fb89c;
+
+      --edge: #3a4045;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171a;
+    --panel: #1b1f23;
+    --panel-2: #202428;
+    --ink: #eceeef;
+    --ink-soft: #a8adb3;
+    --ink-faint: #75797f;
+    --border: #2b3034;
+    --border-strong: #383e43;
+
+    --amber: #e3a24a;
+    --amber-fill: rgba(227, 162, 74, 0.18);
+    --amber-line: #e3a24a;
+
+    --slate: #8aabc9;
+    --slate-fill: rgba(138, 171, 201, 0.18);
+    --slate-line: #8aabc9;
+
+    --sage: #7fb89c;
+    --sage-fill: rgba(127, 184, 156, 0.18);
+    --sage-line: #7fb89c;
+
+    --edge: #3a4045;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: 260px 1fr 320px;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+    gap: 0;
+  }
+
+  header.top {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.9rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    flex-wrap: wrap;
+  }
+  header.top h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: 1.3rem;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  header.top .sub {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  header.top .sub code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.92em;
+    background: var(--slate-fill);
+    color: var(--slate);
+    padding: 0.05em 0.35em;
+    border-radius: 3px;
+  }
+
+  nav.sidebar {
+    border-right: 1px solid var(--border);
+    background: var(--panel);
+    overflow-y: auto;
+    padding: 0.75rem;
+  }
+  nav.sidebar .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.4rem 0.5rem 0.5rem;
+  }
+  .recipe-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    padding: 0.5rem 0.6rem;
+    font: inherit;
+    font-size: 0.85rem;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .recipe-btn:hover { background: var(--panel-2); }
+  .recipe-btn.active {
+    background: var(--amber-fill);
+    border-color: var(--amber);
+    font-weight: 500;
+  }
+  .recipe-btn .meta {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .recipe-btn.active .meta { color: var(--amber); }
+
+  main.canvas-wrap {
+    overflow: auto;
+    background: var(--bg);
+    padding: 1.25rem;
+    position: relative;
+  }
+  .canvas-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .canvas-toolbar h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 540;
+    font-size: 1.15rem;
+    margin: 0;
+  }
+  .legend {
+    display: flex;
+    gap: 1.1rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; border: 1px solid var(--border-strong); }
+
+  .graph-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    overflow: auto;
+  }
+
+  svg.dag { display: block; }
+  .node-box {
+    fill: var(--panel);
+    stroke: var(--border-strong);
+    stroke-width: 1.3;
+    cursor: pointer;
+    transition: opacity 0.12s ease, stroke-width 0.12s ease;
+  }
+  .node-box:hover { stroke: var(--ink-soft); }
+  .node-label {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 11px;
+    fill: var(--ink);
+    pointer-events: none;
+  }
+  .node-id {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 9px;
+    fill: var(--ink-faint);
+    pointer-events: none;
+  }
+  .node.selected .node-box { fill: var(--amber-fill); stroke: var(--amber); stroke-width: 2; }
+  .node.selected .node-id { fill: var(--amber); }
+  .node.direct-parent .node-box { fill: var(--slate-fill); stroke: var(--slate); stroke-width: 1.8; }
+  .node.direct-parent .node-id { fill: var(--slate); }
+  .node.ancestor .node-box { fill: var(--sage-fill); stroke: var(--sage); stroke-width: 1.6; }
+  .node.ancestor .node-id { fill: var(--sage); }
+  .node.dimmed .node-box { opacity: var(--dim-opacity); }
+  .node.dimmed .node-label, .node.dimmed .node-id { opacity: var(--dim-opacity); }
+
+  .edge-halo { stroke: var(--panel); stroke-width: 4.5; fill: none; stroke-linecap: round; }
+  .edge-halo.dimmed { opacity: 0.12; }
+  .edge-line { stroke: var(--edge); stroke-width: 1.6; fill: none; stroke-linecap: round; transition: opacity 0.12s ease, stroke 0.12s ease; }
+  .edge-line.highlight-parent { stroke: var(--slate) !important; stroke-width: 2.4; }
+  .edge-line.highlight-ancestor { stroke: var(--sage) !important; stroke-width: 1.8; }
+  .edge-line.dimmed { stroke: var(--edge) !important; opacity: 0.15; }
+  .edge-line.skip-rank { stroke-dasharray: 7 5; }
+
+  aside.detail {
+    border-left: 1px solid var(--border);
+    background: var(--panel);
+    overflow-y: auto;
+    padding: 1.1rem;
+  }
+  .detail-empty {
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    padding-top: 1rem;
+  }
+  .detail-empty strong { color: var(--ink-soft); }
+  .detail-head {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .detail-text {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    margin-bottom: 1.1rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .detail-section { margin-bottom: 1.1rem; }
+  .detail-section h3 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .detail-section h3 .count {
+    font-weight: 400;
+    color: var(--ink-faint);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .detail-section.parents h3 { color: var(--slate); }
+  .detail-section.ancestors h3 { color: var(--sage); }
+  ul.claim-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+  ul.claim-list li {
+    font-size: 0.82rem;
+    line-height: 1.4;
+    padding: 0.4rem 0.55rem;
+    border-radius: 6px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+  }
+  ul.claim-list li .lid {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    margin-right: 0.4rem;
+  }
+  .detail-section.parents li { border-left: 3px solid var(--slate); }
+  .detail-section.ancestors li { border-left: 3px solid var(--sage); }
+  .clear-btn {
+    font: inherit;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.35rem 0.7rem;
+    cursor: pointer;
+  }
+  .clear-btn:hover { border-color: var(--border-strong); color: var(--ink); }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; grid-template-rows: auto auto auto 1fr; height: auto; }
+    nav.sidebar { max-height: 220px; }
+    aside.detail { border-left: none; border-top: 1px solid var(--border); }
+  }
+</style>
+
+<div class="app">
+  <header class="top">
+    <h1>Recipe Dependency Explorer</h1>
+    <div class="sub">
+      All 24 CaptainCookRecipes ground-truth DAGs. Hover a step to preview its
+      <code>Pa_G(c)</code> direct parents and <code>Anc_G(c)</code> full ancestor set,
+      click to pin it &mdash; the two premise universes SAGER conditions on, versus
+      ARES's sequence prefix.
+    </div>
+  </header>
+
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <main class="canvas-wrap">
+    <div class="canvas-toolbar">
+      <h2 id="recipe-title">&mdash;</h2>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--amber-fill);border-color:var(--amber)"></i>selected step</span>
+        <span><i class="swatch" style="background:var(--slate-fill);border-color:var(--slate)"></i>direct parent</span>
+        <span><i class="swatch" style="background:var(--sage-fill);border-color:var(--sage)"></i>ancestor (indirect)</span>
+      </div>
+    </div>
+    <div class="graph-panel">
+      <svg class="dag" id="dag-svg"></svg>
+    </div>
+  </main>
+
+  <aside class="detail" id="detail-panel">
+    <div class="detail-empty">
+      Hover any step in the graph to preview <strong>what it directly depends on</strong>
+      (its <code>Pa_G(c)</code> parents) and <strong>everything upstream of it</strong>
+      (its full <code>Anc_G(c)</code> ancestor set). Click to pin the selection and see
+      full step text below. Parents are always a subset of ancestors &mdash; the gap
+      between the two is exactly what SAGER (direct parents) and SAGER-ancestors
+      disagree about.
+    </div>
+  </aside>
+</div>
+
+<script>
+  const DATA = __DATA_JSON__;
+
+  const NODE_W = 168, NODE_H = 40, GAP_X = 22, GAP_Y = 34, PAD = 24;
+
+  let currentRecipe = null;
+  let selectedNode = null;
+  let currentLayout = null; // { positions: {id:{x,y}}, order: [...] }
+
+  function computeRanks(nodes, edges) {
+    const children = {}, indeg = {};
+    nodes.forEach(n => { children[n] = []; indeg[n] = 0; });
+    edges.forEach(([u, v]) => {
+      if (!(u in children)) children[u] = [];
+      children[u].push(v);
+      indeg[v] = (indeg[v] || 0) + 1;
+    });
+    const rank = {};
+    nodes.forEach(n => rank[n] = 0);
+    const indegCopy = Object.assign({}, indeg);
+    const queue = nodes.filter(n => (indegCopy[n] || 0) === 0);
+    const order = [];
+    while (queue.length) {
+      const n = queue.shift();
+      order.push(n);
+      (children[n] || []).forEach(c => {
+        indegCopy[c] -= 1;
+        if (indegCopy[c] === 0) queue.push(c);
+      });
+    }
+    order.forEach(n => {
+      (children[n] || []).forEach(c => {
+        rank[c] = Math.max(rank[c], rank[n] + 1);
+      });
+    });
+    return rank;
+  }
+
+  function orderWithinRanks(nodes, edges, rank) {
+    const maxRank = Math.max.apply(null, nodes.map(n => rank[n]));
+    const byRank = [];
+    for (let r = 0; r <= maxRank; r++) byRank.push([]);
+    nodes.forEach(n => byRank[rank[n]].push(n));
+    byRank.forEach(list => list.sort((a, b) => a - b));
+
+    const parentsOf = {}, childrenOf = {};
+    nodes.forEach(n => { parentsOf[n] = []; childrenOf[n] = []; });
+    edges.forEach(([u, v]) => {
+      if (childrenOf[u]) childrenOf[u].push(v);
+      if (parentsOf[v]) parentsOf[v].push(u);
+    });
+
+    function positionIndex() {
+      const pos = {};
+      byRank.forEach(list => list.forEach((n, i) => pos[n] = i));
+      return pos;
+    }
+
+    for (let iter = 0; iter < 4; iter++) {
+      const pos = positionIndex();
+      const downward = iter % 2 === 0;
+      const neighbors = downward ? parentsOf : childrenOf;
+      const rIndices = downward
+        ? Array.from({ length: maxRank + 1 }, (_, i) => i)
+        : Array.from({ length: maxRank + 1 }, (_, i) => maxRank - i);
+      rIndices.forEach(r => {
+        const list = byRank[r];
+        if (!list || list.length < 2) return;
+        const bary = {};
+        list.forEach(n => {
+          const ns = neighbors[n].filter(m => pos[m] !== undefined);
+          bary[n] = ns.length ? ns.reduce((s, m) => s + pos[m], 0) / ns.length : pos[n];
+        });
+        list.sort((a, b) => bary[a] - bary[b]);
+      });
+    }
+    return byRank;
+  }
+
+  function layoutRecipe(recipe) {
+    const nodes = recipe.derived_node_ids.slice();
+    const edges = recipe.edges;
+    const rank = computeRanks(nodes, edges);
+    const byRank = orderWithinRanks(nodes, edges, rank);
+    const maxCount = Math.max.apply(null, byRank.map(l => l.length));
+    const rowWidth = maxCount * (NODE_W + GAP_X) - GAP_X;
+
+    const positions = {};
+    byRank.forEach((list, r) => {
+      const thisWidth = list.length * (NODE_W + GAP_X) - GAP_X;
+      const startX = (rowWidth - thisWidth) / 2;
+      list.forEach((n, i) => {
+        positions[n] = { x: startX + i * (NODE_W + GAP_X), y: r * (NODE_H + GAP_Y) };
+      });
+    });
+
+    const width = rowWidth + PAD * 2;
+    const height = byRank.length * (NODE_H + GAP_Y) - GAP_Y + PAD * 2;
+    return { positions, rank, width, height, numRanks: byRank.length };
+  }
+
+  function truncate(text, n) {
+    return text.length > n ? text.slice(0, n - 1) + "…" : text;
+  }
+
+  function renderSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const names = Object.keys(DATA).sort();
+    let html = '<div class="eyebrow">24 recipes</div>';
+    names.forEach(name => {
+      const r = DATA[name];
+      html += `<button class="recipe-btn" data-recipe="${name}">
+        <span>${name}</span>
+        <span class="meta">${r.derived_node_ids.length}n</span>
+      </button>`;
+    });
+    sidebar.innerHTML = html;
+    sidebar.querySelectorAll(".recipe-btn").forEach(btn => {
+      btn.addEventListener("click", () => selectRecipe(btn.dataset.recipe));
+    });
+  }
+
+  function selectRecipe(name) {
+    currentRecipe = name;
+    selectedNode = null;
+    document.querySelectorAll(".recipe-btn").forEach(b => {
+      b.classList.toggle("active", b.dataset.recipe === name);
+    });
+    document.getElementById("recipe-title").textContent = name;
+    renderGraph(name);
+    renderDetail();
+  }
+
+  function renderGraph(name) {
+    const recipe = DATA[name];
+    const layout = layoutRecipe(recipe);
+    currentLayout = layout;
+    const svg = document.getElementById("dag-svg");
+    svg.setAttribute("viewBox", `0 0 ${layout.width} ${layout.height}`);
+    svg.setAttribute("width", Math.min(layout.width, 1400));
+    svg.setAttribute("height", layout.height * Math.min(1, 1400 / layout.width));
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", `Dependency graph for ${name}: ${recipe.derived_node_ids.length} steps`);
+
+    const ns = "http://www.w3.org/2000/svg";
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const defs = document.createElementNS(ns, "defs");
+    const markerSpec = [["arrow", "var(--edge)"], ["arrow-slate", "var(--slate)"], ["arrow-sage", "var(--sage)"]];
+    defs.innerHTML = markerSpec.map(([id, color]) => `
+      <marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5"
+          markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" style="fill:${color}"></path>
+      </marker>`).join("");
+    svg.appendChild(defs);
+
+    const edgeGroup = document.createElementNS(ns, "g");
+    edgeGroup.setAttribute("id", "edge-group");
+    recipe.edges.forEach(([u, v]) => {
+      const pu = layout.positions[u], pv = layout.positions[v];
+      if (!pu || !pv) return;
+      const x1 = pu.x + NODE_W / 2, y1 = pu.y + NODE_H;
+      const x2 = pv.x + NODE_W / 2, y2 = pv.y;
+      const midY = (y1 + y2) / 2;
+      const d = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
+
+      // Halo: a background-colored casing drawn under every edge so that
+      // crossing lines read as continuous over one another instead of
+      // merging into an ambiguous knot -- the classic transit-map trick.
+      const halo = document.createElementNS(ns, "path");
+      halo.setAttribute("d", d);
+      halo.setAttribute("class", "edge-halo");
+      halo.setAttribute("data-u", u);
+      halo.setAttribute("data-v", v);
+      edgeGroup.appendChild(halo);
+
+      const line = document.createElementNS(ns, "path");
+      line.setAttribute("d", d);
+      const spansMultipleRanks = (layout.rank[v] - layout.rank[u]) > 1;
+      line.setAttribute("class", spansMultipleRanks ? "edge-line skip-rank" : "edge-line");
+      line.setAttribute("data-u", u);
+      line.setAttribute("data-v", v);
+      line.setAttribute("data-skip", spansMultipleRanks ? "1" : "0");
+      line.setAttribute("marker-end", "url(#arrow)");
+      edgeGroup.appendChild(line);
+    });
+    svg.appendChild(edgeGroup);
+
+    const nodeGroup = document.createElementNS(ns, "g");
+    nodeGroup.setAttribute("id", "node-group");
+    recipe.derived_node_ids.forEach(nid => {
+      const pos = layout.positions[nid];
+      if (!pos) return;
+      const g = document.createElementNS(ns, "g");
+      g.setAttribute("class", "node");
+      g.setAttribute("data-node-id", nid);
+      g.setAttribute("transform", `translate(${pos.x}, ${pos.y})`);
+      g.style.cursor = "pointer";
+
+      const rect = document.createElementNS(ns, "rect");
+      rect.setAttribute("class", "node-box");
+      rect.setAttribute("width", NODE_W);
+      rect.setAttribute("height", NODE_H);
+      rect.setAttribute("rx", 7);
+      g.appendChild(rect);
+
+      const title = document.createElementNS(ns, "title");
+      title.textContent = `#${nid}: ${recipe.steps[nid]}`;
+      g.appendChild(title);
+
+      const idText = document.createElementNS(ns, "text");
+      idText.setAttribute("class", "node-id");
+      idText.setAttribute("x", 8);
+      idText.setAttribute("y", 13);
+      idText.textContent = `#${nid}`;
+      g.appendChild(idText);
+
+      const label = document.createElementNS(ns, "text");
+      label.setAttribute("class", "node-label");
+      label.setAttribute("x", 8);
+      label.setAttribute("y", 29);
+      label.textContent = truncate(recipe.steps[nid], 24);
+      g.appendChild(label);
+
+      // Hovering previews the same highlight a click commits to -- so the
+      // parent/ancestor relationship is readable by scanning the graph with
+      // the mouse, without needing to click every step one at a time. A
+      // click always wins: once something is selected, hovering elsewhere
+      // no longer disturbs it.
+      g.addEventListener("mouseenter", () => {
+        if (selectedNode === null) applyHighlight(nid);
+      });
+      g.addEventListener("mouseleave", () => {
+        if (selectedNode === null) applyHighlight(null);
+      });
+
+      nodeGroup.appendChild(g);
+    });
+    svg.appendChild(nodeGroup);
+
+    svg.onclick = (e) => {
+      const g = e.target.closest("[data-node-id]");
+      if (!g) return;
+      const nid = parseInt(g.dataset.nodeId, 10);
+      selectedNode = selectedNode === nid ? null : nid;
+      applyHighlight(selectedNode);
+      renderDetail();
+    };
+  }
+
+  function applyHighlight(nodeId) {
+    const svg = document.getElementById("dag-svg");
+    const recipe = DATA[currentRecipe];
+    const nodeEls = svg.querySelectorAll(".node");
+    const edgeEls = svg.querySelectorAll(".edge-line");
+
+    if (nodeId === null) {
+      nodeEls.forEach(el => el.setAttribute("class", "node"));
+      edgeEls.forEach(el => {
+        el.setAttribute("class", el.dataset.skip === "1" ? "edge-line skip-rank" : "edge-line");
+        el.setAttribute("marker-end", "url(#arrow)");
+      });
+      return;
+    }
+
+    const parents = new Set(recipe.parents_by_node_id[nodeId] || []);
+    const ancestors = new Set(recipe.ancestors_by_node_id[nodeId] || []);
+
+    nodeEls.forEach(el => {
+      const nid = parseInt(el.dataset.nodeId, 10);
+      let cls = "node";
+      if (nid === nodeId) cls += " selected";
+      else if (parents.has(nid)) cls += " direct-parent";
+      else if (ancestors.has(nid)) cls += " ancestor";
+      else cls += " dimmed";
+      el.setAttribute("class", cls);
+    });
+
+    edgeEls.forEach(el => {
+      const u = parseInt(el.dataset.u, 10);
+      const v = parseInt(el.dataset.v, 10);
+      let cls = "edge-line";
+      let marker = "arrow";
+      if (v === nodeId && parents.has(u)) { cls += " highlight-parent"; marker = "arrow-slate"; }
+      else if ((ancestors.has(u) || u === nodeId) && (ancestors.has(v) || v === nodeId)) { cls += " highlight-ancestor"; marker = "arrow-sage"; }
+      else cls += " dimmed";
+      el.setAttribute("class", cls);
+      el.setAttribute("marker-end", `url(#${marker})`);
+    });
+  }
+
+  function claimListHTML(ids, recipe) {
+    if (!ids.length) return '<div style="color:var(--ink-faint);font-size:0.8rem;">none &mdash; this is a root step</div>';
+    return '<ul class="claim-list">' + ids.map(id =>
+      `<li><span class="lid">#${id}</span>${recipe.steps[id]}</li>`
+    ).join("") + '</ul>';
+  }
+
+  function renderDetail() {
+    const panel = document.getElementById("detail-panel");
+    if (selectedNode === null || !currentRecipe) {
+      panel.innerHTML = `<div class="detail-empty">
+        Hover any step in the graph to preview <strong>what it directly depends on</strong>
+        (its <code>Pa_G(c)</code> parents) and <strong>everything upstream of it</strong>
+        (its full <code>Anc_G(c)</code> ancestor set). Click to pin the selection and see
+        full step text below. Parents are always a subset of ancestors &mdash; the gap
+        between the two is exactly what SAGER (direct parents) and SAGER-ancestors
+        disagree about.
+      </div>`;
+      return;
+    }
+    const recipe = DATA[currentRecipe];
+    const parents = (recipe.parents_by_node_id[selectedNode] || []).slice().sort((a, b) => a - b);
+    const ancestors = (recipe.ancestors_by_node_id[selectedNode] || []).slice().sort((a, b) => a - b);
+    const ancestorsOnly = ancestors.filter(a => !parents.includes(a));
+
+    panel.innerHTML = `
+      <div class="detail-head">Step #${selectedNode}</div>
+      <div class="detail-text">${recipe.steps[selectedNode]}</div>
+
+      <div class="detail-section parents">
+        <h3>Direct parents <span class="count">Pa_G(c) &middot; ${parents.length}</span></h3>
+        ${claimListHTML(parents, recipe)}
+      </div>
+
+      <div class="detail-section ancestors">
+        <h3>Ancestors only <span class="count">Anc_G(c) &minus; Pa_G(c) &middot; ${ancestorsOnly.length}</span></h3>
+        ${claimListHTML(ancestorsOnly, recipe)}
+      </div>
+
+      <button class="clear-btn" id="clear-selection">Clear selection</button>
+    `;
+    document.getElementById("clear-selection").onclick = () => {
+      selectedNode = null;
+      applyHighlight(null);
+      renderDetail();
+    };
+  }
+
+  renderSidebar();
+  selectRecipe(Object.keys(DATA).sort()[0]);
+</script>
