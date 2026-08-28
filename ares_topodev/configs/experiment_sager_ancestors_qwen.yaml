@@ -28,3 +28,4 @@ results_dir: ares_topodev/results_sager_qwen
 cache_path: ares_topodev/results_sager_qwen/cache/llm_prompt_cache.jsonl
 raw_claims_shuffle_idx: 0
 qwen_num_gpus: 3
+save_particle_data: true

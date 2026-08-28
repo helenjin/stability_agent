@@ -21,4 +21,5 @@ ares_topodev/results/cache/*
 ares_topodev/results_smoketest/
 ares_topodev/results_invalid/cache/
 ares_topodev/results_invalid_epsilon0.1/cache/
+ares_topodev/results_sager_qwen/cache/
 ares_topodev/vendor/ares/src/exp_helpers/models/.llms*.py.cache/

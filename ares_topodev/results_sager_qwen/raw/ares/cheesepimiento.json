@@ -1,0 +1,477 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "cheesepimiento",
+  "method": "ares",
+  "method_config_key": "cert_granular_temp0_nonexact",
+  "model": "qwen2.5-7b-instruct",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 270.0,
+    "exact": true,
+    "lower_bound_unique_found": 270,
+    "importance_sample_estimate": 270.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (Mix-Mix the cheese and red bell pepper in the bowl), and have all necessary ingredients (butter), we can now do the step add-add 1/2 tbsp softened butter to the bowl. And now we have completed this step add-add 1/2 tbsp softened butter to the bowl.",
+    "2": "Because we have completed all previous steps (Mix-Mix the cheese and red bell pepper in the bowl), and have all necessary ingredients (salt), we can now do the step Add-Add 1/4 teaspoon salt to the bowl. And now we have completed this step Add-Add 1/4 teaspoon salt to the bowl.",
+    "3": "Because we have completed all previous steps (START),  we can now do the step Add-Add 1/3 cup cheddar cheese to a microwave-safe cup. And now we have completed this step Add-Add 1/3 cup cheddar cheese to a microwave-safe cup.",
+    "4": "Because we have completed all previous steps (Melt-Melt the cheese by microwaving cup for 30 sec. (Check after 30 seconds and microwave for 10 seconds more if needed), and Microwave-Microwave the bowl, covered, for 2 minutes), and have all necessary ingredients (cheese, and red bell pepper), we can now do the step Mix-Mix the cheese and red bell pepper in the bowl. And now we have completed this step Mix-Mix the cheese and red bell pepper in the bowl.",
+    "5": "Because we have completed all previous steps (Place-Place the chopped pepper in the microwave-safe bowl, and Add-Add 1 tablespoons of water to the bowl),  we can now do the step Microwave-Microwave the bowl, covered, for 2 minutes. And now we have completed this step Microwave-Microwave the bowl, covered, for 2 minutes.",
+    "6": "Because we have completed all previous steps (Mix-Mix the cheese and red bell pepper in the bowl), and have all necessary ingredients (pepper), we can now do the step Add-Add 1/4 teaspoon pepper to the bowl. And now we have completed this step Add-Add 1/4 teaspoon pepper to the bowl.",
+    "7": "Because we have completed all previous steps (START), and have all necessary ingredients (water), we can now do the step Add-Add 1 tablespoons of water to the bowl. And now we have completed this step Add-Add 1 tablespoons of water to the bowl.",
+    "8": "Because we have completed all previous steps (START), and have all necessary ingredients (red bell pepper), we can now do the step Chop-Chop 1/4 red bell pepper into tiny bits. And now we have completed this step Chop-Chop 1/4 red bell pepper into tiny bits.",
+    "9": "Because we have completed all previous steps (Chop-Chop 1/4 red bell pepper into tiny bits), and have all necessary ingredients (pepper), we can now do the step Place-Place the chopped pepper in the microwave-safe bowl. And now we have completed this step Place-Place the chopped pepper in the microwave-safe bowl.",
+    "10": "Because we have completed all previous steps (Add-Add 1/3 cup cheddar cheese to a microwave-safe cup), and have all necessary ingredients (cheese), we can now do the step Melt-Melt the cheese by microwaving cup for 30 sec. (Check after 30 seconds and microwave for 10 seconds more if needed). And now we have completed this step Melt-Melt the cheese by microwaving cup for 30 sec. (Check after 30 seconds and microwave for 10 seconds more if needed).",
+    "11": "Because we have completed all previous steps (Add-Add 1/4 teaspoon pepper to the bowl, and add-add 1/2 tbsp softened butter to the bowl, and Add-Add 1/4 teaspoon salt to the bowl),  we can now do the step Mix-Mix all the ingredients of the bowl well. And now we have completed this step Mix-Mix all the ingredients of the bowl well.",
+    "12": "Because we have completed all previous steps (Mix-Mix all the ingredients of the bowl well),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 1,
+    "3": 0,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 1,
+    "12": 1
+  },
+  "parents_by_node_id": {
+    "1": [
+      4
+    ],
+    "2": [
+      4
+    ],
+    "3": [],
+    "4": [
+      10,
+      5
+    ],
+    "5": [
+      9,
+      7
+    ],
+    "6": [
+      4
+    ],
+    "7": [],
+    "8": [],
+    "9": [
+      8
+    ],
+    "10": [
+      3
+    ],
+    "11": [
+      6,
+      1,
+      2
+    ],
+    "12": [
+      11
+    ]
+  },
+  "ancestors_by_node_id": {
+    "1": [
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10
+    ],
+    "2": [
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10
+    ],
+    "3": [],
+    "4": [
+      3,
+      5,
+      7,
+      8,
+      9,
+      10
+    ],
+    "5": [
+      7,
+      8,
+      9
+    ],
+    "6": [
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10
+    ],
+    "7": [],
+    "8": [],
+    "9": [
+      8
+    ],
+    "10": [
+      3
+    ],
+    "11": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "12": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        7,
+        8,
+        9,
+        5,
+        3,
+        10,
+        4,
+        6,
+        1,
+        2,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "7": 0.8000000715255737,
+        "8": 0.6007273197174072,
+        "9": 0.4941818118095398,
+        "5": 0.8058182001113892,
+        "3": 0.7512727379798889,
+        "10": 0.8218181729316711,
+        "4": 0.7658182382583618,
+        "6": 0.8021818399429321,
+        "1": 0.7752727270126343,
+        "2": 0.8538181781768799,
+        "11": 0.9269090294837952,
+        "12": 0.9970908761024475
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        7,
+        8,
+        9,
+        3,
+        5,
+        10,
+        4,
+        2,
+        1,
+        6,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "7": 0.800000011920929,
+        "8": 0.6080000400543213,
+        "9": 0.4854545593261719,
+        "3": 0.7461819052696228,
+        "5": 0.7956364154815674,
+        "10": 0.7643635869026184,
+        "4": 0.7512727379798889,
+        "2": 0.8530908823013306,
+        "1": 0.7970908880233765,
+        "6": 0.7927272915840149,
+        "11": 0.9127272963523865,
+        "12": 0.996363639831543
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        7,
+        3,
+        8,
+        10,
+        9,
+        5,
+        4,
+        2,
+        6,
+        1,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "7": 0.800000011920929,
+        "3": 0.8727273344993591,
+        "8": 0.7839999198913574,
+        "10": 0.7847273349761963,
+        "9": 0.5163636207580566,
+        "5": 0.8130909204483032,
+        "4": 0.7767273187637329,
+        "2": 0.8465455174446106,
+        "6": 0.7941818237304688,
+        "1": 0.8058182001113892,
+        "11": 0.9174545407295227,
+        "12": 0.9672727584838867
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        3,
+        7,
+        8,
+        10,
+        9,
+        5,
+        4,
+        1,
+        2,
+        6,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "3": 0.8618181347846985,
+        "7": 0.7709090709686279,
+        "8": 0.7723636031150818,
+        "10": 0.717090904712677,
+        "9": 0.5287272930145264,
+        "5": 0.8050909638404846,
+        "4": 0.7396363615989685,
+        "1": 0.8123636245727539,
+        "2": 0.8225454688072205,
+        "6": 0.8000000715255737,
+        "11": 0.9185454845428467,
+        "12": 0.9970908761024475
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        7,
+        8,
+        3,
+        10,
+        9,
+        5,
+        4,
+        2,
+        6,
+        1,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "7": 0.800000011920929,
+        "8": 0.6036363840103149,
+        "3": 0.7956363558769226,
+        "10": 0.7709090709686279,
+        "9": 0.5185454487800598,
+        "5": 0.8327271938323975,
+        "4": 0.7701818943023682,
+        "2": 0.8341818451881409,
+        "6": 0.7476364374160767,
+        "1": 0.7898181676864624,
+        "11": 0.8676363229751587,
+        "12": 0.958545446395874
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        8,
+        9,
+        3,
+        7,
+        5,
+        10,
+        4,
+        1,
+        6,
+        2,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "8": 0.826909065246582,
+        "9": 0.39345455169677734,
+        "3": 0.8145455121994019,
+        "7": 0.764363706111908,
+        "5": 0.794181764125824,
+        "10": 0.7723636627197266,
+        "4": 0.7680000066757202,
+        "1": 0.8414545655250549,
+        "6": 0.754909098148346,
+        "2": 0.8865454196929932,
+        "11": 0.9374544620513916,
+        "12": 0.970909059047699
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        3,
+        8,
+        9,
+        10,
+        7,
+        5,
+        4,
+        2,
+        1,
+        6,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "3": 0.8567272424697876,
+        "8": 0.6763636469841003,
+        "9": 0.5352727174758911,
+        "10": 0.7221817970275879,
+        "7": 0.7650908827781677,
+        "5": 0.8370909690856934,
+        "4": 0.758545458316803,
+        "2": 0.8152728080749512,
+        "1": 0.787636399269104,
+        "6": 0.7818182110786438,
+        "11": 0.8941817879676819,
+        "12": 0.9927272796630859
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        7,
+        3,
+        8,
+        9,
+        5,
+        10,
+        4,
+        6,
+        2,
+        1,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "7": 0.800000011920929,
+        "3": 0.8727273344993591,
+        "8": 0.771636426448822,
+        "9": 0.5770909190177917,
+        "5": 0.7905454635620117,
+        "10": 0.7898181676864624,
+        "4": 0.7789090871810913,
+        "6": 0.7992727756500244,
+        "2": 0.8974545001983643,
+        "1": 0.7890909314155579,
+        "11": 0.8970909118652344,
+        "12": 0.9854545593261719
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        3,
+        7,
+        10,
+        8,
+        9,
+        5,
+        4,
+        2,
+        1,
+        6,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "3": 0.8567272424697876,
+        "7": 0.7629091143608093,
+        "10": 0.7767272591590881,
+        "8": 0.8007273077964783,
+        "9": 0.5316363573074341,
+        "5": 0.8378182053565979,
+        "4": 0.7498182654380798,
+        "2": 0.8167272806167603,
+        "1": 0.7592727541923523,
+        "6": 0.763272762298584,
+        "11": 0.8883635997772217,
+        "12": 0.9934545159339905
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        7,
+        8,
+        9,
+        5,
+        3,
+        10,
+        4,
+        1,
+        2,
+        6,
+        11,
+        12
+      ],
+      "scores_by_node_id": {
+        "7": 0.800000011920929,
+        "8": 0.6036363840103149,
+        "9": 0.4854545593261719,
+        "5": 0.8167272806167603,
+        "3": 0.7170909643173218,
+        "10": 0.807272732257843,
+        "4": 0.7890909314155579,
+        "1": 0.8123636841773987,
+        "2": 0.8523637056350708,
+        "6": 0.7640000581741333,
+        "11": 0.906181812286377,
+        "12": 0.9723637104034424
+      }
+    }
+  ],
+  "failed_orderings": []
+}

@@ -1,0 +1,484 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "microwavefrenchtoast",
+  "method": "ares",
+  "method_config_key": "cert_granular_temp0_nonexact",
+  "model": "qwen2.5-7b-instruct",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 14.0,
+    "exact": true,
+    "lower_bound_unique_found": 14,
+    "importance_sample_estimate": 14.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (add-add bread pieces to the egg mixture in the mug, pressing the bread down into the egg),  we can now do the step Microwave-Microwave on high for 90 seconds until the egg is cooked through. And now we have completed this step Microwave-Microwave on high for 90 seconds until the egg is cooked through.",
+    "3": "Because we have completed all previous steps (Cut or tear-Cut or tear 1 slices of bread into bite-size pieces, and stir-stir the mug), and have all necessary ingredients (bread, and egg), we can now do the step add-add bread pieces to the egg mixture in the mug, pressing the bread down into the egg. And now we have completed this step add-add bread pieces to the egg mixture in the mug, pressing the bread down into the egg.",
+    "4": "Because we have completed all previous steps (Add-Add 1/4 teaspoon vanilla extract to the mug, and Sprinkle-Sprinkle 1/4 teaspoon cinnamon over the egg),  we can now do the step stir-stir the mug. And now we have completed this step stir-stir the mug.",
+    "5": "Because we have completed all previous steps (START), and have all necessary ingredients (butter), we can now do the step melt-In a large mug, melt 1 tablespoon of softened butter in the microwave for about 30 seconds. And now we have completed this step melt-In a large mug, melt 1 tablespoon of softened butter in the microwave for about 30 seconds.",
+    "6": "Because we have completed all previous steps (whisk-In the mug, whisk one egg with a fork until well blended), and have all necessary ingredients (cinnamon, and egg), we can now do the step Sprinkle-Sprinkle 1/4 teaspoon cinnamon over the egg. And now we have completed this step Sprinkle-Sprinkle 1/4 teaspoon cinnamon over the egg.",
+    "7": "Because we have completed all previous steps (Put-Put the mug's contents on a plate),  we can now do the step cut-cut the contents on plate, and serve. And now we have completed this step cut-cut the contents on plate, and serve.",
+    "8": "Because we have completed all previous steps (Microwave-Microwave on high for 90 seconds until the egg is cooked through),  we can now do the step Put-Put the mug's contents on a plate. And now we have completed this step Put-Put the mug's contents on a plate.",
+    "9": "Because we have completed all previous steps (melt-In a large mug, melt 1 tablespoon of softened butter in the microwave for about 30 seconds), and have all necessary ingredients (butter), we can now do the step Roll-Roll the butter around in the mug to coat it. And now we have completed this step Roll-Roll the butter around in the mug to coat it.",
+    "10": "Because we have completed all previous steps (START), and have all necessary ingredients (bread), we can now do the step Cut or tear-Cut or tear 1 slices of bread into bite-size pieces. And now we have completed this step Cut or tear-Cut or tear 1 slices of bread into bite-size pieces.",
+    "11": "Because we have completed all previous steps (whisk-In the mug, whisk one egg with a fork until well blended),  we can now do the step Add-Add 1/4 teaspoon vanilla extract to the mug. And now we have completed this step Add-Add 1/4 teaspoon vanilla extract to the mug.",
+    "12": "Because we have completed all previous steps (Roll-Roll the butter around in the mug to coat it), and have all necessary ingredients (egg), we can now do the step whisk-In the mug, whisk one egg with a fork until well blended. And now we have completed this step whisk-In the mug, whisk one egg with a fork until well blended.",
+    "13": "Because we have completed all previous steps (cut-cut the contents on plate, and serve),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "3": 1,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 1,
+    "8": 1,
+    "9": 0,
+    "10": 1,
+    "11": 0,
+    "12": 0,
+    "13": 1
+  },
+  "parents_by_node_id": {
+    "1": [
+      3
+    ],
+    "3": [
+      10,
+      4
+    ],
+    "4": [
+      11,
+      6
+    ],
+    "5": [],
+    "6": [
+      12
+    ],
+    "7": [
+      8
+    ],
+    "8": [
+      1
+    ],
+    "9": [
+      5
+    ],
+    "10": [],
+    "11": [
+      12
+    ],
+    "12": [
+      9
+    ],
+    "13": [
+      7
+    ]
+  },
+  "ancestors_by_node_id": {
+    "1": [
+      3,
+      4,
+      5,
+      6,
+      9,
+      10,
+      11,
+      12
+    ],
+    "3": [
+      4,
+      5,
+      6,
+      9,
+      10,
+      11,
+      12
+    ],
+    "4": [
+      5,
+      6,
+      9,
+      11,
+      12
+    ],
+    "5": [],
+    "6": [
+      5,
+      9,
+      12
+    ],
+    "7": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "8": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      9,
+      10,
+      11,
+      12
+    ],
+    "9": [
+      5
+    ],
+    "10": [],
+    "11": [
+      5,
+      9,
+      12
+    ],
+    "12": [
+      5,
+      9
+    ],
+    "13": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        10,
+        5,
+        9,
+        12,
+        11,
+        6,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "10": 0.9890909194946289,
+        "5": 0.7599999308586121,
+        "9": 0.7781819105148315,
+        "12": 0.758545458316803,
+        "11": 0.8050909042358398,
+        "6": 0.7323635816574097,
+        "4": 0.7425454258918762,
+        "3": 0.7941818237304688,
+        "1": 0.7556363344192505,
+        "8": 0.9520000219345093,
+        "7": 0.343999981880188,
+        "13": 0.4981817901134491
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        10,
+        5,
+        9,
+        12,
+        6,
+        11,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "10": 0.9919999241828918,
+        "5": 0.7476363182067871,
+        "9": 0.754909098148346,
+        "12": 0.7134546041488647,
+        "6": 0.7970909476280212,
+        "11": 0.7498181462287903,
+        "4": 0.7316364049911499,
+        "3": 0.8014545440673828,
+        "1": 0.7454545497894287,
+        "8": 0.9483636617660522,
+        "7": 0.4989090859889984,
+        "13": 0.610909104347229
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        5,
+        9,
+        10,
+        12,
+        11,
+        6,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "5": 0.8138182163238525,
+        "9": 0.7338181734085083,
+        "10": 0.962181806564331,
+        "12": 0.6632727980613708,
+        "11": 0.7890908718109131,
+        "6": 0.7636363506317139,
+        "4": 0.6865454316139221,
+        "3": 0.7869090437889099,
+        "1": 0.7621818780899048,
+        "8": 0.9389090538024902,
+        "7": 0.4480000138282776,
+        "13": 0.6436363458633423
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        5,
+        10,
+        9,
+        12,
+        11,
+        6,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "5": 0.8101817965507507,
+        "10": 0.9679999351501465,
+        "9": 0.7519999146461487,
+        "12": 0.697454571723938,
+        "11": 0.7905455231666565,
+        "6": 0.7454545497894287,
+        "4": 0.7178181409835815,
+        "3": 0.7898182272911072,
+        "1": 0.7541818618774414,
+        "8": 0.9440000057220459,
+        "7": 0.3941817879676819,
+        "13": 0.5163636207580566
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        5,
+        9,
+        12,
+        6,
+        10,
+        11,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "5": 0.8101817965507507,
+        "9": 0.7367273569107056,
+        "12": 0.2770909070968628,
+        "6": 0.7658181190490723,
+        "10": 0.9650909304618835,
+        "11": 0.7545455694198608,
+        "4": 0.7200000286102295,
+        "3": 0.8225455284118652,
+        "1": 0.749090850353241,
+        "8": 0.9774544835090637,
+        "7": 0.5912727117538452,
+        "13": 0.6472727060317993
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        5,
+        10,
+        9,
+        12,
+        6,
+        11,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "5": 0.8101817965507507,
+        "10": 0.9672726988792419,
+        "9": 0.7476363778114319,
+        "12": 0.6952727437019348,
+        "6": 0.7963635921478271,
+        "11": 0.7607272863388062,
+        "4": 0.7178181409835815,
+        "3": 0.8109090924263,
+        "1": 0.7396363615989685,
+        "8": 0.9614543914794922,
+        "7": 0.44363635778427124,
+        "13": 0.4545454680919647
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        5,
+        9,
+        12,
+        10,
+        11,
+        6,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "5": 0.8101817965507507,
+        "9": 0.7367273569107056,
+        "12": 0.2770909070968628,
+        "10": 0.9738181829452515,
+        "11": 0.7923636436462402,
+        "6": 0.7490909695625305,
+        "4": 0.7701817750930786,
+        "3": 0.8269090056419373,
+        "1": 0.7876363396644592,
+        "8": 0.9716363549232483,
+        "7": 0.5869090557098389,
+        "13": 0.7527272701263428
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        5,
+        9,
+        10,
+        12,
+        6,
+        11,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "5": 0.8101817965507507,
+        "9": 0.7367273569107056,
+        "10": 0.9789091348648071,
+        "12": 0.6712726950645447,
+        "6": 0.7956364154815674,
+        "11": 0.7130908966064453,
+        "4": 0.6545454859733582,
+        "3": 0.8145455121994019,
+        "1": 0.7927272915840149,
+        "8": 0.962181806564331,
+        "7": 0.42399999499320984,
+        "13": 0.44727271795272827
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        5,
+        9,
+        12,
+        6,
+        11,
+        10,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "5": 0.8101817965507507,
+        "9": 0.7367273569107056,
+        "12": 0.2770909070968628,
+        "6": 0.7810909748077393,
+        "11": 0.5854545831680298,
+        "10": 0.931636393070221,
+        "4": 0.7418182492256165,
+        "3": 0.7861818671226501,
+        "1": 0.7636364102363586,
+        "8": 0.9803636074066162,
+        "7": 0.6247272491455078,
+        "13": 0.6945453882217407
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        5,
+        9,
+        12,
+        11,
+        6,
+        10,
+        4,
+        3,
+        1,
+        8,
+        7,
+        13
+      ],
+      "scores_by_node_id": {
+        "5": 0.8101817965507507,
+        "9": 0.7367273569107056,
+        "12": 0.2770909070968628,
+        "11": 0.8167272806167603,
+        "6": 0.7636363506317139,
+        "10": 0.9156363606452942,
+        "4": 0.7265454530715942,
+        "3": 0.758545458316803,
+        "1": 0.8029091358184814,
+        "8": 0.9716363549232483,
+        "7": 0.6516363620758057,
+        "13": 0.774545431137085
+      }
+    }
+  ],
+  "failed_orderings": []
+}

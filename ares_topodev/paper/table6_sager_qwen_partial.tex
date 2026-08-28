@@ -1,0 +1,149 @@
+% SAGER vs. ARES on CaptainCookRecipes, Qwen2.5-7B-Instruct backbone.
+%
+% PRELIMINARY: computed from the 18/24 recipes complete as of this writing.
+% Remaining in progress: panfriedtofu, scrambledeggs. Not yet started:
+% pinwheels, ramen, sautedmushrooms, spicedhotchocolate, spicytunaavocadowraps,
+% tomatochutney, tomatomozzarellasalad, zoodles (some list overlap possible --
+% check ares_topodev/results_sager_qwen/raw/ares/ for the current set). The
+% Qwen full-dataset run is still in progress; regenerate these tables once
+% more recipes finish (see the commands below each table).
+%
+% Config: ares_topodev/configs/experiment_sager_ancestors_qwen.yaml
+%   K=10 orderings/recipe, epsilon=0.1, delta=0.1, p=0.95, seed=42,
+%   max_new_tokens=40, backbone=qwen2.5-7b-instruct.
+
+\begin{table}[h]
+\centering
+\caption{Order-sensitivity of raw scores on CaptainCookRecipes,
+  Qwen2.5-7B-Instruct backbone (\emph{preliminary}: 18/24 recipes complete).
+  TopoDev = mean per-step max$-$min score range across $K=10$ valid orderings;
+  TopoVar = mean per-step sample variance across the same orderings.}\label{tab:sager-qwen-topodev-partial}
+\begin{tabular}{lcccc}
+\toprule
+Method & $N$ & TopoDev (mean $\pm$ std) & TopoDev 95\% CI & TopoVar (mean $\pm$ std) \\
+\midrule
+ARES               & 18 & 0.127 $\pm$ 0.036 & [0.111, 0.144] & 0.0031 $\pm$ 0.0018 \\
+SAGER (parents)     & 18 & 0.065 $\pm$ 0.022 & [0.054, 0.074] & 0.0007 $\pm$ 0.0004 \\
+SAGER (ancestors)   & 18 & 0.063 $\pm$ 0.019 & [0.054, 0.072] & 0.0007 $\pm$ 0.0004 \\
+\bottomrule
+\end{tabular}
+\end{table}
+% Reproduce via:
+%   python3 -c "
+%   import json, os
+%   from ares_topodev.analysis.topodev import (
+%       compute_per_example_topodev, compute_per_example_topovar,
+%       summarize_topodev, summarize_topovar)
+%   for m in ['ares', 'sager', 'sager_ancestors']:
+%       d = f'ares_topodev/results_sager_qwen/raw/{m}'
+%       files = [f for f in sorted(os.listdir(d))
+%                if json.load(open(os.path.join(d, f))).get('is_complete')]
+%       per_ex = [compute_per_example_topodev(json.load(open(os.path.join(d, f)))) for f in files]
+%       per_ex_v = [compute_per_example_topovar(json.load(open(os.path.join(d, f)))) for f in files]
+%       print(m, summarize_topodev(per_ex), summarize_topovar(per_ex_v))
+%   "
+
+\begin{table}[h]
+\centering
+\caption{Error-detection sensitivity under valid reordering, CaptainCookRecipes,
+  Qwen2.5-7B-Instruct backbone (\emph{preliminary}: 18/24 recipes complete,
+  5-fold CV thresholds, error-class-only F1). $\Delta F1$ = mean per-recipe
+  max$-$min F1 range across the $K=10$ orderings (lower = more order-stable
+  error detection). Jaccard = mean error-recovery Jaccard between the
+  predicted-error sets of different orderings of the same recipe.}\label{tab:sager-qwen-f1-partial}
+\begin{tabular}{lcccccc}
+\toprule
+Method & $N$ & Mean F1 & F1 95\% CI & $\Delta F1$ (mean) & $\Delta F1$ 95\% CI & Jaccard \\
+\midrule
+ARES               & 18 & 0.283 & [0.182, 0.384] & 0.219 & [0.160, 0.282] & 0.648 \\
+SAGER (parents)     & 18 & 0.610 & [0.540, 0.685] & 0.082 & [0.046, 0.124] & 0.933 \\
+SAGER (ancestors)   & 18 & 0.556 & [0.467, 0.643] & 0.073 & [0.045, 0.102] & 0.945 \\
+\bottomrule
+\end{tabular}
+\end{table}
+% Reproduce via:
+%   python3 -m ares_topodev.analysis.report_detection_sensitivity \
+%     --raw-results-dir ares_topodev/results_sager_qwen \
+%     --recipe-data-dir ares_topodev/vendor/ares/data/recipe_graphs \
+%     --methods ares sager sager_ancestors \
+%     --k-folds 5 --seed 42 \
+%     --output-dir <output_dir>
+%   (numbers above taken from <output_dir>/aggregate/cross_graph_summary.csv)
+
+\begin{table}[h]
+\centering
+\caption{Macro-F1 (paper convention, averaged over both the sound and error
+  classes) vs.\ error-class-only F1 vs.\ sound-class-only F1, same
+  CV-thresholded predictions as Table~\ref{tab:sager-qwen-f1-partial}.
+  CaptainCookRecipes, Qwen2.5-7B-Instruct backbone (\emph{preliminary}: 18/24
+  recipes complete). Uncertainty is mean $\pm$ bootstrap SD over graphs.
+  The paper (arXiv:2507.12948v2, Table~1, GPT-4o-mini backbone) never
+  reports SAGER, so that column is n/a for both SAGER rows --- it is included
+  only as a reference point for ARES, on a different backbone.}\label{tab:sager-qwen-macrof1-partial}
+\begin{tabular}{lccccc}
+\toprule
+Method & $N$ & Paper's Macro-F1 & Ours, Macro-F1 & Ours, Error-Class F1 & Ours, Sound-Class F1 \\
+\midrule
+ARES               & 18 & 0.633 $\pm$ 0.010 (GPT-4o-mini) & 0.379 $\pm$ 0.029 & 0.283 $\pm$ 0.052 & 0.476 $\pm$ 0.048 \\
+SAGER (parents)     & 18 & n/a                             & 0.579 $\pm$ 0.028 & 0.610 $\pm$ 0.037 & 0.547 $\pm$ 0.047 \\
+SAGER (ancestors)   & 18 & n/a                             & 0.522 $\pm$ 0.032 & 0.556 $\pm$ 0.046 & 0.488 $\pm$ 0.049 \\
+\bottomrule
+\end{tabular}
+\end{table}
+% Reproduce via:
+%   python3 -m ares_topodev.analysis.report_macro_f1_comparison \
+%     --raw-results-dir ares_topodev/results_sager_qwen \
+%     --recipe-data-dir ares_topodev/vendor/ares/data/recipe_graphs \
+%     --methods ares sager sager_ancestors \
+%     --k-folds 5 --seed 42 \
+%     --output-dir <output_dir>
+%   (numbers above taken from <output_dir>/aggregate/macro_f1_comparison.csv)
+
+% - Note the ARES sound-class F1 dropped a lot from the n=5 snapshot (0.788
+%   -> 0.476) as more, harder recipes entered the sample -- ARES is now
+%   BELOW both SAGER variants on sound-class F1 too, not just error-class F1.
+%   At n=18, SAGER dominates ARES on every column in this table, not only
+%   Macro-F1/error-class F1 as it appeared at n=5.
+%
+% - Interpreting the ARES row against the paper's own number: 0.379 (ours,
+%   Qwen2.5-7B-Instruct) vs. 0.633 (paper, GPT-4o-mini) is a backbone
+%   difference, not a bug -- see table5_macro_f1_comparison.tex, which runs
+%   this same comparison for the GPT-4o-mini backbone and lands much closer
+%   to the paper's number (0.583). Do not read the gap here as "our ARES
+%   reimplementation is worse than the paper's" -- it is a weaker backbone,
+%   and the gap widened (was 0.14 at n=5, now 0.25 at n=18) as more of the
+%   harder/larger recipes (e.g. scrambledeggs-adjacent, mugcake,
+%   sautedmushrooms) entered the sample -- worth watching whether it keeps
+%   widening or stabilizes once all 24 are in.
+
+% --- Notes on reading all three tables together ---
+%
+% - Both SAGER variants continue to roughly halve TopoDev and cut TopoVar
+%   ~4x relative to ARES at n=18 (same direction as n=5, now on 3.6x more
+%   data): conditioning on the graph's actual parents/ancestors instead of
+%   the full sequence prefix makes the raw stability *score* much less
+%   sensitive to which valid ordering is shown. Parents vs. ancestors remain
+%   statistically indistinguishable on this metric (heavily overlapping CIs).
+%
+% - On F1, both SAGER variants continue to score much higher than ARES, and
+%   the gap widened as more data came in: 0.610 / 0.556 vs. 0.283 (was
+%   0.503 / 0.415 vs. 0.198 at n=5). ARES's F1 CI has moved well off 0 now
+%   (only 4 zero-predicted-positive orderings across all 3 methods combined
+%   at n=18, down from 18 at n=5 -- driven by ares alone both times).
+%
+% - The n=5 anomaly is RESOLVED: at n=5, SAGER (direct parents) looked like
+%   the LEAST order-stable method by Delta F1 (0.127) despite having the
+%   lowest raw-score TopoDev -- flagged at the time as likely noise. At
+%   n=18 that inverts as expected: SAGER (parents) Delta F1 = 0.082 and
+%   SAGER (ancestors) Delta F1 = 0.073, both far more stable than ARES's
+%   0.219, and close to each other. Confirms it was noise from too few
+%   graphs, not a real effect -- good example of why n=5 conclusions here
+%   should always be held loosely.
+%
+% - mean_exact_match_rate is still 0.0 for all three methods at n=18: across
+%   every recipe seen so far, no method ever predicts the EXACT SAME error
+%   set in all 10 orderings of a recipe. This looks like it may be a
+%   structural property of the setup (K=10 orderings basically always turns
+%   up at least one disagreement, whichever method) rather than a small-n
+%   artifact -- worth stating plainly rather than as a method comparison
+%   point once the full 24 are in.

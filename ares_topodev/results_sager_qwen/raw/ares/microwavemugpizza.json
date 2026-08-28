@@ -1,0 +1,609 @@
+{
+  "dataset": "captaincookrecipes",
+  "recipe_name": "microwavemugpizza",
+  "method": "ares",
+  "method_config_key": "cert_granular_temp0_nonexact",
+  "model": "qwen2.5-7b-instruct",
+  "hyperparams": {
+    "p": 0.95,
+    "temperature": 0.0,
+    "epsilon": 0.1,
+    "delta": 0.1
+  },
+  "seed": 42,
+  "num_orderings_requested": 10,
+  "num_orderings_used": 10,
+  "is_complete": true,
+  "topo_sampling_exhausted": false,
+  "num_valid_orderings_estimate": {
+    "value": 48.0,
+    "exact": true,
+    "lower_bound_unique_found": 48,
+    "importance_sample_estimate": 48.0
+  },
+  "step_text_by_node_id": {
+    "1": "Because we have completed all previous steps (Take-Take a microwavable mug), and have all necessary ingredients (salt), we can now do the step add-Measure 1/8 teaspoon of salt and add it to the mug. And now we have completed this step add-Measure 1/8 teaspoon of salt and add it to the mug.",
+    "2": "Because we have completed all previous steps (Sprinkle-Sprinkle 1 generous tablespoon of mozzarella cheese on top of the sauce), and have all necessary ingredients (dried Italian herbs), we can now do the step Sprinkle-Sprinkle dried Italian herbs inside the mug. And now we have completed this step Sprinkle-Sprinkle dried Italian herbs inside the mug.",
+    "3": "Because we have completed all previous steps (Mix-Mix the contents of the mug thoroughly. (There might be some lumps, but that is ok.)),  we can now do the step Take-Take 1 tablespoon of marinara sauce. And now we have completed this step Take-Take 1 tablespoon of marinara sauce.",
+    "4": "Because we have completed all previous steps (Take-Take 1 tablespoon of marinara sauce),  we can now do the step spread-spread marinara sauce around the surface of the batter. And now we have completed this step spread-spread marinara sauce around the surface of the batter.",
+    "5": "Because we have completed all previous steps (Sprinkle-Sprinkle dried Italian herbs inside the mug),  we can now do the step Microwave-Microwave for 1 minute 20 seconds, or until it rises and the toppings are bubbling. And now we have completed this step Microwave-Microwave for 1 minute 20 seconds, or until it rises and the toppings are bubbling.",
+    "6": "Because we have completed all previous steps (Take-Take a microwavable mug), and have all necessary ingredients (flour), we can now do the step add-Measure 4 tablespoons of flour and add it to the mug. And now we have completed this step add-Measure 4 tablespoons of flour and add it to the mug.",
+    "7": "Because we have completed all previous steps (Stir-Stir the contents in the mug well), and have all necessary ingredients (olive oil), we can now do the step Add-1 tablespoon of olive oil to the mug. And now we have completed this step Add-1 tablespoon of olive oil to the mug.",
+    "8": "Because we have completed all previous steps (Take-Take a microwavable mug),  we can now do the step add-Measure 1/16 teaspoon of baking soda and add it to the mug. And now we have completed this step add-Measure 1/16 teaspoon of baking soda and add it to the mug.",
+    "9": "Because we have completed all previous steps (START),  we can now do the step Take-Take a microwavable mug. And now we have completed this step Take-Take a microwavable mug.",
+    "10": "Because we have completed all previous steps (Add-Add in 3 tablespoons of milk to the mug, and Add-1 tablespoon of olive oil to the mug),  we can now do the step Mix-Mix the contents of the mug thoroughly. (There might be some lumps, but that is ok.). And now we have completed this step Mix-Mix the contents of the mug thoroughly. (There might be some lumps, but that is ok.).",
+    "11": "Because we have completed all previous steps (add-Measure 4 tablespoons of flour and add it to the mug, and add-Measure 1/16 teaspoon of baking soda and add it to the mug, and add-Measure 1/8 teaspoon of salt and add it to the mug, and add-Measure 1/8 teaspoon of baking powder and add it to the mug),  we can now do the step Stir-Stir the contents in the mug well. And now we have completed this step Stir-Stir the contents in the mug well.",
+    "12": "Because we have completed all previous steps (spread-spread marinara sauce around the surface of the batter), and have all necessary ingredients (mozzarella cheese), we can now do the step Sprinkle-Sprinkle 1 generous tablespoon of mozzarella cheese on top of the sauce. And now we have completed this step Sprinkle-Sprinkle 1 generous tablespoon of mozzarella cheese on top of the sauce.",
+    "13": "Because we have completed all previous steps (Take-Take a microwavable mug),  we can now do the step add-Measure 1/8 teaspoon of baking powder and add it to the mug. And now we have completed this step add-Measure 1/8 teaspoon of baking powder and add it to the mug.",
+    "14": "Because we have completed all previous steps (Stir-Stir the contents in the mug well), and have all necessary ingredients (milk), we can now do the step Add-Add in 3 tablespoons of milk to the mug. And now we have completed this step Add-Add in 3 tablespoons of milk to the mug.",
+    "15": "Because we have completed all previous steps (Microwave-Microwave for 1 minute 20 seconds, or until it rises and the toppings are bubbling),  we can now do the step END. And now we have completed this step END."
+  },
+  "ground_truth_error_by_node_id": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 0,
+    "7": 1,
+    "8": 0,
+    "9": 0,
+    "10": 1,
+    "11": 1,
+    "12": 1,
+    "13": 0,
+    "14": 1,
+    "15": 1
+  },
+  "parents_by_node_id": {
+    "1": [
+      9
+    ],
+    "2": [
+      12
+    ],
+    "3": [
+      10
+    ],
+    "4": [
+      3
+    ],
+    "5": [
+      2
+    ],
+    "6": [
+      9
+    ],
+    "7": [
+      11
+    ],
+    "8": [
+      9
+    ],
+    "9": [],
+    "10": [
+      14,
+      7
+    ],
+    "11": [
+      6,
+      8,
+      1,
+      13
+    ],
+    "12": [
+      4
+    ],
+    "13": [
+      9
+    ],
+    "14": [
+      11
+    ],
+    "15": [
+      5
+    ]
+  },
+  "ancestors_by_node_id": {
+    "1": [
+      9
+    ],
+    "2": [
+      1,
+      3,
+      4,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "3": [
+      1,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      13,
+      14
+    ],
+    "4": [
+      1,
+      3,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      13,
+      14
+    ],
+    "5": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "6": [
+      9
+    ],
+    "7": [
+      1,
+      6,
+      8,
+      9,
+      11,
+      13
+    ],
+    "8": [
+      9
+    ],
+    "9": [],
+    "10": [
+      1,
+      6,
+      7,
+      8,
+      9,
+      11,
+      13,
+      14
+    ],
+    "11": [
+      1,
+      6,
+      8,
+      9,
+      13
+    ],
+    "12": [
+      1,
+      3,
+      4,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      13,
+      14
+    ],
+    "13": [
+      9
+    ],
+    "14": [
+      1,
+      6,
+      8,
+      9,
+      11,
+      13
+    ],
+    "15": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  "orderings": [
+    {
+      "ordering_index": 0,
+      "topo_order_step_ids": [
+        9,
+        13,
+        6,
+        8,
+        1,
+        11,
+        7,
+        14,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.9895104765892029,
+        "13": 0.7790210247039795,
+        "6": 0.7916083931922913,
+        "8": 0.774125874042511,
+        "1": 0.7678322196006775,
+        "11": 0.967832088470459,
+        "7": 0.7559440732002258,
+        "14": 0.7905594110488892,
+        "10": 0.817132830619812,
+        "3": 0.6279720664024353,
+        "4": 0.6891608238220215,
+        "12": 0.7839160561561584,
+        "2": 0.7486014366149902,
+        "5": 0.5986013412475586,
+        "15": 0.8566433191299438
+      }
+    },
+    {
+      "ordering_index": 1,
+      "topo_order_step_ids": [
+        9,
+        13,
+        6,
+        1,
+        8,
+        11,
+        14,
+        7,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "13": 0.7608391642570496,
+        "6": 0.7874125838279724,
+        "1": 0.7776224613189697,
+        "8": 0.7895104885101318,
+        "11": 0.9895104169845581,
+        "14": 0.7807692885398865,
+        "7": 0.748251736164093,
+        "10": 0.8160839080810547,
+        "3": 0.6499999761581421,
+        "4": 0.7353147268295288,
+        "12": 0.813636302947998,
+        "2": 0.8867133259773254,
+        "5": 0.6132867336273193,
+        "15": 0.8972028493881226
+      }
+    },
+    {
+      "ordering_index": 2,
+      "topo_order_step_ids": [
+        9,
+        6,
+        13,
+        1,
+        8,
+        11,
+        7,
+        14,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "6": 0.8300699591636658,
+        "13": 0.7797203063964844,
+        "1": 0.7762237787246704,
+        "8": 0.7895104885101318,
+        "11": 0.9818181991577148,
+        "7": 0.7412587404251099,
+        "14": 0.7923077344894409,
+        "10": 0.8167832493782043,
+        "3": 0.6115384697914124,
+        "4": 0.6930069923400879,
+        "12": 0.8003496527671814,
+        "2": 0.8524475693702698,
+        "5": 0.755944013595581,
+        "15": 0.9167832732200623
+      }
+    },
+    {
+      "ordering_index": 3,
+      "topo_order_step_ids": [
+        9,
+        6,
+        1,
+        13,
+        8,
+        11,
+        7,
+        14,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "6": 0.8300699591636658,
+        "1": 0.8013986945152283,
+        "13": 0.7496503591537476,
+        "8": 0.7853147387504578,
+        "11": 0.9678322076797485,
+        "7": 0.7916083335876465,
+        "14": 0.7702797651290894,
+        "10": 0.825174868106842,
+        "3": 0.6143356561660767,
+        "4": 0.6674824953079224,
+        "12": 0.7580419778823853,
+        "2": 0.8006993532180786,
+        "5": 0.6734265685081482,
+        "15": 0.8692308068275452
+      }
+    },
+    {
+      "ordering_index": 4,
+      "topo_order_step_ids": [
+        9,
+        13,
+        1,
+        8,
+        6,
+        11,
+        7,
+        14,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "13": 0.7489510178565979,
+        "1": 0.7958042025566101,
+        "8": 0.7874126434326172,
+        "6": 0.807692289352417,
+        "11": 0.9993007183074951,
+        "7": 0.7118880748748779,
+        "14": 0.7909091114997864,
+        "10": 0.7930070161819458,
+        "3": 0.5961538553237915,
+        "4": 0.6758741140365601,
+        "12": 0.7625874280929565,
+        "2": 0.76888108253479,
+        "5": 0.6454545259475708,
+        "15": 0.8951048254966736
+      }
+    },
+    {
+      "ordering_index": 5,
+      "topo_order_step_ids": [
+        9,
+        6,
+        1,
+        13,
+        8,
+        11,
+        14,
+        7,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "6": 0.8300699591636658,
+        "1": 0.8013986349105835,
+        "13": 0.7517483234405518,
+        "8": 0.788811206817627,
+        "11": 0.9601398706436157,
+        "14": 0.7723776698112488,
+        "7": 0.7583916187286377,
+        "10": 0.8639860153198242,
+        "3": 0.6695804595947266,
+        "4": 0.6790210008621216,
+        "12": 0.7734265923500061,
+        "2": 0.8237762451171875,
+        "5": 0.6930070519447327,
+        "15": 0.8391607999801636
+      }
+    },
+    {
+      "ordering_index": 6,
+      "topo_order_step_ids": [
+        9,
+        13,
+        6,
+        8,
+        1,
+        11,
+        14,
+        7,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "13": 0.7489510178565979,
+        "6": 0.8034965991973877,
+        "8": 0.777622401714325,
+        "1": 0.7979020476341248,
+        "11": 0.996503472328186,
+        "14": 0.7755244374275208,
+        "7": 0.7160839438438416,
+        "10": 0.8080419301986694,
+        "3": 0.6209790110588074,
+        "4": 0.6713286638259888,
+        "12": 0.7248252034187317,
+        "2": 0.7755244970321655,
+        "5": 0.6027972102165222,
+        "15": 0.8398600816726685
+      }
+    },
+    {
+      "ordering_index": 7,
+      "topo_order_step_ids": [
+        9,
+        6,
+        1,
+        8,
+        13,
+        11,
+        7,
+        14,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "6": 0.8300699591636658,
+        "1": 0.8013986349105835,
+        "8": 0.781818151473999,
+        "13": 0.7706294655799866,
+        "11": 0.9769230484962463,
+        "7": 0.7657343745231628,
+        "14": 0.7671328783035278,
+        "10": 0.791608452796936,
+        "3": 0.5702797174453735,
+        "4": 0.6125873923301697,
+        "12": 0.7185314297676086,
+        "2": 0.809440553188324,
+        "5": 0.6293706297874451,
+        "15": 0.867132842540741
+      }
+    },
+    {
+      "ordering_index": 8,
+      "topo_order_step_ids": [
+        9,
+        1,
+        8,
+        6,
+        13,
+        11,
+        14,
+        7,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "1": 0.7993006706237793,
+        "8": 0.7559440732002258,
+        "6": 0.8013986945152283,
+        "13": 0.7797203063964844,
+        "11": 0.985314667224884,
+        "14": 0.7933566570281982,
+        "7": 0.7062937617301941,
+        "10": 0.8458042144775391,
+        "3": 0.6367132663726807,
+        "4": 0.6898601055145264,
+        "12": 0.7646852731704712,
+        "2": 0.8758741021156311,
+        "5": 0.7503496408462524,
+        "15": 0.8783217668533325
+      }
+    },
+    {
+      "ordering_index": 9,
+      "topo_order_step_ids": [
+        9,
+        6,
+        8,
+        13,
+        1,
+        11,
+        7,
+        14,
+        10,
+        3,
+        4,
+        12,
+        2,
+        5,
+        15
+      ],
+      "scores_by_node_id": {
+        "9": 0.983916163444519,
+        "6": 0.8300699591636658,
+        "8": 0.7545454502105713,
+        "13": 0.7930070161819458,
+        "1": 0.7860139608383179,
+        "11": 0.983916163444519,
+        "7": 0.7433566451072693,
+        "14": 0.7695804238319397,
+        "10": 0.8202797770500183,
+        "3": 0.6171329021453857,
+        "4": 0.666433572769165,
+        "12": 0.7006993293762207,
+        "2": 0.7552447319030762,
+        "5": 0.6531468629837036,
+        "15": 0.8321678638458252
+      }
+    }
+  ],
+  "failed_orderings": []
+}
