@@ -74,8 +74,12 @@ SAGER (ancestors)   & 24 & 0.623 & [0.549, 0.694] & 0.081 & [0.054, 0.109] & 0.9
   CaptainCookRecipes, Qwen2.5-7B-Instruct backbone, all 24 recipes.
   Uncertainty is mean $\pm$ bootstrap SD over graphs.
   The paper (arXiv:2507.12948v2, Table~1, GPT-4o-mini backbone) never
-  reports SAGER, so that column is n/a for both SAGER rows --- it is included
-  only as a reference point for ARES, on a different backbone.}\label{tab:sager-qwen-macrof1}
+  reports SAGER, so that column is n/a for both SAGER rows. It is also NOT a
+  same-backbone baseline for the ARES row: the paper never evaluates
+  Qwen2.5-7B-Instruct at all, so 0.633 is shown only as a fixed reference
+  point (was this pipeline ever validated against the paper on any
+  backbone? -- yes, see table5\_macro\_f1\_comparison.tex, GPT-4o-mini), not
+  as a target this Qwen run should approach.}\label{tab:sager-qwen-macrof1}
 \begin{tabular}{lccccc}
 \toprule
 Method & $N$ & Paper's Macro-F1 & Ours, Macro-F1 & Ours, Error-Class F1 & Ours, Sound-Class F1 \\
@@ -124,12 +128,21 @@ SAGER (ancestors)   & 24 & n/a                             & 0.547 $\pm$ 0.028 &
 %   Macro-F1 table, including sound-class F1 (0.399 vs. 0.515/0.470) -- this
 %   trend first appeared at n=18 and holds at the full n=24.
 %
-% - The ARES-vs-paper Macro-F1 gap (0.366 ours, Qwen2.5-7B-Instruct, vs.
-%   0.633 paper, GPT-4o-mini) also stabilized rather than continuing to
-%   widen: 0.14 at n=5, 0.25 at n=18, 0.27 at n=24. This is a genuine
-%   backbone-strength difference, not a bug -- see table5_macro_f1_comparison.tex
-%   for the same comparison on GPT-4o-mini, which lands within 0.05 of the
-%   paper's number.
+% - CORRECTION (was wrong in an earlier draft of this file): there is no
+%   paper Macro-F1 number for Qwen2.5-7B-Instruct to compare against -- the
+%   paper never evaluates that backbone (only GPT-4o-mini and, in this
+%   project's own still-unrun Table 1 plan, Qwen3-4B -- a different, newer,
+%   smaller model; see table1_valid_reordering.tex). 0.633 is a GPT-4o-mini
+%   number and has no bearing on what ARES "should" score here. Framing
+%   this Qwen run's absolute Macro-F1 (0.493 -> 0.379 -> 0.366 across
+%   n=5/18/24) as a "gap vs. the paper that stabilized" was a mistake:
+%   there was never a reason to expect convergence toward an unrelated
+%   backbone's number. The one valid cross-check remains that THIS SAME
+%   pipeline, run on GPT-4o-mini instead of Qwen, lands within 0.05 of the
+%   paper's 0.633 (table5_macro_f1_comparison.tex, 0.583) -- confirming the
+%   harness itself is sound, and that the low absolute number here is a
+%   real Qwen2.5-7B-Instruct backbone-weakness effect, not evidence about
+%   how close or far this run is from "the paper's" result.
 %
 % - mean_exact_match_rate is 0.0 for all three methods across all 24
 %   recipes: no method, on any recipe, ever predicts the identical error set
