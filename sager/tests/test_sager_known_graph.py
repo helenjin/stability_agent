@@ -1,7 +1,7 @@
-"""Tests for ares_topodev.sager_known_graph -- SAGER, known dependency graph
-setting. Six required categories: linear chain, branching DAG, diamond DAG
-(depth-limited ancestors), topological-serialization invariance, the L cap,
-and reproducibility. Uses MockEntailmentScorer throughout (deterministic, no
+"""Tests for sager -- SAGER, known dependency graph setting. Six required
+categories: linear chain, branching DAG, diamond DAG (depth-limited
+ancestors), topological-serialization invariance, the L cap, and
+reproducibility. Uses MockEntailmentScorer throughout (deterministic, no
 external calls).
 """
 import math
@@ -9,7 +9,7 @@ import math
 import networkx as nx
 import pytest
 
-from ares_topodev.sager_known_graph import (
+from sager import (
     MockEntailmentScorer,
     compute_depth_limited_ancestors,
     restrict_order,

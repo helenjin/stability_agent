@@ -4,15 +4,16 @@ A clean, modular implementation of SAGER (Structure-Aware Guarantees for
 Evaluating Reasoning) for the setting where the inferential dependency DAG
 `G` is already known -- no graph inference or partial-graph handling here.
 
-This is a **standalone module**, independent of the older, ARES-tensor-based
-`ares_topodev.eval_harness.sager` (which reuses ARES's own
+This lives in its own top-level `sager/` package (a sibling of
+`ares_topodev`, `stability_agent`, etc.), independent of the older,
+ARES-tensor-based `ares_topodev.eval_harness.sager` (which reuses ARES's own
 `stability_rate_deterministic` machinery and only ever conditions on direct
 graph parents, not depth-limited ancestors, and never averages over multiple
-topological orderings). That module still backs `run_experiment.py` and is
-left untouched. This package implements the algorithm as specified from
-scratch and is not yet wired into `run_experiment.py`, dataset loaders, or
-any ARES comparison -- that is deliberately out of scope for this first
-version.
+topological orderings). That module still backs `ares_topodev`'s
+`run_experiment.py` and is left untouched. This package implements the
+algorithm as specified from scratch and is not yet wired into any
+experiment harness, dataset loaders, or ARES comparison -- that is
+deliberately out of scope for this first version.
 
 ## Inputs
 
@@ -124,7 +125,7 @@ with or without it. `diagnostics` reports `entailment_requests`,
 
 ## Tests
 
-See `ares_topodev/tests/test_sager_known_graph.py` for the six required
+See `sager/tests/test_sager_known_graph.py` for the six required
 categories: linear chain, branching DAG, diamond DAG (depth-limited
 ancestors), topological-serialization invariance, the `L` cap, and
 reproducibility.

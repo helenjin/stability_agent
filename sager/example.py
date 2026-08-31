@@ -5,11 +5,11 @@
     b -> d
     c -> d
 
-Run with:  python -m ares_topodev.sager_known_graph.example
+Run with:  python -m sager.example
 """
 import networkx as nx
 
-from ares_topodev.sager_known_graph import MockEntailmentScorer, sager_known_graph
+from sager import MockEntailmentScorer, sager_known_graph
 
 
 def build_toy_graph():
