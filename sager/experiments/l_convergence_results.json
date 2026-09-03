@@ -1,0 +1,206 @@
+[
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 16,
+    "L": 10,
+    "N": 100,
+    "tau": 0.9150000046938662,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 10,
+      "entailment_requests": 16000,
+      "unique_entailment_calls": 612,
+      "cache_hits": 15388
+    },
+    "wall_seconds": 328.16869378089905
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 21,
+    "L": 10,
+    "N": 100,
+    "tau": 0.5131000076234339,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 10,
+      "entailment_requests": 16000,
+      "unique_entailment_calls": 612,
+      "cache_hits": 15388
+    },
+    "wall_seconds": 328.16869378089905
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 22,
+    "L": 10,
+    "N": 100,
+    "tau": 0.7812000115811826,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 10,
+      "entailment_requests": 16000,
+      "unique_entailment_calls": 612,
+      "cache_hits": 15388
+    },
+    "wall_seconds": 328.16869378089905
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 16,
+    "L": 25,
+    "N": 100,
+    "tau": 0.8919600061357025,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 25,
+      "entailment_requests": 40000,
+      "unique_entailment_calls": 1271,
+      "cache_hits": 38729
+    },
+    "wall_seconds": 691.2350730895996
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 21,
+    "L": 25,
+    "N": 100,
+    "tau": 0.5244400077879429,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 25,
+      "entailment_requests": 40000,
+      "unique_entailment_calls": 1271,
+      "cache_hits": 38729
+    },
+    "wall_seconds": 691.2350730895996
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 22,
+    "L": 25,
+    "N": 100,
+    "tau": 0.763640011334419,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 25,
+      "entailment_requests": 40000,
+      "unique_entailment_calls": 1271,
+      "cache_hits": 38729
+    },
+    "wall_seconds": 691.2350730895996
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 16,
+    "L": 50,
+    "N": 100,
+    "tau": 0.8897000062137834,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 50,
+      "entailment_requests": 80000,
+      "unique_entailment_calls": 2232,
+      "cache_hits": 77768
+    },
+    "wall_seconds": 1222.6792027950287
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 21,
+    "L": 50,
+    "N": 100,
+    "tau": 0.5508200081109997,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 50,
+      "entailment_requests": 80000,
+      "unique_entailment_calls": 2232,
+      "cache_hits": 77768
+    },
+    "wall_seconds": 1222.6792027950287
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 22,
+    "L": 50,
+    "N": 100,
+    "tau": 0.7572800112485883,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 50,
+      "entailment_requests": 80000,
+      "unique_entailment_calls": 2232,
+      "cache_hits": 77768
+    },
+    "wall_seconds": 1222.6792027950287
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 16,
+    "L": 100,
+    "N": 100,
+    "tau": 0.8897000062435868,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 100,
+      "entailment_requests": 160000,
+      "unique_entailment_calls": 3787,
+      "cache_hits": 156213
+    },
+    "wall_seconds": 2082.0600361824036
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 21,
+    "L": 100,
+    "N": 100,
+    "tau": 0.5450200079470867,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 100,
+      "entailment_requests": 160000,
+      "unique_entailment_calls": 3787,
+      "cache_hits": 156213
+    },
+    "wall_seconds": 2082.0600361824036
+  },
+  {
+    "recipe": "scrambledeggs",
+    "node_id": 22,
+    "L": 100,
+    "N": 100,
+    "tau": 0.7546800112098453,
+    "diagnostics": {
+      "num_nodes": 24,
+      "num_edges": 26,
+      "num_soundness_samples": 100,
+      "num_topological_orders_used": 100,
+      "entailment_requests": 160000,
+      "unique_entailment_calls": 3787,
+      "cache_hits": 156213
+    },
+    "wall_seconds": 2082.0600361824036
+  }
+]

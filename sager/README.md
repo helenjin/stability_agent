@@ -24,8 +24,9 @@ deliberately out of scope for this first version.
 | `base_priors` | `dict[node, float]` | Soundness prior `p_v`, required for every node with **no ancestors at all** in `G` (in-degree 0) -- the "base claims". |
 | `entailment_scorer` | `callable(premises: list[str], claim: str) -> float` | Scores an ordered list of premise claims against a target claim. Output is validated/clipped to `[0, 1]`. |
 | `depth` | `int \| math.inf \| None` | Ancestor depth `d`. `1` = direct parents only; `math.inf`/`None` = full ancestor closure. |
-| `num_soundness_samples` | `int` | `N`, number of Monte Carlo soundness samples. |
+| `num_soundness_samples` | `int \| None` | `N`, number of Monte Carlo soundness samples. Defaults to 100 if neither this nor `(epsilon, delta)` is given. Mutually exclusive with `(epsilon, delta)`. |
 | `max_orderings` | `int` | `L`, cap on the number of distinct topological orderings averaged over. |
+| `epsilon`, `delta` | `float \| None` | Tolerance/failure-probability pair. If both given, `N` is *derived* instead of being a raw hyperparameter: `N = ceil(log(2*|V|/delta) / (2*epsilon**2))`, a Hoeffding-style bound giving `\|tau_hat_G(v) - E[tau_hat_G(v)]\| <= epsilon` for every node simultaneously with probability `>= 1 - delta`. This is the same formula and union-bound convention ARES's `cert_nonexact` method uses for its own N -- valid here because `tau_hat_G(v)` is a mean of N samples that are independent across Monte Carlo passes and bounded in `[0, 1]`, exactly Hoeffding's precondition. **Does not** say anything about whether `max_orderings` (`L`) is large enough -- that's a separate source of error (see `sager/experiments/l_convergence_check.py`). |
 | `seed` | `int \| None` | Random seed. Same seed -> bit-identical results. |
 | `debug` | `bool` | If `True`, also return per-sample `(p_v^(i), alpha_v^(i), A_v^(i))` for every node (off by default -- `O(N * |V|)` memory). |
 
@@ -38,7 +39,8 @@ SagerResult(
     tau={node: tau_hat_G(node) for node in G},   # graph-conditioned soundness scores, each in [0, 1]
     diagnostics={
         "num_nodes": ..., "num_edges": ...,
-        "num_soundness_samples": N, "num_topological_orders_used": L_G,
+        "num_soundness_samples": N, "epsilon": ..., "delta": ...,  # epsilon/delta are None unless that path was used
+        "num_topological_orders_used": L_G,
         "entailment_requests": ..., "unique_entailment_calls": ..., "cache_hits": ...,
     },
     debug_samples=None,  # or a list of length N, see above, if debug=True

@@ -50,14 +50,58 @@ def _derived_seed(seed: Optional[int], *parts: object) -> int:
     return int(digest[:16], 16)
 
 
+def _resolve_num_soundness_samples(
+    num_soundness_samples: Optional[int],
+    epsilon: Optional[float],
+    delta: Optional[float],
+    num_nodes: int,
+) -> int:
+    """Resolve N either from a direct override or from a Hoeffding-style
+    tolerance derivation, mirroring ARES's own cert_nonexact convention
+    exactly: for N independent samples bounded in [0, 1], the empirical mean
+    is within epsilon of the true mean with probability >= 1 - delta once
+    N >= log(2/delta) / (2 * epsilon**2); union-bounding over every node's
+    simultaneously-estimated tau_hat_G(v) (m = num_nodes, all scored in one
+    call here, exactly as ARES scores every claim in a tree in one call)
+    replaces delta with delta/m, giving log(2*m/delta) in the numerator.
+    This is valid for SAGER's estimator specifically because
+    tau_hat_G(v) = mean_i p_v^(i) is a mean of N samples that are
+    independent across i (each Monte Carlo pass draws its own alpha^(i) from
+    an independently-seeded RNG) and bounded in [0, 1] (p_v^(i) is a
+    probability) -- exactly Hoeffding's precondition, not an approximation
+    of it.
+
+    Note this bounds only Monte Carlo noise across the N passes, at whatever
+    L (max_orderings) currently is -- it says nothing about whether L itself
+    is large enough for p_v^(i) to be a good proxy for the true all-orderings
+    average. That is a separate question (see sager/experiments/l_convergence_check.py).
+    """
+    if epsilon is None and delta is None:
+        return 100 if num_soundness_samples is None else num_soundness_samples
+    if epsilon is None or delta is None:
+        raise ValueError("epsilon and delta must be given together (both or neither)")
+    if num_soundness_samples is not None:
+        raise ValueError(
+            "pass either num_soundness_samples or (epsilon, delta), not both -- "
+            "ambiguous which should determine N"
+        )
+    if not (0.0 < epsilon < 1.0):
+        raise ValueError(f"epsilon must be in (0, 1), got {epsilon}")
+    if not (0.0 < delta < 1.0):
+        raise ValueError(f"delta must be in (0, 1), got {delta}")
+    return int(math.log(2 * num_nodes / delta) / (2 * (epsilon**2))) + 1
+
+
 def sager_known_graph(
     G: nx.DiGraph,
     claims: Dict[Node, str],
     base_priors: Dict[Node, float],
     entailment_scorer: EntailmentScorer,
     depth: Union[int, float, None] = math.inf,
-    num_soundness_samples: int = 100,
+    num_soundness_samples: Optional[int] = None,
     max_orderings: int = 20,
+    epsilon: Optional[float] = None,
+    delta: Optional[float] = None,
     seed: Optional[int] = None,
     debug: bool = False,
 ) -> SagerResult:
@@ -70,9 +114,18 @@ def sager_known_graph(
         every node with no ancestors in G (in-degree 0).
       entailment_scorer: callable(premises: list[str], claim: str) -> float.
       depth: ancestor depth d (positive int, or math.inf/None for unlimited).
-      num_soundness_samples: N, number of Monte Carlo samples.
+      num_soundness_samples: N, number of Monte Carlo samples. Defaults to
+        100 if neither this nor (epsilon, delta) is given. Mutually
+        exclusive with (epsilon, delta) -- passing both raises ValueError.
       max_orderings: L, the cap on the number of distinct topological
         orderings averaged over.
+      epsilon: tolerance -- if given (together with delta), N is derived via
+        a Hoeffding-style bound instead of being a raw hyperparameter, the
+        same convention ARES's cert_nonexact method uses for its own N. See
+        `_resolve_num_soundness_samples` for the exact formula and why it's
+        valid for SAGER's estimator specifically (not just borrowed by
+        analogy).
+      delta: failure probability paired with epsilon (see above).
       seed: random seed; same seed -> bit-identical results.
       debug: if True, also return per-sample (p_v^(i), alpha_v^(i), A_v^(i))
         for every node. Off by default -- O(N * |V|) memory when enabled.
@@ -84,6 +137,9 @@ def sager_known_graph(
         raise TypeError("G must be a networkx.DiGraph")
     if not nx.is_directed_acyclic_graph(G):
         raise ValueError("G must be acyclic")
+    num_soundness_samples = _resolve_num_soundness_samples(
+        num_soundness_samples, epsilon, delta, G.number_of_nodes()
+    )
     if num_soundness_samples < 1:
         raise ValueError("num_soundness_samples (N) must be >= 1")
     if max_orderings < 1:
@@ -178,6 +234,8 @@ def sager_known_graph(
         "num_nodes": G.number_of_nodes(),
         "num_edges": G.number_of_edges(),
         "num_soundness_samples": N,
+        "epsilon": epsilon,
+        "delta": delta,
         "num_topological_orders_used": L_G,
         "entailment_requests": cache.total_requests,
         "unique_entailment_calls": cache.unique_calls,

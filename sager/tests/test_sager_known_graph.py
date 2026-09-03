@@ -300,3 +300,114 @@ def test_out_of_range_score_is_clipped():
         seed=0,
     )
     assert result.tau["b"] == 1.0  # clipped from 5.0
+
+
+# --- 7. epsilon/delta -> N derivation (Hoeffding-style, mirrors ARES's cert_nonexact) ---
+
+
+def _tiny_graph_and_scorer():
+    G = nx.DiGraph([("a", "b"), ("b", "c")])
+    claims = {"a": "flour and water are available", "b": "the dough is mixed", "c": "the bread is baked"}
+    return G, claims
+
+
+def test_epsilon_delta_derives_expected_N():
+    G, claims = _tiny_graph_and_scorer()
+    epsilon, delta = 0.1, 0.1
+    result = sager_known_graph(
+        G, claims=claims, base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+        epsilon=epsilon, delta=delta, max_orderings=5, seed=0,
+    )
+    m = G.number_of_nodes()  # 3
+    expected_N = int(math.log(2 * m / delta) / (2 * (epsilon**2))) + 1
+    assert result.diagnostics["num_soundness_samples"] == expected_N
+    assert result.diagnostics["epsilon"] == epsilon
+    assert result.diagnostics["delta"] == delta
+
+
+def test_no_args_defaults_to_100_with_epsilon_delta_none_in_diagnostics():
+    G, claims = _tiny_graph_and_scorer()
+    result = sager_known_graph(
+        G, claims=claims, base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+        max_orderings=5, seed=0,
+    )
+    assert result.diagnostics["num_soundness_samples"] == 100
+    assert result.diagnostics["epsilon"] is None
+    assert result.diagnostics["delta"] is None
+
+
+def test_explicit_num_soundness_samples_still_works_unchanged():
+    G, claims = _tiny_graph_and_scorer()
+    result = sager_known_graph(
+        G, claims=claims, base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+        num_soundness_samples=37, max_orderings=5, seed=0,
+    )
+    assert result.diagnostics["num_soundness_samples"] == 37
+    assert result.diagnostics["epsilon"] is None
+    assert result.diagnostics["delta"] is None
+
+
+def test_passing_both_num_soundness_samples_and_epsilon_delta_raises():
+    G, claims = _tiny_graph_and_scorer()
+    with pytest.raises(ValueError, match="not both"):
+        sager_known_graph(
+            G, claims=claims, base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+            num_soundness_samples=50, epsilon=0.1, delta=0.1, max_orderings=5, seed=0,
+        )
+
+
+def test_epsilon_without_delta_raises():
+    G, claims = _tiny_graph_and_scorer()
+    with pytest.raises(ValueError, match="together"):
+        sager_known_graph(
+            G, claims=claims, base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+            epsilon=0.1, max_orderings=5, seed=0,
+        )
+
+
+def test_delta_without_epsilon_raises():
+    G, claims = _tiny_graph_and_scorer()
+    with pytest.raises(ValueError, match="together"):
+        sager_known_graph(
+            G, claims=claims, base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+            delta=0.1, max_orderings=5, seed=0,
+        )
+
+
+@pytest.mark.parametrize("bad_epsilon", [0.0, 1.0, -0.1, 1.5])
+def test_epsilon_out_of_range_raises(bad_epsilon):
+    G, claims = _tiny_graph_and_scorer()
+    with pytest.raises(ValueError, match="epsilon"):
+        sager_known_graph(
+            G, claims=claims, base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+            epsilon=bad_epsilon, delta=0.1, max_orderings=5, seed=0,
+        )
+
+
+@pytest.mark.parametrize("bad_delta", [0.0, 1.0, -0.1, 1.5])
+def test_delta_out_of_range_raises(bad_delta):
+    G, claims = _tiny_graph_and_scorer()
+    with pytest.raises(ValueError, match="delta"):
+        sager_known_graph(
+            G, claims=claims, base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+            epsilon=0.1, delta=bad_delta, max_orderings=5, seed=0,
+        )
+
+
+def test_larger_graph_gives_larger_N_via_union_bound():
+    """N grows with num_nodes (m) at fixed (epsilon, delta), since a stricter
+    per-node failure probability (delta/m) is needed as m grows to keep the
+    whole-graph guarantee at delta."""
+    small = nx.DiGraph([("a", "b")])
+    big = nx.DiGraph([(str(i), str(i + 1)) for i in range(20)])
+
+    def n_for(G):
+        claims = {n: f"claim {n}" for n in G.nodes}
+        roots = [n for n in G.nodes if G.in_degree(n) == 0]
+        result = sager_known_graph(
+            G, claims=claims, base_priors={r: 0.9 for r in roots},
+            entailment_scorer=MockEntailmentScorer(), epsilon=0.1, delta=0.1, max_orderings=5, seed=0,
+        )
+        return result.diagnostics["num_soundness_samples"]
+
+    assert n_for(big) > n_for(small)
