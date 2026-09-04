@@ -1,0 +1,44 @@
+{
+  "rows": {
+    "field": "recipe",
+    "order": [
+      "Blender Banana Pancakes", "Breakfast Burritos", "Broccoli Stir Fry", "Butter Corn Cup",
+      "Caprese Bruschetta", "Cheese Pimiento", "Cucumber Raita", "Microwave Egg Sandwich",
+      "Microwave French Toast", "Microwave Mug Pizza", "Sauteed Mushrooms", "Scrambled Eggs",
+      "Spiced Hot Chocolate", "Tomato Mozzarella Salad", "Zoodles", "Overall (217 claims)"
+    ]
+  },
+  "cols": {
+    "field": "col",
+    "order": ["N", "Non-inv. %", "Mean TopoDev", "Median TopoDev", "Max TopoDev", "Max Swing"]
+  },
+  "metric": {
+    "field": "metric",
+    "value": "result",
+    "direction": {
+      "N": "max",
+      "Non-inv. %": "max",
+      "Mean TopoDev": "max",
+      "Median TopoDev": "max",
+      "Max TopoDev": "max",
+      "Max Swing": "max"
+    }
+  },
+  "aggregate": {
+    "over": ["run"],
+    "stat": "mean",
+    "uncertainty": { "type": "none" }
+  },
+  "format": {
+    "mode": "pm",
+    "mean_decimals": 4,
+    "unc_decimals": 4,
+    "missing": "--",
+    "overrides": {
+      "N": { "mean_decimals": 0 },
+      "Non-inv. %": { "mean_decimals": 1 },
+      "Max Swing": { "mean_decimals": 4 }
+    }
+  },
+  "output": { "format": "latex" }
+}

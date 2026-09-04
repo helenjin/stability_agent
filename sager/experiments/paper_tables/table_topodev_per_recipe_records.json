@@ -1,0 +1,674 @@
+[
+  {
+    "recipe": "Blender Banana Pancakes",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 15
+  },
+  {
+    "recipe": "Blender Banana Pancakes",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Blender Banana Pancakes",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.02282836362302003
+  },
+  {
+    "recipe": "Blender Banana Pancakes",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.014228651947620852
+  },
+  {
+    "recipe": "Blender Banana Pancakes",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.06219860987698142
+  },
+  {
+    "recipe": "Blender Banana Pancakes",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.1328672170639038
+  },
+  {
+    "recipe": "Breakfast Burritos",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 12
+  },
+  {
+    "recipe": "Breakfast Burritos",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Breakfast Burritos",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.01827025473799017
+  },
+  {
+    "recipe": "Breakfast Burritos",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.014303699212303633
+  },
+  {
+    "recipe": "Breakfast Burritos",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.05149087905883789
+  },
+  {
+    "recipe": "Breakfast Burritos",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.12872719764709473
+  },
+  {
+    "recipe": "Broccoli Stir Fry",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 26
+  },
+  {
+    "recipe": "Broccoli Stir Fry",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Broccoli Stir Fry",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.06360090866857815
+  },
+  {
+    "recipe": "Broccoli Stir Fry",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.05990595681306673
+  },
+  {
+    "recipe": "Broccoli Stir Fry",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.18490213627754548
+  },
+  {
+    "recipe": "Broccoli Stir Fry",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.48400000000000004
+  },
+  {
+    "recipe": "Butter Corn Cup",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 13
+  },
+  {
+    "recipe": "Butter Corn Cup",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Butter Corn Cup",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.04818062285180443
+  },
+  {
+    "recipe": "Butter Corn Cup",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.03827876686730874
+  },
+  {
+    "recipe": "Butter Corn Cup",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.12463261419536127
+  },
+  {
+    "recipe": "Butter Corn Cup",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.29964160919189453
+  },
+  {
+    "recipe": "Caprese Bruschetta",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 12
+  },
+  {
+    "recipe": "Caprese Bruschetta",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Caprese Bruschetta",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.03176979711692351
+  },
+  {
+    "recipe": "Caprese Bruschetta",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.01986581669125352
+  },
+  {
+    "recipe": "Caprese Bruschetta",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.08906422372283479
+  },
+  {
+    "recipe": "Caprese Bruschetta",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.24036359786987305
+  },
+  {
+    "recipe": "Cheese Pimiento",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 12
+  },
+  {
+    "recipe": "Cheese Pimiento",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Cheese Pimiento",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.02544045974112809
+  },
+  {
+    "recipe": "Cheese Pimiento",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.0229268904983318
+  },
+  {
+    "recipe": "Cheese Pimiento",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.06937824709754606
+  },
+  {
+    "recipe": "Cheese Pimiento",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.15054529905319214
+  },
+  {
+    "recipe": "Cucumber Raita",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 12
+  },
+  {
+    "recipe": "Cucumber Raita",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Cucumber Raita",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.04062393456821329
+  },
+  {
+    "recipe": "Cucumber Raita",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.036372817986989735
+  },
+  {
+    "recipe": "Cucumber Raita",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.11800000000000001
+  },
+  {
+    "recipe": "Cucumber Raita",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.29500000000000004
+  },
+  {
+    "recipe": "Microwave Egg Sandwich",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 13
+  },
+  {
+    "recipe": "Microwave Egg Sandwich",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Microwave Egg Sandwich",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.034640153771173555
+  },
+  {
+    "recipe": "Microwave Egg Sandwich",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.0349803197642631
+  },
+  {
+    "recipe": "Microwave Egg Sandwich",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.06932800770859604
+  },
+  {
+    "recipe": "Microwave Egg Sandwich",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.18100357055664062
+  },
+  {
+    "recipe": "Microwave French Toast",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 12
+  },
+  {
+    "recipe": "Microwave French Toast",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Microwave French Toast",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.03574406616381372
+  },
+  {
+    "recipe": "Microwave French Toast",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.016346135181558953
+  },
+  {
+    "recipe": "Microwave French Toast",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.18963333696027965
+  },
+  {
+    "recipe": "Microwave French Toast",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.5010908842086792
+  },
+  {
+    "recipe": "Microwave Mug Pizza",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 15
+  },
+  {
+    "recipe": "Microwave Mug Pizza",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 93.33333333333333
+  },
+  {
+    "recipe": "Microwave Mug Pizza",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.01933686342545245
+  },
+  {
+    "recipe": "Microwave Mug Pizza",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.01498916944849364
+  },
+  {
+    "recipe": "Microwave Mug Pizza",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.05355730455100597
+  },
+  {
+    "recipe": "Microwave Mug Pizza",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.1531468629837036
+  },
+  {
+    "recipe": "Sauteed Mushrooms",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 19
+  },
+  {
+    "recipe": "Sauteed Mushrooms",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 94.73684210526315
+  },
+  {
+    "recipe": "Sauteed Mushrooms",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.030442735762947135
+  },
+  {
+    "recipe": "Sauteed Mushrooms",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.027393429869222316
+  },
+  {
+    "recipe": "Sauteed Mushrooms",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.08857674638413855
+  },
+  {
+    "recipe": "Sauteed Mushrooms",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.18900000000000006
+  },
+  {
+    "recipe": "Scrambled Eggs",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 24
+  },
+  {
+    "recipe": "Scrambled Eggs",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Scrambled Eggs",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.03811101049101817
+  },
+  {
+    "recipe": "Scrambled Eggs",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.031903552307527915
+  },
+  {
+    "recipe": "Scrambled Eggs",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.17538141292622775
+  },
+  {
+    "recipe": "Scrambled Eggs",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.48200000000000004
+  },
+  {
+    "recipe": "Spiced Hot Chocolate",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 8
+  },
+  {
+    "recipe": "Spiced Hot Chocolate",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 75.0
+  },
+  {
+    "recipe": "Spiced Hot Chocolate",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.026305296267351345
+  },
+  {
+    "recipe": "Spiced Hot Chocolate",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.01754430627197543
+  },
+  {
+    "recipe": "Spiced Hot Chocolate",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.08017185380937804
+  },
+  {
+    "recipe": "Spiced Hot Chocolate",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.23779523372650146
+  },
+  {
+    "recipe": "Tomato Mozzarella Salad",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 10
+  },
+  {
+    "recipe": "Tomato Mozzarella Salad",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 60.0
+  },
+  {
+    "recipe": "Tomato Mozzarella Salad",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.012826566515179253
+  },
+  {
+    "recipe": "Tomato Mozzarella Salad",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.012744949214939016
+  },
+  {
+    "recipe": "Tomato Mozzarella Salad",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.04691547480170049
+  },
+  {
+    "recipe": "Tomato Mozzarella Salad",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.10641509294509888
+  },
+  {
+    "recipe": "Zoodles",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 14
+  },
+  {
+    "recipe": "Zoodles",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 100.0
+  },
+  {
+    "recipe": "Zoodles",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.032095945714123594
+  },
+  {
+    "recipe": "Zoodles",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.010028424586002557
+  },
+  {
+    "recipe": "Zoodles",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.19671443023381321
+  },
+  {
+    "recipe": "Zoodles",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.457446813583374
+  },
+  {
+    "recipe": "Overall (217 claims)",
+    "col": "N",
+    "metric": "result",
+    "run": "main",
+    "value": 217
+  },
+  {
+    "recipe": "Overall (217 claims)",
+    "col": "Non-inv. %",
+    "metric": "result",
+    "run": "main",
+    "value": 96.31336405529954
+  },
+  {
+    "recipe": "Overall (217 claims)",
+    "col": "Mean TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.03440590682817707
+  },
+  {
+    "recipe": "Overall (217 claims)",
+    "col": "Median TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.023393026665108677
+  },
+  {
+    "recipe": "Overall (217 claims)",
+    "col": "Max TopoDev",
+    "metric": "result",
+    "run": "main",
+    "value": 0.19671443023381321
+  },
+  {
+    "recipe": "Overall (217 claims)",
+    "col": "Max Swing",
+    "metric": "result",
+    "run": "main",
+    "value": 0.5010908842086792
+  }
+]
