@@ -56,14 +56,30 @@ class CachingEntailmentScorer:
     immutable, cheap-to-hash proxy for the actual (premises, claim) text pair
     -- rather than the text itself, per the spec. This is a pure
     optimization: given a correct underlying scorer, results are identical
-    with or without this wrapper. Tracks request/hit counts for diagnostics.
+    with or without this wrapper. `premise_ids` is already the *effective*
+    context -- the caller (algorithm.py) has already restricted a sampled
+    global topological ordering down to depth-limited ancestors and then
+    filtered by which of those turned out "sound" in the current Monte Carlo
+    sample -- so two different global orderings that happen to induce the
+    same effective context collapse to the same cache entry, while a
+    different local order, a different sound/active subset, or a different
+    target node all produce a different key. Tracks request/hit counts for
+    diagnostics.
+
+    `use_cache=False` disables memoization while keeping the exact same call
+    interface and accounting (every request becomes a real model call) --
+    this is for A/B numerical-equivalence testing, not a second
+    implementation of SAGER: the algorithm code path is identical either
+    way, only whether this wrapper remembers past answers differs.
     """
 
-    def __init__(self, scorer: EntailmentScorer):
+    def __init__(self, scorer: EntailmentScorer, use_cache: bool = True):
         self._scorer = scorer
+        self.use_cache = use_cache
         self._cache: Dict[Tuple[tuple, Node], float] = {}
         self.total_requests = 0
         self.cache_hits = 0
+        self.model_calls = 0
 
     def __call__(
         self,
@@ -74,13 +90,37 @@ class CachingEntailmentScorer:
     ) -> float:
         self.total_requests += 1
         key = (tuple(premise_ids), target_id)
-        if key in self._cache:
+        if self.use_cache and key in self._cache:
             self.cache_hits += 1
             return self._cache[key]
+        self.model_calls += 1
         score = clip_score(self._scorer(list(premise_texts), claim_text))
-        self._cache[key] = score
+        if self.use_cache:
+            self._cache[key] = score
         return score
 
     @property
     def unique_calls(self) -> int:
-        return len(self._cache)
+        return self.model_calls
+
+    # --- spec-named diagnostics (aliases over the same counters above) -----
+
+    @property
+    def num_entailment_requests(self) -> int:
+        return self.total_requests
+
+    @property
+    def num_entailment_model_calls(self) -> int:
+        return self.model_calls
+
+    @property
+    def num_cache_hits(self) -> int:
+        return self.cache_hits
+
+    @property
+    def num_cache_misses(self) -> int:
+        return self.total_requests - self.cache_hits
+
+    @property
+    def cache_hit_rate(self) -> float:
+        return (self.cache_hits / self.total_requests) if self.total_requests > 0 else 0.0

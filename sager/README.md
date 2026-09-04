@@ -41,7 +41,12 @@ SagerResult(
         "num_nodes": ..., "num_edges": ...,
         "num_soundness_samples": N, "epsilon": ..., "delta": ...,  # epsilon/delta are None unless that path was used
         "num_topological_orders_used": L_G,
+        # kept for backward compatibility:
         "entailment_requests": ..., "unique_entailment_calls": ..., "cache_hits": ...,
+        # same counters, spec-named (see Caching below):
+        "num_entailment_requests": ..., "num_entailment_model_calls": ...,
+        "num_cache_hits": ..., "num_cache_misses": ..., "cache_hit_rate": ...,
+        "nominal_evaluations_upper_bound": ...,  # L_G * N * |V|
     },
     debug_samples=None,  # or a list of length N, see above, if debug=True
 )
@@ -70,11 +75,66 @@ SagerResult(
 
 ## Caching
 
-`entailment.CachingEntailmentScorer` memoizes calls keyed by
-`(tuple(ordered_premise_node_ids), target_node_id)`. This is purely an
-optimization -- given a correct `entailment_scorer`, results are identical
-with or without it. `diagnostics` reports `entailment_requests`,
-`unique_entailment_calls`, and `cache_hits`.
+SAGER memoizes entailment-model calls with a simple dictionary cache
+(`entailment.CachingEntailmentScorer`) keyed on `(ordered effective premise
+ids, target node id)`, where "effective premises" is the sequence of
+ancestor nodes actually shown to the model for one query -- a sampled
+topological ordering restricted to a claim's depth-limited ancestors, then
+further filtered down to whichever of those ancestors were sampled "sound"
+in the current Monte Carlo pass. Because that key depends only on which
+ancestors ended up in the prompt and in what relative order -- not on the
+full global ordering that produced them -- two different sampled orderings
+that happen to induce the same local context for a claim collapse to a
+single cache entry, while a different order, a different sound/unsound
+subset, or a different target claim each produce a distinct entry. The
+cache is created fresh at the start of each `sager_known_graph` call and
+lives for that one call only, so it's reused across every Monte Carlo
+sample and every sampled ordering for that one DAG but never bleeds across
+different recipes/examples. It's purely a performance optimization --
+`use_cache=False` disables it for A/B testing (see
+`sager/tests/test_sager_known_graph.py`'s
+`test_use_cache_false_disables_memoization_but_preserves_results`), and
+turning it off changes only how many real model calls happen, never
+SAGER's `tau` output.
+
+`diagnostics` reports both the original field names (`entailment_requests`,
+`unique_entailment_calls`, `cache_hits`) and spec-named equivalents
+(`num_entailment_requests`, `num_entailment_model_calls`, `num_cache_hits`,
+`num_cache_misses`, `cache_hit_rate`), backed by the same counters.
+
+### Computational cost
+
+Without caching, the naive per-call cost is `L * N * |V|` entailment
+evaluations: `L` sampled orderings, restricted per node, evaluated fresh in
+every one of `N` Monte Carlo passes for every one of `|V|` nodes
+(`diagnostics["nominal_evaluations_upper_bound"]` reports this exact
+number). In practice almost all of those requests are redundant: a node's
+restricted context depends only on which of its (typically few) ancestors
+are active in a given Monte Carlo sample and how the sampled orderings
+happen to arrange them, so the same effective context recurs constantly
+across passes -- especially for the majority of nodes with small ancestor
+sets, whose restricted-context space saturates almost immediately (see
+`sager/experiments/l_convergence_check.py`'s adaptive-L analysis for the
+real-data version of this). Caching collapses the actual work to
+`O(N * sum_c K_c)`, where `K_c <= L` is the number of *distinct* effective
+contexts claim `c` actually encounters across all `N * L` chances to
+produce one -- a per-claim quantity driven by that claim's own ancestor-set
+size and its position in the graph, not a fixed constant.
+
+Measured on the real `scrambledeggs` recipe (24 nodes, 8 of them roots,
+`depth=2`, `L=100`, `N=100`): nominal upper bound `100 * 100 * 24 =
+240,000`; actual unique entailment calls after caching: `3,787`
+(`num_cache_hits` was `156,213` on that same run) -- a **~63x reduction**
+against the nominal bound (~42x against the actual logical-request count of
+160,000, since root nodes never call the entailment scorer at all -- the
+nominal bound over-counts them). This is driven almost entirely by the
+~85% of nodes with few ancestors, whose small number of possible restricted
+contexts get hit repeatedly rather than recomputed. Nodes with large
+ancestor sets (the ones `l_convergence_check.py` specifically probes) still
+cost close to their full `L` per Monte Carlo pass, since a large ancestor
+set can produce many genuinely distinct restricted orderings -- caching
+doesn't reduce their asymptotic cost, it eliminates the redundant work
+everywhere else.
 
 ## Edge cases and ambiguities encountered
 

@@ -86,7 +86,7 @@ from ares_topodev.eval_harness.recipe_example import RecipeExample, apply_orderi
 from ares_topodev.topo_reorder.dag import RecipeDag, extract_recipe_dag, load_recipe_json
 from ares_topodev.topo_reorder.topo_sample import count_or_estimate_linear_extensions, sample_orderings
 
-from sager import sager_known_graph
+from sager import compute_depth_limited_ancestors, sager_known_graph
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_DIR = os.path.join(REPO_ROOT, "ares_topodev", "vendor", "ares", "data", "recipe_graphs")
@@ -142,7 +142,13 @@ SAGER_DEPTH = 2              # d: capped (not full closure) -- see RECIPE_NAMES 
                              # this is a real scope change vs the first 3-recipe pass (was math.inf),
                              # made for computational feasibility at this scale, not an ablation choice
 SAGER_N = 200                # Monte Carlo soundness-sampling budget
-SAGER_L = 10                 # topological-order budget (Pi_G)
+SAGER_L_CAP = 50              # topological-order budget (Pi_G) ceiling -- see adaptive_max_orderings():
+                             # the actual L used per recipe is min(SAGER_L_CAP, max_ancestors!), not this
+                             # constant directly. Raised from a flat SAGER_L=10 after
+                             # sager/experiments/l_convergence_check.py found L=10 measurably biased
+                             # (~0.025-0.038 in tau) for claims with >3 true ancestors -- L=50 already
+                             # captured most of that convergence in the one case tested (scrambledeggs
+                             # node 16, 10 ancestors: tau identical to 4dp between L=50 and L=100).
 
 # Fixed, not tuned on gold labels (see analysis/detection_sensitivity.py for
 # this project's usual CV-tuned threshold -- deliberately not used here, per
@@ -238,6 +244,29 @@ def build_graph_and_priors(dag: RecipeDag):
     return G, base_priors
 
 
+def adaptive_max_orderings(G: nx.DiGraph, depth, l_cap: int) -> int:
+    """Per-recipe topological-order budget L, adaptive to that recipe's own
+    hardest claim: L = min(l_cap, k!), where k is the largest depth-limited
+    ancestor-set size across every node in G.
+
+    Why: SAGER shares the same L sampled full-graph orderings across every
+    node in one call, restricting them per node (see algorithm.py) -- for a
+    node with a small ancestor set, most of a large L's restrictions
+    collapse to the same few distinct sequences (cheap cache hits, not new
+    model calls, per l_convergence_check.py's diagnostics), so a flat L
+    chosen for the hardest claim in the whole dataset overpays on every
+    recipe that doesn't contain one. k! is only the binding constraint
+    while it's smaller than l_cap (roughly k <= 5 for l_cap=50; it explodes
+    past any reasonable cap immediately after) -- above that, l_cap governs
+    and this is equivalent to the flat-L behavior it replaces. This keeps
+    the per-call semantics in algorithm.py completely unchanged (a single
+    shared L for the whole graph); only how that one L is *chosen*, per
+    recipe rather than globally, is new.
+    """
+    max_ancestors = max((len(compute_depth_limited_ancestors(G, v, depth)) for v in G.nodes), default=0)
+    return min(l_cap, math.factorial(max_ancestors))
+
+
 @dataclass
 class NodeMetrics:
     mean_score: float
@@ -286,6 +315,7 @@ def run_example(recipe_name: str, entailment_model, mode):
 
     G, base_priors = build_graph_and_priors(dag)
     claims = {nid: example.derived_claims_by_node_id[nid] for nid in node_ids}
+    sager_l = adaptive_max_orderings(G, SAGER_DEPTH, SAGER_L_CAP)
     # Sanity check 6: SAGER's own node ids ARE the permanent recipe step ids
     # (G's nodes == claims' keys == gold_by_node's keys) -- nothing gets
     # remapped through position, so SAGER's output dict is already keyed by
@@ -307,7 +337,7 @@ def run_example(recipe_name: str, entailment_model, mode):
     # rho_r loop below -- reused as-is for every row.
     sager_result = sager_known_graph(
         G, claims=claims, base_priors=base_priors, entailment_scorer=shared_entailment_scorer,
-        depth=SAGER_DEPTH, num_soundness_samples=SAGER_N, max_orderings=SAGER_L, seed=SEED,
+        depth=SAGER_DEPTH, num_soundness_samples=SAGER_N, max_orderings=sager_l, seed=SEED,
     )
 
     for r, order in enumerate(topo_result.orderings):
@@ -382,7 +412,7 @@ def run_example(recipe_name: str, entailment_model, mode):
         recipe_name=recipe_name, dag=dag, example=example, node_ids=node_ids,
         topo_result=topo_result, linear_ext=linear_ext, rows=rows,
         ares_scores_by_r=ares_scores_by_r, sager_scores_by_r=sager_scores_by_r,
-        sager_exact_invariant=sager_exact_invariant,
+        sager_exact_invariant=sager_exact_invariant, sager_l=sager_l,
     )
 
 
@@ -452,7 +482,7 @@ def main():
     print(f"  recipes: {recipe_names}")
     print(f"  device: {args.device or 'auto'}")
     print(f"  R (observed serializations per example): {R}")
-    print(f"  SAGER config: d={SAGER_DEPTH}, N={SAGER_N}, L={SAGER_L}, seed={SEED}")
+    print(f"  SAGER config: d={SAGER_DEPTH}, N={SAGER_N}, L=adaptive per recipe (min({SAGER_L_CAP}, max_ancestors!), see adaptive_max_orderings), seed={SEED}")
     print(f"  ARES config: epsilon={ARES_EPSILON}, delta={ARES_DELTA}, p={P_BASE}, temperature={TEMPERATURE}")
     print(f"  shared entailment model: EntailmentModel(QwenLLMFixed({BACKBONE_MODEL_NAME!r})) + real CaptainCookRecipes prompt/mapping")
     print(f"  verdict threshold (fixed, not CV-tuned): {VERDICT_THRESHOLD}")
@@ -467,6 +497,7 @@ def main():
         print(f"Example: {recipe_name}")
         print("=" * 78)
         result = run_example(recipe_name, entailment_model, mode)
+        print(f"  SAGER L for this recipe (adaptive, cap={SAGER_L_CAP}): {result['sager_l']}")
         per_example_results.append(result)
         all_rows.extend(result["rows"])
         agg_rows = build_aggregate_rows(result)

@@ -104,6 +104,7 @@ def sager_known_graph(
     delta: Optional[float] = None,
     seed: Optional[int] = None,
     debug: bool = False,
+    use_cache: bool = True,
 ) -> SagerResult:
     """Run SAGER (known-graph setting).
 
@@ -129,6 +130,12 @@ def sager_known_graph(
       seed: random seed; same seed -> bit-identical results.
       debug: if True, also return per-sample (p_v^(i), alpha_v^(i), A_v^(i))
         for every node. Off by default -- O(N * |V|) memory when enabled.
+      use_cache: if True (default), memoize entailment queries by
+        (effective ordered ancestor context, target node) within this one
+        call -- see `entailment.CachingEntailmentScorer`. Purely a
+        performance optimization; sager_known_graph's tau is identical
+        either way. False disables memoization for A/B comparison, e.g. in
+        tests.
 
     Returns:
       SagerResult(tau={node: tau_hat_G(node)}, diagnostics={...}, debug_samples=...)
@@ -179,7 +186,7 @@ def sager_known_graph(
         v: [restrict_order(order, anc_sets[v]) for order in orderings] for v in nodes
     }
 
-    cache = CachingEntailmentScorer(entailment_scorer)
+    cache = CachingEntailmentScorer(entailment_scorer, use_cache=use_cache)
 
     N = num_soundness_samples
     sum_p: Dict[Node, float] = {v: 0.0 for v in nodes}
@@ -237,9 +244,19 @@ def sager_known_graph(
         "epsilon": epsilon,
         "delta": delta,
         "num_topological_orders_used": L_G,
+        # kept for backward compatibility with existing consumers:
         "entailment_requests": cache.total_requests,
         "unique_entailment_calls": cache.unique_calls,
         "cache_hits": cache.cache_hits,
+        # spec-named cache-savings instrumentation (same underlying counters):
+        "num_entailment_requests": cache.num_entailment_requests,
+        "num_entailment_model_calls": cache.num_entailment_model_calls,
+        "num_cache_hits": cache.num_cache_hits,
+        "num_cache_misses": cache.num_cache_misses,
+        "cache_hit_rate": cache.cache_hit_rate,
+        # nominal upper bound L*N*|V| vs. actual unique calls after caching --
+        # see module docstring / package README for the O(N * sum_c K_c) claim.
+        "nominal_evaluations_upper_bound": L_G * N * G.number_of_nodes(),
     }
 
     return SagerResult(tau=tau, diagnostics=diagnostics, debug_samples=debug_samples)

@@ -1,38 +1,18 @@
 """Scratch validation script -- entailment caching behavior for SAGER
 (known dependency graph). Compares a normal (cached) run against a
-no-cache run built by swapping out CachingEntailmentScorer for a
-pass-through counting wrapper with the identical call interface, so the
-exact same algorithm code path runs either way -- only the memoization
-layer differs."""
+no-cache run via `sager_known_graph(..., use_cache=False)`, so the exact
+same algorithm code path runs either way -- only the memoization layer
+inside CachingEntailmentScorer differs. (Formerly done by monkeypatching
+CachingEntailmentScorer out entirely with a hand-rolled pass-through
+wrapper -- superseded by the real use_cache flag; see
+sager/tests/test_sager_known_graph.py's
+test_use_cache_false_disables_memoization_but_preserves_results for the
+pytest-suite version of this same comparison.)"""
 import math
-from unittest.mock import patch
 
 import networkx as nx
 
-from sager import MockEntailmentScorer, sager_known_graph
-from sager import algorithm as alg
-from sager.entailment import CachingEntailmentScorer, clip_score
-
-
-class NoCacheEntailmentScorer:
-    """Same call interface as CachingEntailmentScorer, but memoizes nothing --
-    every request actually invokes the underlying scorer. Used to swap out
-    caching for a controlled no-cache run of the exact same algorithm code."""
-
-    def __init__(self, scorer):
-        self._scorer = scorer
-        self.total_requests = 0
-        self.cache_hits = 0  # always 0 -- no caching happens
-        self._seen_keys = set()
-
-    def __call__(self, premise_ids, target_id, premise_texts, claim_text):
-        self.total_requests += 1
-        self._seen_keys.add((tuple(premise_ids), target_id))
-        return clip_score(self._scorer(list(premise_texts), claim_text))
-
-    @property
-    def unique_calls(self):
-        return len(self._seen_keys)  # "would-be" unique inputs, for comparison only
+from sager import CachingEntailmentScorer, MockEntailmentScorer, sager_known_graph
 
 
 class CountingScorer:
@@ -74,8 +54,9 @@ print("=" * 70)
 print("2. Run with caching disabled (CachingEntailmentScorer swapped out)")
 print("=" * 70)
 counting_scorer_nocache = CountingScorer(MockEntailmentScorer())
-with patch.object(alg, "CachingEntailmentScorer", NoCacheEntailmentScorer):
-    result_nocache = sager_known_graph(G, entailment_scorer=counting_scorer_nocache, debug=True, **SHARED_KWARGS)
+result_nocache = sager_known_graph(
+    G, entailment_scorer=counting_scorer_nocache, debug=True, use_cache=False, **SHARED_KWARGS
+)
 print(f"  diagnostics: {result_nocache.diagnostics}")
 print(f"  ground-truth actual scorer invocations: {counting_scorer_nocache.calls}")
 assert counting_scorer_nocache.calls == result_nocache.diagnostics["entailment_requests"]

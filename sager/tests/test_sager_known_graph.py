@@ -10,6 +10,7 @@ import networkx as nx
 import pytest
 
 from sager import (
+    CachingEntailmentScorer,
     MockEntailmentScorer,
     compute_depth_limited_ancestors,
     restrict_order,
@@ -300,6 +301,107 @@ def test_out_of_range_score_is_clipped():
         seed=0,
     )
     assert result.tau["b"] == 1.0  # clipped from 5.0
+
+
+# --- 8. Effective-context caching: use_cache flag + spec-exact key scenarios ---
+
+
+def test_use_cache_false_disables_memoization_but_preserves_results():
+    """Same numerical tau (and full per-sample debug trace) with
+    use_cache=True vs False -- caching must be a pure optimization, never a
+    behavior change. Only the cache-savings stats differ."""
+    G = _diamond()
+    kwargs = dict(
+        claims={"a": "flour and water", "b": "dough mixed", "c": "dough risen", "d": "bread baked"},
+        base_priors={"a": 0.9}, entailment_scorer=MockEntailmentScorer(),
+        depth=math.inf, num_soundness_samples=50, max_orderings=4, seed=7, debug=True,
+    )
+    cached = sager_known_graph(G, use_cache=True, **kwargs)
+    uncached = sager_known_graph(G, use_cache=False, **kwargs)
+
+    assert cached.tau == uncached.tau
+    assert cached.debug_samples == uncached.debug_samples
+
+    # use_cache=False: no memoization -- every logical request is a real model call
+    assert uncached.diagnostics["num_cache_hits"] == 0
+    assert uncached.diagnostics["num_entailment_model_calls"] == uncached.diagnostics["num_entailment_requests"]
+    assert uncached.diagnostics["cache_hit_rate"] == 0.0
+    # use_cache=True: repeated MC samples/orderings recur, so some collapse
+    assert cached.diagnostics["num_cache_hits"] > 0
+    assert cached.diagnostics["num_entailment_model_calls"] < cached.diagnostics["num_entailment_requests"]
+    assert cached.diagnostics["cache_hit_rate"] > 0.0
+    # same number of LOGICAL requests either way -- only how many are served from cache differs
+    assert cached.diagnostics["num_entailment_requests"] == uncached.diagnostics["num_entailment_requests"]
+    # num_cache_misses must equal the actual model-call count in both modes
+    assert cached.diagnostics["num_cache_misses"] == cached.diagnostics["num_entailment_model_calls"]
+    assert uncached.diagnostics["num_cache_misses"] == uncached.diagnostics["num_entailment_model_calls"]
+
+
+def test_cache_scenario_1_same_effective_context_different_global_order():
+    """Spec example: pi_1=(a,b,c,d,e), pi_2=(b,a,c,e,d). Claim e's effective
+    context is (b,c) under both (different global orders, same relative
+    order of its ancestors) -- the model is called once; the second lookup
+    is a cache hit returning an identical score."""
+    pi_1 = ["a", "b", "c", "d", "e"]
+    pi_2 = ["b", "a", "c", "e", "d"]
+    ancestors_of_e = {"b", "c"}
+
+    restricted_1 = tuple(restrict_order(pi_1, ancestors_of_e))
+    restricted_2 = tuple(restrict_order(pi_2, ancestors_of_e))
+    assert restricted_1 == restricted_2 == ("b", "c")  # same effective context despite differing global order
+
+    scorer = CachingEntailmentScorer(MockEntailmentScorer())
+    score_1 = scorer(restricted_1, "e", ["Claim B", "Claim C"], "Claim E")
+    assert scorer.num_entailment_model_calls == 1 and scorer.num_cache_hits == 0
+
+    score_2 = scorer(restricted_2, "e", ["Claim B", "Claim C"], "Claim E")
+    assert scorer.num_entailment_model_calls == 1  # no second model call
+    assert scorer.num_cache_hits == 1
+    assert score_1 == score_2
+
+
+def test_cache_scenario_2_different_local_order_not_collapsed():
+    """(a, b) and (b, a) must be different cache keys -- ordering changes
+    the entailment prompt, so it must not collide."""
+    scorer = CachingEntailmentScorer(MockEntailmentScorer())
+    score_ab = scorer(("a", "b"), "c", ["Claim A", "Claim B"], "Claim C")
+    score_ba = scorer(("b", "a"), "c", ["Claim B", "Claim A"], "Claim C")
+    assert scorer.num_entailment_model_calls == 2
+    assert scorer.num_cache_hits == 0
+    assert score_ab != score_ba  # MockEntailmentScorer is order-sensitive
+
+
+def test_cache_scenario_3_different_soundness_state_not_collided():
+    """Effective context (a, b) (both sound) and (b,) (only b sound) must
+    not collide, even though they share a target and (b,) is a subset."""
+    scorer = CachingEntailmentScorer(MockEntailmentScorer())
+    score_ab = scorer(("a", "b"), "c", ["Claim A", "Claim B"], "Claim C")
+    score_b = scorer(("b",), "c", ["Claim B"], "Claim C")
+    assert scorer.num_entailment_model_calls == 2
+    assert scorer.num_cache_hits == 0
+    assert score_ab != score_b
+
+
+def test_cache_scenario_4_different_target_claims_not_collided():
+    """The identical premise context for two different target claims must
+    not collide -- the target node id is part of the key."""
+    scorer = CachingEntailmentScorer(MockEntailmentScorer())
+    score_c1 = scorer(("a", "b"), "c1", ["Claim A", "Claim B"], "Claim C1")
+    score_c2 = scorer(("a", "b"), "c2", ["Claim A", "Claim B"], "Claim C2")
+    assert scorer.num_entailment_model_calls == 2
+    assert scorer.num_cache_hits == 0
+    assert score_c1 != score_c2
+
+
+def test_cache_hit_rate_formula():
+    scorer = CachingEntailmentScorer(MockEntailmentScorer())
+    assert scorer.cache_hit_rate == 0.0  # no requests yet -- must not divide by zero
+    scorer(("a",), "b", ["Claim A"], "Claim B")
+    scorer(("a",), "b", ["Claim A"], "Claim B")  # hit
+    scorer(("a",), "b", ["Claim A"], "Claim B")  # hit
+    assert scorer.num_entailment_requests == 3
+    assert scorer.num_cache_hits == 2
+    assert scorer.cache_hit_rate == 2 / 3
 
 
 # --- 7. epsilon/delta -> N derivation (Hoeffding-style, mirrors ARES's cert_nonexact) ---
